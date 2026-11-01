@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cuatrocientos</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cuatrocientos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="CUATROCIENTOS">
+<meta property="og:description" content="Cuesta lo que pesa. Catálogo de camisetas de alto gramaje.">
+<meta property="og:image" content="og.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+/* Concepto: una sola pantalla, como una tienda de ropa colgada. Bienvenida con percha que gira, riel, vista de prenda con etiquetas de color, ficha de pedido. */
+:root{
+  --blanco:#FFFFFF; --negro:#000000; --perla:#E5E5E5; --linea:#CFCFCF;
+  --carmin:#9B1B1B; --carmin-claro:#C23A3A; --texto2:#444444;
+  --display:'Archivo','Arial Narrow',Arial,sans-serif; --cuerpo:'Inter',system-ui,sans-serif;
+  --franja:34px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body::before,.capa::before{content:"";position:fixed;inset:-24px;z-index:-1;background:url(fondo.jpg) center/cover no-repeat;filter:blur(2.5px) brightness(1.05);pointer-events:none}
+@media (max-aspect-ratio:1/1){body::before,.capa::before{background:url(fondo.jpg) center 42%/100% auto no-repeat,url(fondo.jpg) center/cover no-repeat}}
+.capa::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(248,248,248,.52),rgba(240,240,240,.62));pointer-events:none}
+.luz{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,rgba(248,248,248,.52),rgba(240,240,240,.62))}
+body{margin:0;background:radial-gradient(120% 90% at 50% 38%,#fff 0%,#f6f6f6 60%,#ececec 100%);color:var(--negro);font-family:var(--cuerpo);font-size:15px;line-height:1.5;overflow:hidden}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--carmin);outline-offset:3px}
+.lbl{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.gut{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+
+/* franja inferior */
+.franja{position:fixed;left:0;right:0;bottom:0;height:calc(var(--franja) + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);background:var(--carmin);color:var(--blanco);z-index:60;overflow:hidden;display:flex;align-items:center;white-space:nowrap}
+.franja-pista{display:flex;flex-shrink:0;animation:franja 40s linear infinite}
+.franja-pista span{padding-right:34px}
+@keyframes franja{to{transform:translateX(-50%)}}
+
+/* app */
+.app{height:100%;display:flex;flex-direction:column;padding-bottom:calc(var(--franja) + env(safe-area-inset-bottom,0px))}
+.sup{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;min-height:76px;padding-top:max(8px,env(safe-area-inset-top,0px))}
+.sup button.txt{background:none;border:0;padding:10px 0;justify-self:start}
+.sup button.txt.der{justify-self:end}
+.sup .txt:hover{text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--carmin)}
+.marca-sup{display:flex;align-items:center;gap:10px}
+.sup .mi{height:52px;width:auto}
+.sup .mp{height:38px;width:auto}
+.escena{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding-bottom:10px}
+.riel-wrap{width:min(1100px,100%)}
+.carril{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:0 4px 8px}
+.carril::-webkit-scrollbar{display:none}
+.fila{position:relative;display:flex;justify-content:space-evenly;justify-content:safe space-evenly;gap:clamp(18px,2.6vw,40px);padding-left:clamp(10px,2vw,30px);padding-right:clamp(10px,2vw,30px);width:max-content;min-width:100%;padding-top:2px}
+.fila::before{content:"";position:absolute;left:0;right:0;top:15px;height:5px;border-radius:3px;background:linear-gradient(#fafafa,#9a9a9a 55%,#666);box-shadow:0 2px 3px rgba(0,0,0,.22)}
+.colgante{flex:0 0 clamp(190px,23vw,290px);width:clamp(190px,23vw,290px);background:none;border:0;padding:0;position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;align-self:flex-start;transform-origin:50% 0;animation:cae .9s cubic-bezier(.2,.8,.2,1) both,sway 7s ease-in-out infinite;animation-delay:calc(var(--i) * 90ms + .25s),calc(var(--i) * -1.1s);}
+.fuera .colgante{animation-play-state:paused,paused;opacity:0}
+@keyframes cae{from{transform:translateY(-70%);opacity:0}to{transform:none;opacity:1}}
+@keyframes sway{0%,100%{transform:rotate(-.9deg)}50%{transform:rotate(.9deg)}}
+.giro{position:relative;transform-style:preserve-3d;transform:perspective(900px) rotateY(0deg);transition:transform .95s cubic-bezier(.55,0,.2,1);transform-origin:50% 0}
+.giro.vuelta{transform:perspective(900px) rotateY(180deg)}
+.cara{display:flex;flex-direction:column;align-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cara.e{position:absolute;inset:0;transform:rotateY(180deg)}
+.percha{width:60%;height:auto;margin-bottom:-13%;position:relative;z-index:2;overflow:visible}
+.media{display:block;width:100%;aspect-ratio:var(--ar,10/13.4)}
+.media{position:relative}
+.media svg{width:100%;height:100%;display:block}
+.media img.foto{position:absolute;inset:0;width:100%;height:100%;display:block}
+.colgante .media svg{filter:drop-shadow(0 12px 8px rgba(0,0,0,.14))}
+.media img.foto{object-fit:contain;object-position:50% 0;filter:drop-shadow(0 14px 10px rgba(0,0,0,.18))}
+@media (hover:hover){.colgante:hover .giro{transform:perspective(900px) rotateY(180deg)}}
+.pie-escena{width:min(1100px,100%);display:flex;justify-content:flex-end;min-height:20px;font-size:12px;color:var(--texto2);letter-spacing:.02em}
+.pie-escena span{text-align:right}
+.pie-escena b{color:var(--negro);font-weight:600}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 28px;border:1px solid var(--negro);border-radius:999px;background:transparent;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--negro);transition:background .2s,color .2s}
+.pill:hover{background:var(--negro);color:var(--blanco)}
+.pill.solido{background:var(--negro);color:var(--blanco)}
+.pill.solido:hover{background:var(--carmin);border-color:var(--carmin)}
+.pill.wa{background:var(--carmin);color:var(--blanco);border-color:var(--carmin)}
+.pill.wa:hover{background:#7e1515;border-color:#7e1515}
+.pill[disabled],.pill[aria-disabled="true"]{opacity:.4;pointer-events:none}
+
+/* bienvenida */
+.bienvenida{position:fixed;inset:0;z-index:100;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+.bienvenida::before,.bienvenida::after{content:"";position:absolute;top:0;bottom:0;width:50.4%;z-index:-1;background:var(--blanco);transition:transform 1.25s cubic-bezier(.76,0,.18,1);
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.045) 0 1px,transparent 1px 34px,rgba(0,0,0,.03) 34px 35px,transparent 35px 70px)}
+.bienvenida::before{left:0;box-shadow:inset -14px 0 22px -14px rgba(0,0,0,.28)}
+.bienvenida::after{right:0;box-shadow:inset 14px 0 22px -14px rgba(0,0,0,.28)}
+.bienvenida>*{transition:opacity .45s ease,transform .6s ease}
+.bienvenida.sale{pointer-events:none}
+.bienvenida.sale>*{opacity:0!important;transform:scale(1.06)!important;animation:none!important}
+.bienvenida.sale::before{transform:translateX(-102%)}
+.bienvenida.sale::after{transform:translateX(102%)}
+.bienvenida .bv-icono{width:auto;height:clamp(130px,25vh,230px);animation:bv-entra 1s cubic-bezier(.2,.8,.2,1) both}
+.bienvenida .palabra{height:clamp(62px,11vh,104px);width:auto;animation:bv-entra 1s .18s cubic-bezier(.2,.8,.2,1) both}
+.bienvenida .bv-eslogan{font-family:var(--cuerpo);font-weight:300;font-size:clamp(13px,1.9vh,17px);letter-spacing:.34em;text-indent:.34em;color:var(--negro);animation:bv-entra 1s .36s cubic-bezier(.2,.8,.2,1) both}
+.bienvenida .carga{margin-top:6px}
+@keyframes bv-entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.bienvenida .carga{width:140px;height:2px;background:var(--perla);overflow:hidden}
+.bienvenida .carga i{display:block;height:100%;width:100%;background:var(--carmin);transform-origin:0 50%;animation:carga 4.6s linear both}
+@keyframes carga{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* vista de prenda */
+.capa{position:fixed;inset:0;z-index:40;isolation:isolate;background:#e9e9e9;display:none;flex-direction:column;padding-bottom:calc(var(--franja) + env(safe-area-inset-bottom,0px))}
+.capa.abierta{display:flex;animation:aparece .45s ease both}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
+.capa .cerrar{position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:max(18px,env(safe-area-inset-right,0px));background:none;border:0;padding:10px 4px;z-index:5}
+.capa .cerrar:hover{text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--carmin)}
+.escenario{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;container-type:size}
+.foco{position:relative;width:calc(var(--k,1) * max(120px,min(88cqw,calc((100cqh - 60px)/1.62))));z-index:3}
+@supports not (width:1cqw){.foco{width:calc(var(--k,1) * clamp(190px,min(54vh,calc((100vh - 270px)/1.62)),600px))}}
+.foco{align-self:flex-start;margin-top:40px}
+.foco .giro,#f-giro .giro,.det{cursor:zoom-in}
+.foco img.foto,.ficha img.foto{transform:none!important}
+.ficha-img .seg{position:relative;z-index:6}
+.foco .percha{width:46%;margin-bottom:-9%}
+.foco .media svg{filter:drop-shadow(0 20px 14px rgba(0,0,0,.2))}
+.foco.entra-der{animation:desliza-der .55s cubic-bezier(.2,.8,.2,1) both}
+.foco.entra-izq{animation:desliza-izq .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes desliza-der{from{opacity:0;transform:translateX(70px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes desliza-izq{from{opacity:0;transform:translateX(-70px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+.fantasma{position:absolute;top:50%;width:clamp(120px,22vh,210px);opacity:.28;filter:blur(9px);transform:translateY(-52%);pointer-events:none;z-index:1}
+.fantasma.i{left:calc(50% - clamp(260px,34vw,470px))}
+.fantasma.d{right:calc(50% - clamp(260px,34vw,470px))}
+.etiquetas{position:absolute;left:calc(50% + clamp(100px,17vh,170px));top:calc(50% - clamp(150px,24vh,230px));display:flex;gap:12px;z-index:4}
+.etq{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;animation:sway 5s ease-in-out infinite;animation-delay:calc(var(--k) * -1.3s)}
+.etq:hover,.etq:focus-visible{animation:balanceo 1s ease-in-out}
+@keyframes balanceo{0%,100%{transform:rotate(0)}30%{transform:rotate(7deg)}65%{transform:rotate(-5deg)}}
+.etq .hilo{width:1px;height:clamp(26px,5vh,52px);background:#777}
+.etq .papel{width:30px;height:74px;border-radius:5px;border:1px solid #111;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;box-shadow:0 5px 8px rgba(0,0,0,.2);clip-path:polygon(0 12px,10px 0,calc(100% - 10px) 0,100% 12px,100% 100%,0 100%)}
+.etq .papel::before{content:"";position:absolute;top:7px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#e9e9e9;border:1px solid #777}
+.etq .papel span{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-stretch:125%;font-weight:700;font-size:8px;letter-spacing:.16em;text-transform:uppercase}
+.etq[aria-pressed="true"] .papel{outline:2px solid var(--carmin);outline-offset:2px}
+.flecha{position:absolute;top:50%;margin-top:-22px;width:44px;height:44px;border-radius:50%;border:1px solid var(--negro);background:var(--blanco);display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;z-index:5}
+.flecha:hover{background:var(--negro);color:var(--blanco)}
+.flecha.i{left:max(18px,calc(env(safe-area-inset-left,0px) + 14px))}
+.flecha.d{right:max(18px,calc(env(safe-area-inset-right,0px) + 14px))}
+.titulo-area{display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 18px 16px;text-align:center}
+.titulo-area h2{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(17px,2.4vw,24px);letter-spacing:.06em;text-transform:uppercase;line-height:1.1}
+.titulo-area .sub{font-size:12px;color:var(--texto2);margin-top:-6px}
+.seg{display:inline-flex;border:1px solid var(--negro);border-radius:999px;padding:3px;gap:2px;background:var(--blanco)}
+.seg button{min-height:34px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.seg button[aria-pressed="true"]{background:var(--negro);color:var(--blanco)}
+.seg button[hidden]{display:none}
+.modo-det #etiquetas{opacity:0;pointer-events:none}
+.det-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.det{width:max(150px,min(100%,calc(100cqh - 200px),520px));aspect-ratio:1/1;overflow:hidden;background:#111;cursor:zoom-in;border:1px solid var(--negro);position:relative}
+.det img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease;transform-origin:50% 50%;user-select:none;-webkit-user-drag:none}
+.det.zoom{cursor:zoom-out}
+.det.zoom img{transform:scale(2.2)}
+.det-txt{margin:0;font-size:13px;text-align:center;color:var(--texto2);max-width:44ch}
+.det-ayuda{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--texto2)}
+.det-nav{display:flex;gap:8px}
+.det-th{width:52px;height:52px;padding:0;border:1px solid var(--negro);background:#111;opacity:.55;overflow:hidden}
+.det-th[aria-pressed="true"]{opacity:1;outline:2px solid var(--carmin);outline-offset:2px}
+.det-th img{width:100%;height:100%;object-fit:cover;display:block}
+@media (prefers-reduced-motion:reduce){.det img{transition:none}}
+.zoomer{z-index:70;background:#e9e9e9}
+.zoomer::before,.zoomer::after{display:none}
+.z-vista{flex:1;min-height:0;position:relative;overflow:hidden;touch-action:none;cursor:grab;margin:52px 0 8px}
+.z-vista:active{cursor:grabbing}
+.z-vista img{position:absolute;left:50%;top:50%;max-width:96%;max-height:96%;width:auto;height:auto;transform-origin:0 0;user-select:none;-webkit-user-drag:none;will-change:transform;filter:drop-shadow(0 10px 14px rgba(0,0,0,.2))}
+.z-barra{display:flex;justify-content:center;align-items:center;gap:10px;padding:6px 16px 4px}
+.z-barra button{min-width:46px;min-height:46px;border:1px solid var(--negro);border-radius:999px;background:var(--blanco);font-family:var(--display);font-stretch:125%;font-weight:700;font-size:14px;padding:0 16px}
+.z-barra button:hover{background:var(--negro);color:var(--blanco)}
+.z-ayuda{text-align:center;font-size:11px;color:var(--texto2);padding:2px 12px 12px}
+.acc-fila{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap}
+.enlace{background:none;border:0;padding:6px 2px;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:10px;letter-spacing:.2em;text-transform:uppercase;border-bottom:1px solid var(--negro)}
+.enlace:hover{color:var(--carmin);border-color:var(--carmin)}
+
+/* ficha */
+.ficha{z-index:45;background:var(--blanco);overflow:auto}
+.ficha-grid{flex:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);min-height:0}
+.ficha-img{background:var(--perla);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 24px 24px;min-height:0}
+.ficha-img .giro{width:calc(var(--k,1) * clamp(190px,min(46vh,calc((100vh - 300px)/1.62)),440px))}
+.ficha-img .seg{order:-1}
+.ficha-img .det{width:clamp(180px,min(52vh,calc(100vh - 340px)),520px)}
+.ficha::before,.ficha::after{display:none}
+.ficha-der{padding:64px max(28px,env(safe-area-inset-right,0px)) 28px 36px;display:flex;flex-direction:column;gap:16px;overflow:auto;min-width:0}
+.ficha-der h3{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(22px,3vw,32px);letter-spacing:.06em;text-transform:uppercase;line-height:1.05}
+.badge{display:inline-block;background:var(--negro);color:var(--blanco);font-family:var(--display);font-stretch:125%;font-weight:700;font-size:11px;letter-spacing:.12em;padding:3px 9px}
+.precio{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:24px}
+.ficha-der p{margin:0;color:var(--texto2)}
+.dato{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;font-size:14px;border-top:1px solid var(--linea);padding-top:12px;align-items:center}
+.dato>b{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.opciones{display:flex;flex-wrap:wrap;gap:8px}
+.op{min-width:52px;min-height:44px;padding:0 14px;border:1px solid var(--negro);background:var(--blanco);font-family:var(--display);font-stretch:125%;font-weight:700;font-size:12px;letter-spacing:.06em}
+.op[aria-pressed="true"]{background:var(--negro);color:var(--blanco)}
+.op small{display:block;font-family:var(--cuerpo);font-weight:500;font-size:9px;letter-spacing:.04em;text-transform:none;margin-top:2px;opacity:.85}
+#f-tallas .op{line-height:1.1;padding-top:4px;padding-bottom:4px}
+#f-tallas .op[data-e="ultimas"] small{color:var(--carmin)}
+#f-tallas .op[aria-pressed="true"][data-e="ultimas"] small{color:#ffb4b4}
+.op[disabled]{opacity:.38;cursor:not-allowed;text-decoration:line-through;text-decoration-thickness:1px}
+.op[disabled] small{text-decoration:none}
+.op.col{display:inline-flex;align-items:center;gap:8px}
+.op.col i{width:14px;height:14px;border-radius:50%;border:1px solid #888;display:block}
+.cant{display:inline-flex;align-items:center;border:1px solid var(--negro);justify-self:start}
+.cant button{width:44px;height:44px;border:0;background:var(--blanco);font-size:20px}
+.cant button:hover{background:var(--perla)}
+.cant output{min-width:44px;text-align:center;font-family:var(--display);font-weight:700}
+.acciones{display:flex;flex-direction:column;gap:10px}
+.aviso{font-size:12px;color:var(--texto2)}
+.msg{font-size:12px;color:var(--carmin);min-height:16px}
+.lista-pts{margin:0;padding-left:18px;color:var(--texto2);font-size:13px}
+
+/* paneles */
+.vel{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.5);display:none}
+.vel.abierto{display:block}
+.panel{position:fixed;z-index:71;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 32px));max-height:calc(100% - 80px);overflow:auto;background:var(--blanco);border:1px solid var(--negro);padding:28px;display:none}
+.panel.abierto{display:block}
+.panel h3{margin:6px 0 10px;font-family:var(--display);font-stretch:125%;font-weight:300;font-size:26px;letter-spacing:.05em;text-transform:uppercase;line-height:1.1}
+.panel p{margin:0 0 12px;color:var(--texto2)}
+.panel .x{float:right;background:none;border:1px solid var(--negro);min-height:36px;padding:0 12px;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.barra{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:start;margin-top:14px}
+.barra .g{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:19px}
+.barra .g small{font-size:10px;font-weight:600;letter-spacing:.1em}
+.barra .pista{background:var(--perla);height:14px;margin-top:8px}
+.barra .txt{display:block;margin-top:6px;font-size:13.5px;line-height:1.35;color:var(--texto2)}
+.barra .rel{height:100%;background:var(--negro);width:0;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.barra:first-of-type .rel{background:var(--carmin)}
+.pasos{display:grid;gap:10px;margin:14px 0 4px}
+.pasos div{border-top:2px solid var(--negro);padding-top:8px;font-size:13px;color:var(--texto2)}
+.pasos b{display:block;color:var(--negro);font-family:var(--display);font-stretch:125%;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.num{display:inline-block;font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.04em;border:1px solid var(--negro);padding:8px 14px;user-select:all;margin:4px 0 12px}
+
+/* pedido */
+.bp{position:fixed;left:0;right:0;bottom:calc(var(--franja) + env(safe-area-inset-bottom,0px));z-index:65;background:var(--negro);color:var(--blanco);transform:translateY(120%);visibility:hidden;transition:transform .3s,visibility .3s}
+.bp.visible{transform:none;visibility:visible}
+.bp-fila{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px;padding-top:6px;padding-bottom:6px}
+.bp button.ver{background:none;border:0;color:var(--blanco);text-align:left}
+.bp .pill{border-color:var(--blanco);color:var(--blanco);min-height:40px;padding:0 20px}
+.bp .pill:hover{background:var(--blanco);color:var(--negro)}
+.lista{max-height:36vh;overflow:auto;border-bottom:1px solid #333}
+.lista[hidden]{display:none}
+.item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #2a2a2a;font-size:13px}
+.item button{background:none;border:1px solid #666;color:var(--blanco);min-height:32px;padding:0 12px;font-size:12px}
+
+@media (max-width:860px){
+  .colgante{flex-basis:200px;width:200px}
+  .fantasma{display:none}
+  .etiquetas{left:auto;right:max(14px,env(safe-area-inset-right,0px));top:12%}
+  .flecha{top:auto;bottom:12px;margin:0}
+  .ficha-grid{grid-template-columns:1fr;display:block}
+  .ficha-img{padding:56px 16px 20px}
+  .ficha-der{padding:20px 18px 24px}
+  .sup{min-height:68px}
+}
+@media (max-height:640px){
+  .sup{min-height:58px}.sup img{height:40px}
+  .titulo-area{gap:8px;padding-bottom:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .franja-pista,.colgante,.etq,.bienvenida .bv-icono,.bienvenida .palabra,.bienvenida .bv-eslogan,.bienvenida .carga i{animation:none!important}
+  .fuera .colgante{opacity:1}
+  .giro,.bienvenida,.barra .rel,.bp{transition:none}
+  .foco.entra-der,.foco.entra-izq,.capa.abierta{animation:none}
+}
+
+[hidden]{display:none!important}
+/* ===== sección Polos: otro fondo, serifa y dorado ===== */
+body.polos{--blanco:#fbf8f2;--negro:#2b2620;--perla:#e8dfd0;--linea:#d6c9b4;--carmin:#8a6d3b;--carmin-claro:#a8884a;--texto2:#6b6155;--display:'DM Serif Display',Georgia,serif;font-synthesis:none}
+body.polos::before,.polos .capa::before{background:url(fondo_polos.jpg) center 60%/cover no-repeat;filter:blur(5px)}
+body.polos .luz,.polos .capa::after{background:linear-gradient(180deg,rgba(247,242,233,.55),rgba(247,242,233,.25) 55%,rgba(247,242,233,.5))}
+.polos .fila::before{background:linear-gradient(#e7d7b0,#a88c4f 55%,#6f5a2c);box-shadow:0 2px 3px rgba(60,40,10,.3)}
+.percha{color:#3b3b3b}.polos .percha{color:#6f5a2c}
+.polos .colgante .media svg,.polos .media img.foto{filter:drop-shadow(0 16px 12px rgba(60,40,10,.22))}
+.polos .lbl{font-stretch:100%;font-weight:400;letter-spacing:.2em}
+.polos .pill.wa:hover{background:#6f5a2c;border-color:#6f5a2c}
+.polos #f-tallas .op[data-e="ultimas"] small{color:#9B1B1B}
+.polos .ficha-der h3,.polos .titulo-area h2,.polos .precio,.polos .panel h3{font-stretch:100%;font-weight:400;letter-spacing:.04em}
+.polos .badge{background:var(--carmin)}
+.cen{display:flex;justify-content:center}
+.izq button{white-space:nowrap}
+@media (max-width:520px){.tit-polos span{letter-spacing:.14em;font-size:9px;white-space:nowrap}.polos .lbl{letter-spacing:.12em}}
+.izq{justify-self:start}
+.tit-polos{text-align:center;font-family:'DM Serif Display',Georgia,serif;line-height:1}
+.tit-polos h1{margin:0;font-weight:400;font-size:clamp(32px,5.4vw,46px);letter-spacing:.04em}
+.tit-polos span{display:block;margin-top:8px;font-family:var(--cuerpo);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--carmin)}
+.fila-pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.leg-p{display:block;margin-top:10px;text-align:center;line-height:1.2}
+.leg-p b{display:block;font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:clamp(16px,1.8vw,21px)}
+/* v18: una percha por color, prendas del mismo tamaño, vista de prenda sin percha */
+.carril{scroll-snap-type:x proximity}
+.colgante{scroll-snap-align:center}
+.foco .percha,.fantasma .percha,.ficha .percha{display:none}
+.giro.grande .media img.foto{object-position:50% 50%}
+.foco{align-self:center;margin-top:0;width:min(94cqw,calc(100cqh - 90px),640px)}
+@supports not (width:1cqw){.foco{width:clamp(220px,min(80vw,calc(100vh - 280px)),640px)}}
+.ficha-img #f-giro{width:min(100%,560px,calc(100vh - 300px))}
+.ficha-img #f-giro .giro{width:100%}
+.leg-p small{letter-spacing:.12em}
+.cod-ficha{font-size:11px;letter-spacing:.14em;color:var(--texto2);margin-left:8px}
+.leg-p small{display:block;margin-top:4px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--texto2)}
+
+/* ---- v22: secciones, color dentro de la prenda, detalles completos, prendas más grandes ---- */
+.tabs-sec{flex:none;margin-top:4px}
+.pie-escena{justify-content:center}.pie-escena span{text-align:center}
+.escena{gap:12px}
+.seg button i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;border:1px solid rgba(0,0,0,.35);vertical-align:-1px}
+.seg button[aria-pressed="true"] i{border-color:rgba(255,255,255,.7)}
+.seg-col{max-width:calc(100vw - 36px);flex-wrap:wrap;justify-content:center}
+.leg-p{display:flex;flex-direction:column;align-items:center}
+.leg-p b,.leg-p small{width:100%;text-align:center}
+.pts{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.pts i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.4);display:block}
+.colgante{flex-basis:clamp(200px,min(29vw,calc(100vh - 505px)),380px);width:clamp(200px,min(29vw,calc(100vh - 505px)),380px)}
+.det{width:auto;max-width:100%;aspect-ratio:auto;background:none;border:0;display:flex;justify-content:center;align-items:center}
+.det img{width:auto;height:auto;max-width:100%;max-height:min(calc(100cqh - 230px),560px);object-fit:contain;border:1px solid var(--negro);background:#111}
+.ficha-img .det{width:auto}
+.ficha-img .det img{max-height:min(calc(100vh - 380px),540px);max-width:min(100%,520px)}
+.det-th img{object-fit:contain}
+.det-wrap{align-items:center;text-align:center}
+.det-txt{text-align:center;margin-inline:auto}
+@media (max-width:860px){.colgante{flex-basis:min(270px,72vw);width:min(270px,72vw)}}
+@media (max-width:520px){.tabs-sec button{padding:0 13px;letter-spacing:.12em}}
+
+/* ---- v23: precio visible, notas ---- */
+.e-precio{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,3.2vw,34px);letter-spacing:.02em;line-height:1;margin:2px 0 4px;text-align:center}
+.e-precio.sin{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--texto2)}
+.leg-p .pr{display:block;margin-top:5px;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(17px,1.9vw,22px);letter-spacing:.02em;line-height:1.1;text-align:center}
+.leg-p .pr.sin{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--texto2)}
+.leg-p small{margin-top:6px}
+.nota{margin:0;padding:10px 14px;border-left:3px solid var(--carmin);background:rgba(255,255,255,.7);font-size:13px;line-height:1.45;color:var(--negro);text-align:left}
+.nota-e{max-width:min(440px,calc(100vw - 36px));text-align:center;border-left:0;border:1px solid var(--carmin);border-radius:12px;font-size:12px;padding:8px 14px}
+.nota[hidden]{display:none}
+
+/* recorrido por las perchas */
+.colgante{transition:rotate .8s cubic-bezier(.2,1.9,.45,1),scale .8s ease,opacity .7s ease}
+.colgante.t-act{scale:1.07}
+.fila.tour .colgante:not(.t-act){opacity:.62}
+
+/* ---- v27: detalles con foto grande ---- */
+.modo-det .e-comp,.modo-det .e-sellos,.modo-det #e-nota,.modo-det .e-peso,.modo-det .det-ayuda{display:none!important}
+.modo-det .e-fila{margin:0}
+.modo-det .e-precio{font-size:clamp(20px,2.6vw,26px)}
+.modo-det .titulo-area{gap:7px;padding-bottom:10px}
+.modo-det .titulo-area h2{font-size:clamp(15px,2vw,19px)}
+.modo-det .det img{max-height:min(calc(100cqh - 120px),680px)}
+.modo-det .det-txt{font-size:12.5px;line-height:1.35}
+.modo-det .det-th{width:44px;height:44px}
+.modo-det .det-wrap{gap:7px}
+
+/* ---- v26: perchas con vida, bienvenida con contador, fondo vivo, historias ---- */
+/* A */
+.colgante{rotate:calc(var(--vel,0) * 1deg);transition:rotate .8s cubic-bezier(.2,1.9,.45,1)}
+.colgante.elegida{animation:elige .52s cubic-bezier(.3,1.3,.5,1) both;z-index:4}
+@keyframes elige{0%{transform:rotate(0) scale(1)}28%{transform:rotate(-8deg) scale(1.03)}58%{transform:rotate(6deg) scale(1.11)}100%{transform:rotate(0) scale(1.18)}}
+.fila.eligiendo .colgante:not(.elegida){opacity:.22;transition:opacity .35s}
+.carril{user-select:none;-webkit-user-select:none}
+.carril.arrastrando{cursor:grabbing}
+.carril img{-webkit-user-drag:none;user-drag:none}
+@media (hover:hover){.carril{cursor:grab}}
+/* C */
+
+/* D */
+body::before,.capa::before{animation:deriva 38s ease-in-out infinite alternate;will-change:transform}
+body.dvd::before{animation-duration:24s}
+body.polos::before,.polos .capa::before{animation-duration:55s}
+@keyframes deriva{from{transform:translate3d(-1.4%,.6%,0) scale(1.06)}to{transform:translate3d(1.4%,-1%,0) scale(1.13)}}
+.luz i{position:absolute;display:block}
+.luz .l1{top:-25%;bottom:-25%;left:-50%;width:42%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5) 50%,transparent);transform:skewX(-14deg);filter:blur(18px);animation:barrido 15s ease-in-out infinite;animation-delay:2s}
+@keyframes barrido{0%{translate:0 0;opacity:0}6%{opacity:1}34%{translate:360% 0;opacity:1}40%{translate:380% 0;opacity:0}100%{translate:380% 0;opacity:0}}
+.luz .l2{left:-10%;right:-10%;bottom:-30%;height:75%;background:radial-gradient(55% 60% at 50% 100%,rgba(155,27,27,.36),transparent 72%);opacity:0}
+body.dvd .luz .l1{width:30%;animation-duration:9s;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75) 50%,transparent)}
+body.dvd .luz .l2{opacity:1;animation:pulso 4.8s ease-in-out infinite}
+@keyframes pulso{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+body.polos .luz .l1{width:55%;animation-duration:22s;background:linear-gradient(100deg,transparent,rgba(255,232,180,.7) 50%,transparent)}
+/* E: modo deslizar (horizontal) integrado a la pantalla principal */
+.hist-vista{display:none;position:relative;flex:1;min-height:0;width:100%;container-type:size}
+body.slides .hist-vista{display:block;animation:aparece .6s ease both}
+body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:none}
+.riel-wrap.desv{opacity:0;transition:opacity .4s ease}
+.h-scroll{position:absolute;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.h-scroll::-webkit-scrollbar{display:none}
+.h-slide{flex:0 0 100%;height:100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,1.2vh,12px);padding:14px 16px 30px;text-align:center;position:relative}
+.h-slide .percha{display:none}
+.h-nom{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,3.4vw,38px);letter-spacing:.05em;text-transform:uppercase;line-height:1}
+.h-nom small{display:block;margin-top:6px;font-family:var(--cuerpo);font-weight:400;font-stretch:100%;font-size:12px;letter-spacing:.2em;color:var(--texto2)}
+.h-foto{width:min(88cqw,calc(100cqh - 200px),640px);cursor:default}
+.h-foto .giro{width:100%}
+.h-pcol{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
+.h-espec[hidden]{display:none}
+.h-datos{display:flex;align-items:center;justify-content:center;gap:clamp(14px,3vw,28px)}
+.h-precio{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(40px,7.4vh,60px);line-height:1;letter-spacing:.01em}
+.h-precio.sin{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto2);font-weight:600}
+.h-g{padding-left:clamp(14px,3vw,28px);border-left:1.5px solid var(--linea);text-align:left}
+.h-g small{display:block;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--texto2);line-height:1.2}
+.h-g b{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(30px,5.4vh,44px);line-height:1;font-variant-numeric:tabular-nums}
+.h-g b i{font-style:normal;font-size:.5em;margin-left:3px;letter-spacing:.08em}
+.h-g em{display:block;margin-top:5px;height:5px;border-radius:3px;background:rgba(0,0,0,.15);overflow:hidden}
+.h-g em u{display:block;height:100%;width:0;background:var(--carmin);border-radius:3px;transition:width 1s .2s cubic-bezier(.2,.8,.2,1)}
+.vis .h-g em u{width:var(--w)}
+.h-fila{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.h-cols{display:flex;gap:9px}
+.h-cols button{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(0,0,0,.45);padding:0}
+.h-cols button[aria-pressed="true"]{outline:2px solid var(--negro);outline-offset:3px}
+.h-ver{white-space:nowrap}
+.h-sig{position:absolute;right:4px;top:42%;writing-mode:vertical-rl;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--texto2);animation:empuja 1.6s ease-in-out infinite}
+@keyframes empuja{0%,100%{transform:translateX(0);opacity:.4}50%{transform:translateX(-7px);opacity:1}}
+@keyframes flota{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:1}}
+.h-slide .h-foto,.h-slide .h-nom,.h-slide .h-datos,.h-slide .h-fila{opacity:0;transform:translateY(34px);transition:opacity .5s,transform .6s cubic-bezier(.2,.9,.25,1)}
+.h-slide .h-foto{transform:translateY(60px) scale(.88);transition-duration:.7s}
+.h-slide.vis .h-nom{opacity:1;transform:none}
+.h-slide.vis .h-foto{opacity:1;transform:none;transition-delay:.08s}
+.h-slide.vis .h-datos{opacity:1;transform:none;transition-delay:.2s}
+.h-slide.vis .h-fila{opacity:1;transform:none;transition-delay:.3s}
+.h-pos{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:9px;z-index:5}
+.h-pos button{width:9px;height:9px;padding:0;border-radius:50%;border:1.5px solid var(--negro);background:none;transition:width .3s,background .3s}
+.h-pos button.on{background:var(--negro);width:22px;border-radius:5px}
+.h-flecha{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1.5px solid var(--negro);background:var(--blanco);font-size:18px;z-index:6;display:none}
+.h-flecha.i{left:max(14px,env(safe-area-inset-left,0px))}.h-flecha.d{right:max(14px,env(safe-area-inset-right,0px))}
+@media (min-width:700px){.h-flecha{display:block}}
+@media (max-width:520px){.h-datos{gap:14px}}
+@media (prefers-reduced-motion:reduce){
+  body::before,.capa::before,.luz i,.h-sig{animation:none!important}
+  .colgante{transition:none}
+  .h-slide .h-foto,.h-slide .h-nom,.h-slide .h-datos,.h-slide .h-fila{opacity:1;transform:none;transition:none}
+}
+
+/* ---- v25: comparación de peso, sellos, stock ---- */
+.e-comp{font-size:11.5px;color:var(--texto2);letter-spacing:.03em;text-align:center;margin-top:-2px}
+.e-comp:empty{display:none}
+.e-sellos{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:min(520px,calc(100vw - 32px))}
+.e-sellos:empty{display:none}
+.sello{display:inline-block;padding:5px 11px 4px;border:1.5px solid var(--negro);border-radius:999px;background:rgba(255,255,255,.75);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.2}
+.sello.st-ok{border-color:#1f7a3a;color:#1f7a3a}
+.sello.st-ul{border-color:var(--carmin);background:var(--carmin);color:#fff}
+.sello.st-ag{border-color:#777;color:#777;text-decoration:line-through}
+.izq-s{justify-content:flex-start;margin:4px 0 8px}
+.comp{margin:6px 0 10px;display:grid;gap:7px}
+.comp .cb{display:grid;grid-template-columns:116px 1fr 52px;align-items:center;gap:10px;font-size:12px}
+.comp .cb span{color:var(--texto2)}
+.comp .cb.me span{color:var(--negro);font-weight:700}
+.comp em{display:block;height:8px;border-radius:4px;background:rgba(0,0,0,.12);overflow:hidden}
+.comp em i{display:block;height:100%;border-radius:4px;background:#9a9a9a}
+.comp .me em i{background:var(--carmin)}
+.comp b{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;text-align:right}
+.comp p{margin:0;font-size:12px;color:var(--texto2)}
+@media (max-width:520px){.sello{font-size:9.5px;padding:4px 9px 3px;letter-spacing:.08em}.comp .cb{grid-template-columns:98px 1fr 46px}}
+
+/* ---- v24: gramaje grande, ajuste a pantallas bajas, polos con aire ---- */
+.e-fila{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin:2px 0 4px}
+.e-fila .e-precio{margin:0}
+.e-peso{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:118px;padding-left:20px;border-left:1.5px solid var(--linea,#bbb)}
+.e-peso .pl{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--texto2);line-height:1}
+.e-peso .pv{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,3.2vw,34px);line-height:1;letter-spacing:.02em}
+.e-peso .pv small{font-size:.5em;letter-spacing:.08em;margin-left:2px}
+.e-peso .pb{display:block;position:relative;height:5px;border-radius:3px;background:rgba(0,0,0,.15);overflow:hidden}
+.e-peso .pb i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--carmin)}
+.e-peso[hidden]{display:none}
+.gr{display:inline-flex;align-items:baseline;gap:3px;margin-top:8px;padding:5px 13px 4px;border:1.5px solid var(--negro);border-radius:999px;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:.06em;line-height:1;text-transform:uppercase}
+.gr em{font-style:normal;font-size:17px;letter-spacing:.02em}
+.badge-g{font-size:20px;padding:6px 14px;letter-spacing:.06em}
+.escena{justify-content:safe center}
+.leg-p small{margin-top:8px}
+.polos .leg-p{margin-top:16px}
+.polos .leg-p .pr{margin-top:8px}
+.polos .leg-p .pr.sin{font-size:12px;letter-spacing:.1em;white-space:nowrap}
+.polos .leg-p small{margin-top:8px;font-size:11px}
+.polos .pie-escena{margin-top:4px}
+@media (max-width:860px){.polos .tabs-sec{margin-top:10px}}
+@media (min-width:861px){body.polos .colgante{flex-basis:clamp(150px,min(29vw,calc(100vh - 605px)),380px);width:clamp(150px,min(29vw,calc(100vh - 605px)),380px)}}
+.polos .e-precio.sin{font-size:14px}
+/* v51: polos — una prenda protagonista sobre un plinto de piedra; se desliza para cambiar de color */
+.polos .colgante .percha{display:none}
+.polos .fila::before{display:none}
+.polos .riel-wrap{container-type:inline-size}
+.polos .carril{scroll-snap-type:x proximity}
+.polos .fila{gap:0;padding-left:0;padding-right:0;justify-content:flex-start}
+.polos .fila .colgante{flex:0 0 100cqw;width:100cqw;align-items:center;scroll-snap-align:center;transform-origin:50% 45%}
+.polos .fila .colgante .giro{width:min(94cqw,calc(100dvh - 400px),560px);margin:0 auto}
+.polos .colgante .media{aspect-ratio:1/.92!important;margin:0}
+.polos .colgante .media img.foto{inset:0 0 6% 0;height:94%;object-position:50% 100%;z-index:1}
+.p-dots{display:none;justify-content:center;gap:12px;margin-top:10px}
+.polos .p-dots{display:flex}
+.p-dots button{width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(60,40,10,.35);padding:0;cursor:pointer;transition:transform .25s,border-color .25s}
+.p-dots button[aria-current="true"]{transform:scale(1.18);border-color:#3b2f19;box-shadow:0 0 0 3px rgba(255,255,255,.7)}
+@media (max-width:860px){
+  .colgante{flex-basis:clamp(150px,min(72vw,calc((100dvh - 430px)*.88)),270px);width:clamp(150px,min(72vw,calc((100dvh - 430px)*.88)),270px)}
+  .pie-escena{display:none}
+  .tabs-sec{margin-top:0}
+}
+@media (max-height:720px) and (max-width:860px){
+  .sup{min-height:54px}.sup .mi{height:40px}.sup .mp{height:30px}
+  .tit-polos h1{font-size:30px}.tit-polos span{margin-top:5px}
+  .escena{gap:8px;padding-top:6px}.tabs-sec{margin-top:4px}
+  .colgante{flex-basis:clamp(150px,min(72vw,calc((100dvh - 424px)*.9)),270px);width:clamp(150px,min(72vw,calc((100dvh - 424px)*.9)),270px)}
+}
+
+/* ---- v37: cortina + desfile de luz ---- */
+.fila.luces .colgante{filter:brightness(.2) saturate(.5);transition:filter 2.8s cubic-bezier(.45,0,.25,1),rotate .8s cubic-bezier(.2,1.9,.45,1)}
+.fila.luces .colgante .leg-p{opacity:0;transform:translateY(-4px);transition:opacity 2s cubic-bezier(.45,0,.25,1) .7s,transform 2s cubic-bezier(.45,0,.25,1) .7s}
+.fila.luces.alba .colgante{filter:brightness(.55) saturate(.8)}
+.fila.luces .colgante.lit{filter:brightness(1) saturate(1)}
+.fila.luces .colgante.lit .leg-p{opacity:1;transform:none}
+.fila.luces:not(.alba) .colgante,.fila.luces:not(.alba) .colgante .leg-p{transition:none}
+.fila.luces.alba .colgante{transition:filter .8s cubic-bezier(.45,0,.25,1),rotate .6s cubic-bezier(.2,1.9,.45,1)}
+.funda{position:absolute;left:-3%;right:-3%;top:-4px;z-index:5;pointer-events:none;border-radius:14px 14px 22px 22px;
+  background:linear-gradient(104deg,rgba(255,255,255,.34),rgba(255,255,255,.07) 34%,rgba(255,255,255,.26) 52%,rgba(255,255,255,.06) 70%,rgba(255,255,255,.3)),repeating-linear-gradient(94deg,rgba(255,255,255,.07) 0 2px,transparent 2px 26px);
+  -webkit-backdrop-filter:blur(2.5px) brightness(1.1);backdrop-filter:blur(2.5px) brightness(1.1);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),inset 0 -12px 18px -10px rgba(255,255,255,.55),0 6px 14px -8px rgba(0,0,0,.35);
+  transition:transform .9s cubic-bezier(.55,0,.2,1),opacity .9s cubic-bezier(.55,0,.2,1)}
+.funda::before{content:"";position:absolute;left:12%;top:8%;width:9%;height:60%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));filter:blur(3px);transform:rotate(6deg)}
+.funda.sube{transform:translateY(-112%);opacity:0}
+.funda .fl{position:absolute;left:50%;top:36%;width:16%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7%;opacity:.88;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.5))}
+.funda .fl img{display:block;width:100%;height:auto}
+.funda .fl img+img{width:78%}
+.fila.luces .colgante:not(.listo) .pr{opacity:0}
+.fila.luces .colgante .pr{transition:opacity .7s ease}
+.gbar{display:block;position:relative;width:58%;max-width:120px;height:0;margin:0 auto}
+.gbar::before{content:"";position:absolute;left:0;right:0;top:5px;height:3px;border-radius:2px;background:rgba(0,0,0,.14)}
+.gbar u{position:absolute;left:0;top:5px;height:3px;border-radius:2px;width:0;background:var(--carmin);text-decoration:none}
+.haz{display:none}
+
+/* ---- v36: encabezado con aire ---- */
+.sup{min-height:100px;padding-bottom:16px;column-gap:16px}
+.escena{gap:20px}.tabs-sec{margin-top:8px}
+.h-slide{padding-top:26px}
+.h-nom{margin-top:8px}
+@media (max-width:860px){
+  .sup{min-height:84px;padding-bottom:12px}
+  .escena{gap:16px}.tabs-sec{margin-top:8px}
+  .h-slide{padding-top:22px}
+}
+@media (max-width:520px){.sup .mi{height:38px}.sup .mp{height:27px}.marca-sup{gap:8px}}
+@media (max-height:720px) and (max-width:860px){
+  .sup{min-height:68px;padding-bottom:8px}.sup .mi{height:34px}.sup .mp{height:24px}
+  .escena{gap:10px;padding-top:4px}.tabs-sec{margin-top:6px}
+  .h-slide{padding-top:14px}
+}
+
+/* ---- v42: encuadre seguro del modo deslizar ---- */
+.h-slide{justify-content:safe center;padding-bottom:36px;overflow:hidden}
+.h-fila{max-width:100%;row-gap:5px}
+.h-br{flex:0 0 100%;height:0}
+.h-fila .h-ver{min-height:40px;padding:0 24px}
+.h-cols button{width:28px;height:28px}
+.h-fila .h-esp{flex:0 0 auto;min-height:32px;padding:0 20px;font-size:9.5px;margin:0;background:rgba(255,255,255,.55)}
+.h-fila .h-esp:hover{background:var(--negro)}
+@media (max-width:520px){
+  .h-slide .h-foto{width:min(88cqw,calc(100cqh - 290px),640px)}
+  .h-precio{font-size:clamp(34px,6.6vh,52px)}
+  .h-fila{gap:8px 12px}
+}
+@media (max-width:520px) and (min-height:760px){ .h-slide .h-foto{width:min(88cqw,calc(100cqh - 290px),640px)} }
+
+
+/* ---- v72: ficha de polos — que 'Ampliar' no quede bajo la franja ---- */
+.polos .ficha-img #f-giro{width:min(100%,560px,calc((100vh - 270px)*.73))}
+/* ---- v71: polos en pantallas de PC — que 'Ver disponibilidad' no quede bajo la franja ---- */
+@media (min-width:861px){.polos .fila .colgante .giro{width:min(94cqw,calc(100dvh - 455px),560px)}}
+/* ---- v69: slides — la foto deja sitio a precio, colores y botones en cualquier ancho ---- */
+.h-slide .h-foto{width:min(88cqw,calc(100cqh - 300px),640px)}
+/* ---- v68: detalles sin chocar con Cerrar ---- */
+.modo-det .escenario{padding-top:50px}
+/* ---- v67: tamaño parejo de la prenda en pantallas bajas; polos sin recorte ---- */
+.polos .foco{width:min(94cqw,calc((100cqh - 90px)*.73),640px)}
+@media (max-height:960px){
+  .titulo-area{gap:6px;padding-bottom:10px}
+  .e-comp{display:none}
+  .nota-e{font-size:11px;line-height:1.25;padding:5px 10px}
+  .e-sellos{gap:4px}
+  .e-sellos .sello{font-size:9px;padding:3px 8px 2px}
+}
+@media (max-height:700px){
+  .nota-e{display:none!important}
+  .e-sellos .sello:not(.esp){display:none}
+}
+
+/* ============ PROMOS ============ */
+.t-promo{color:var(--carmin)}.seg button.t-promo[aria-pressed="true"]{color:var(--blanco)}
+.panel.promos{width:min(780px,calc(100% - 20px));padding:20px 18px 24px}
+.panel.promos h3{margin-bottom:4px}
+.pm-sub{margin:0 0 16px!important;font-size:14px}
+.pm-lista{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.promo{border:1px solid var(--negro);background:#fff;padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0;position:relative}
+.pm-ahorro{position:absolute;top:-1px;right:-1px;background:var(--carmin);color:#fff;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px}
+.pm-fotos{display:flex;justify-content:center;align-items:center;padding:0 22px 0 4px;overflow:hidden}
+.pm-fotos img{flex:0 1 90px;min-width:0;width:90px;height:auto;aspect-ratio:1;object-fit:contain;margin-right:-22px;filter:drop-shadow(0 6px 5px rgba(0,0,0,.18))}
+.promo h4{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase}
+.promo p{margin:2px 0 0!important;font-size:13px;color:var(--texto2);line-height:1.35}
+.pm-pr{display:flex;align-items:baseline;gap:10px;margin-top:auto;flex-wrap:wrap}
+.pm-pr s{color:#777;font-size:14px}
+.pm-pr b{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:34px;letter-spacing:.01em;line-height:1}
+.pm-pr b sup{font-size:.48em;vertical-align:.85em;margin-left:2px;letter-spacing:0}
+.promo .pill{width:100%;justify-content:center;text-align:center;min-height:42px}
+@media (max-width:620px){.pm-lista{grid-template-columns:minmax(0,1fr)}}
+
+.sello.esp{background:var(--carmin);border-color:var(--carmin);color:#fff}
+.espm{display:block;margin-top:3px;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--carmin)}
+.h-espec{margin-top:2px;white-space:nowrap;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--carmin)}
+</style>
+
+<div class="luz" id="luz" aria-hidden="true"><i class="l1"></i><i class="l2"></i></div>
+<div class="app fuera" id="app">
+  <div class="sup gut">
+    <div class="izq"><button type="button" class="txt lbl" id="b-nosotros">Nosotros</button><button type="button" class="txt lbl" id="b-camisetas" hidden>← Camisetas</button></div>
+    <div class="cen"><span class="marca-sup" id="marca-sup"><img class="mi" src="./marca_icono_negro.png" alt=""><img class="mp" src="./marca_palabra_negro.png" alt="Cuatrocientos"></span><div class="tit-polos" id="tit-polos" hidden><h1>Polos</h1><span>Cuatrocientos · Colección</span></div></div>
+    <button type="button" class="txt der lbl" id="b-contacto">Contacto</button>
+  </div>
+  <main class="escena gut">
+    <div class="seg tabs-sec" id="tabs-sec" role="group" aria-label="Sección"><button type="button" data-s="camisetas" aria-pressed="true">Camisetas</button><button type="button" data-s="dvd" aria-pressed="false">DVDs</button><button type="button" data-s="polos" aria-pressed="false">Polos</button><button type="button" data-s="promos" aria-pressed="false" class="t-promo">Promos</button></div>
+    <div class="riel-wrap"><div class="carril" id="carril"><div class="fila" id="fila" aria-label="Prendas colgadas"></div></div><div class="p-dots" id="p-dots" aria-label="Colores del polo"></div></div>
+    <div class="hist-vista" id="hist-vista" aria-label="Prendas: desliza hacia los lados">
+      <div class="h-scroll" id="h-scroll"></div>
+      <button type="button" class="h-flecha i" id="h-ant" aria-label="Prenda anterior">←</button>
+      <button type="button" class="h-flecha d" id="h-sig" aria-label="Prenda siguiente">→</button>
+      <div class="h-pos" id="h-pos" aria-hidden="true"></div>
+    </div>
+    <div class="pie-escena" aria-live="polite"><span id="leyenda">Pasa el cursor por una prenda o tócala</span></div>
+    <div class="fila-pills"><button type="button" class="pill" id="b-ver">Ver disponibilidad</button></div>
+  </main>
+</div>
+
+<div class="franja lbl" aria-hidden="true"><div class="franja-pista" id="franja"></div></div>
+
+<section class="capa" id="enfoque" role="dialog" aria-modal="true" aria-label="Prenda" hidden>
+  <button type="button" class="cerrar lbl" id="e-cerrar">Cerrar ✕</button>
+  <div class="escenario" id="escenario">
+    <button type="button" class="flecha i" id="e-ant" aria-label="Prenda anterior">←</button>
+    <div class="fantasma i" id="fan-i"></div>
+    <div class="foco" id="foco"></div>
+    <div class="fantasma d" id="fan-d"></div>
+    <button type="button" class="flecha d" id="e-sig" aria-label="Prenda siguiente">→</button>
+  </div>
+  <div class="titulo-area">
+    <h2 id="e-nombre"></h2>
+    <span class="sub" id="e-sub"></span>
+    <div class="e-fila"><div class="e-precio" id="e-precio"></div><div class="e-peso" id="e-peso" hidden></div></div>
+    <div class="e-comp" id="e-comp"></div>
+    <div class="seg seg-col" id="e-colores" role="group" aria-label="Color" hidden></div>
+    <div class="e-sellos" id="e-sellos"></div>
+    <p class="nota nota-e" id="e-nota" hidden></p>
+    <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" id="e-frente" aria-pressed="true">Frente</button><button type="button" id="e-espalda" aria-pressed="false">Espalda</button><button type="button" id="e-detalles" aria-pressed="false" hidden>Detalles</button></div>
+    <div class="acc-fila"><button type="button" class="enlace" id="e-zoom">Ampliar ⤢</button><button type="button" class="enlace" id="e-disp">Ver disponibilidad ↗</button></div>
+  </div>
+</section>
+
+<section class="capa ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="f-nombre" hidden></section>
+
+<section class="capa zoomer" id="zoom" role="dialog" aria-modal="true" aria-label="Zoom de la prenda" hidden>
+  <button type="button" class="cerrar lbl" id="z-cerrar">Cerrar ✕</button>
+  <div class="z-vista" id="z-vista"><img id="z-img" alt="" draggable="false"></div>
+  <div class="z-barra"><button type="button" id="z-menos" aria-label="Alejar">−</button><button type="button" id="z-reset">Ajustar</button><button type="button" id="z-mas" aria-label="Acercar">+</button></div>
+  <p class="z-ayuda">Pellizca, usa la rueda del mouse o los botones. Arrastra para moverte. Doble toque para acercar.</p>
+</section>
+
+<div class="vel" id="vel"></div>
+<div class="panel" id="panel" role="dialog" aria-modal="true" hidden></div>
+
+<div class="bp" id="bp">
+  <div class="lista" id="lista" hidden><div class="gut" id="lista-in"></div></div>
+  <div class="bp-fila gut">
+    <button type="button" class="ver lbl" id="bp-ver" aria-expanded="false"></button>
+    <a class="pill" id="bp-wa" href="#" target="_blank" rel="noopener">Enviar pedido</a>
+  </div>
+</div>
+
+<div class="haz" id="haz" aria-hidden="true"></div>
+<div class="bienvenida" id="bienvenida">
+  <img class="bv-icono" src="./marca_icono_negro.png" alt="">
+  <img class="palabra" src="./marca_palabra_negro.png" alt="cuatro cientos">
+  <span class="bv-eslogan">Cuesta lo que pesa</span>
+  <div class="carga" aria-hidden="true"><i></i></div>
+  <button type="button" class="pill solido" id="b-entrar">Entrar</button>
+</div>
+
+<script>
+/* ============ AJUSTES ============ */
+const CONFIG = {
+  whatsapp: "593997051484", whatsappTxt: "+593 997 05 1484",   // WhatsApp Business de CUATROCIENTOS
+  moneda: "$",
+  frase: ["Nuevos drops","400 · 300 · 220 · 200 · 180 gramos","Cuesta lo que pesa","Algodón 100%","Pedidos por WhatsApp","Ecuador"],
+  frasePolos: ["Cuatrocientos","Polos","Manga larga","Cuello y cierre","Pedidos por WhatsApp","Ecuador"]
+};
+const TALLAS = ["S","M","L","XL","XXL","2XL"];
+const tallasDe = d => d.tallas || TALLAS.slice(0,5);
+const COLORES = {
+  "Negro":     {hex:"#0a0a0a", ink:"blanco"},
+  "Blanco":    {hex:"#f6f6f4", ink:"negro"},
+  "Gris perla":{hex:"#d9d9d9", ink:"negro"},
+  "Plomo":     {hex:"#a7a9ab", ink:"negro"},
+  "Rosado":    {hex:"#d4235f", ink:"blanco"},
+  "Fucsia":    {hex:"#b3125a", ink:"blanco"},
+  "Crema":     {hex:"#efe8d6", ink:"negro"}
+};
+/* Fotos reales: en cada diseño, fotos["Color"] = {frente:"fotos/archivo.jpg", espalda:"fotos/archivo.jpg"}
+   Detalles (zoom): detalles:[{src:"fotos/archivo.jpg", txt:"Qué se ve en la foto"}]
+   Nombres, gramajes y precios son de EJEMPLO: cámbialos por los reales. */
+const TODOS = [
+  {id:"flor",sellos:["Pedrería y flor pintada"],codigo:"18075",nombre:"Flor",g:400,precio:29.99,colores:["Negro"],desc:"Camiseta negra oversize con una flor pintada y pedrería de colores. Pequeña en el pecho, grande en la espalda.",
+    fotos:{"Negro":{frente:"fotos_png/flor-negro-frente.png",espalda:"fotos_png/flor-negro-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/flor-negro-1-c.jpg",txt:"Flor del pecho con pedrería"},{src:"fotos/flor-negro-2.jpg",txt:"Pétalos pintados y pedrería de la espalda"}]}},
+  {id:"cruces",sellos:["Bordado en relieve"],codigo:"9909",nombre:"Cruces",g:400,precio:29.99,precios:{"Blanco":31.99,"Fucsia":31.99},especial:{"Blanco":1,"Fucsia":1},colores:["Negro","Blanco","Fucsia"],alias:{"Fucsia":"Rosado"},notas:{"Blanco":"Bordado que cambia de color: con el calor el rosado se vuelve blanco y, al enfriarse, vuelve a ser rosado."},desc:"Camiseta oversize pesada con cruces y letras bordadas en relieve. Un símbolo pequeño al frente, composición grande en la espalda.",
+    fotos:{"Negro":{frente:"fotos_png/cruces-negro-frente.png",espalda:"fotos_png/cruces-negro-espalda.png"},"Blanco":{frente:"fotos_png/cruces-blanco-frente.png",espalda:"fotos_png/cruces-blanco-espalda.png"},"Fucsia":{frente:"fotos_png/cruces-fucsia-frente.png",espalda:"fotos_png/cruces-fucsia-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/cruces-negro-1-c.jpg",txt:"Emblema del frente con tachas metálicas"},{src:"fotos/cruces-negro-2.jpg",txt:"Banda bordada en verde y cruces de tela"}],"Blanco":[{src:"fotos/cruces-blanco-1-c.jpg",txt:"Cruces de tela con tachas metálicas"},{src:"fotos/cruces-blanco-2.jpg",txt:"Banda bordada en rosa y cruces en relieve"}],"Fucsia":[{src:"fotos/cruces-fucsia-1.jpg",txt:"Flores de tela en relieve con tachas metálicas"},{src:"fotos/cruces-fucsia-2.jpg",txt:"Cruces de tela en relieve y banda bordada de la espalda"}]}},
+  {id:"herradura",sellos:["Escudo bordado"],codigo:"18056",nombre:"Herradura",g:400,precio:29.99,precios:{"Negro":31.99},especial:{"Negro":1},colores:["Negro","Blanco"],notas:{"Negro":"Bordado que cambia de color: rosa en reposo y blanco con el calor."},desc:"Camiseta oversize pesada con un escudo bordado: pequeño en el pecho, grande en la espalda. En negro con bordado rosa que se vuelve blanco con el calor, y en blanco con hilo morado.",
+    fotos:{"Blanco":{frente:"fotos_png/herradura-blanco-frente.png",espalda:"fotos_png/herradura-blanco-espalda.png"},"Negro":{frente:"fotos_png/herradura-negro-frente.png",espalda:"fotos_png/herradura-negro-espalda.png"}},
+    detalles:{"Blanco":[{src:"fotos/herradura-blanco-1.jpg",txt:"Escudo del frente, bordado en morado"},{src:"fotos/herradura-blanco-2.jpg",txt:"Escudo de la espalda, de cerca"}],"Negro":[{src:"fotos/herradura-negro-1.jpg",txt:"Bordado rosa en reposo"},{src:"fotos/herradura-negro-2.jpg",txt:"Con el calor el bordado se vuelve blanco"}]}},
+  {id:"desenfoque",sellos:["Letras desenfocadas"],codigo:"3207",nombre:"Desenfoque",g:300,precio:24.99,colores:["Blanco","Negro"],desc:"Camiseta oversize con letras desenfocadas, como vistas fuera de foco. Texto pequeño al frente y frase grande en la espalda.",
+    fotos:{"Blanco":{frente:"fotos_png/desenfoque-blanco-frente.png",espalda:"fotos_png/desenfoque-blanco-espalda.png"},"Negro":{frente:"fotos_png/desenfoque-negro-frente.png",espalda:"fotos_png/desenfoque-negro-espalda.png"}},
+    detalles:{"Blanco":[{src:"fotos/desenfoque-blanco-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/desenfoque-blanco-2.jpg",txt:"Frase de la espalda, de cerca"}],"Negro":[{src:"fotos/desenfoque-negro-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/desenfoque-negro-2.jpg",txt:"Frase de la espalda, de cerca"}]}},
+  {id:"relieve",sellos:["Bordado tono sobre tono"],codigo:"9901",nombre:"Relieve",g:400,precio:29.99,colores:["Negro","Blanco"],desc:"Camiseta oversize pesada con bordado en relieve del mismo color de la tela: se descubre al tacto y con la luz. Pequeño en el pecho, grande en la espalda.",
+    fotos:{"Negro":{frente:"fotos_png/relieve-negro-frente.png",espalda:"fotos_png/relieve-negro-espalda.png"},"Blanco":{frente:"fotos_png/relieve-blanco-frente.png",espalda:"fotos_png/relieve-blanco-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/relieve-negro-1.jpg",txt:"Bordado de la espalda, de cerca"},{src:"fotos/relieve-negro-2.jpg",txt:"Relieve y banda inferior"}],"Blanco":[{src:"fotos/relieve-blanco-1.jpg",txt:"Bordado de la espalda, de cerca"},{src:"fotos/relieve-blanco-2.jpg",txt:"Relieve y banda inferior"}]}},
+  {id:"menos-mas",sellos:["Cadena de acero inoxidable"],sec:"dvd",codigo:"6682",nombre:"Menos Más",g:220,precio:24.99,colores:["Negro","Rosado"],desc:"Musculosa con estampa grande al frente: «More / Less» en letras de plantilla y firma. En negro y en rosado degradado. Incluye una cadena de acero inoxidable: úsala puesta en la prenda o como collar, como una cadena normal.",
+    fotos:{"Negro":{frente:"fotos_png/menosmas-negro-frente.png",espalda:"fotos_png/menosmas-negro-espalda.png"},"Rosado":{frente:"fotos_png/menosmas-rosado-frente.png",espalda:"fotos_png/menosmas-rosado-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/menosmas-negro-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-negro-1.jpg",txt:"Estampa de cerca"},{src:"fotos/menosmas-negro-2.jpg",txt:"Cadena de acero inoxidable"}],"Rosado":[{src:"fotos/menosmas-rosado-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-rosado-1-c.jpg",txt:"Estampa de cerca"}]}},
+  {id:"club",sellos:["Lavado con manchas"],sec:"dvd",codigo:"0215",nombre:"Club",g:200,precio:19.99,colores:["Negro","Blanco"],desc:"Musculosa con manchas lavadas y letras tipo plantilla. Texto chico al frente, «Made Club Studio» grande atrás.",
+    fotos:{"Negro":{frente:"fotos_png/club-negro-frente.png",espalda:"fotos_png/club-negro-espalda.png"},"Blanco":{frente:"fotos_png/club-blanco-frente.png",espalda:"fotos_png/club-blanco-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/club-negro-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/club-negro-2.jpg",txt:"Letras de la espalda, de cerca"}],"Blanco":[{src:"fotos/club-blanco-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/club-blanco-2.jpg",txt:"Letras de la espalda, de cerca"}]}},
+  {id:"erosion",sellos:["Letras desgastadas"],sec:"dvd",codigo:"76021",nombre:"Erosión",g:180,precio:17.99,colores:["Plomo","Negro"],desc:"Musculosa con letras rojas desgastadas. Discreta al frente, protagonista en la espalda. En plomo jaspeado y en negro.",
+    fotos:{"Plomo":{frente:"fotos_png/erosion-plomo-frente.png",espalda:"fotos_png/erosion-plomo-espalda.png"},"Negro":{frente:"fotos_png/erosion-negro-frente.png",espalda:"fotos_png/erosion-negro-espalda.png"}},
+    detalles:{"Plomo":[{src:"fotos/erosion-plomo-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/erosion-plomo-2.jpg",txt:"Letras de la espalda, de cerca"}],"Negro":[{src:"fotos/erosion-negro-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/erosion-negro-2.jpg",txt:"Letras de la espalda, de cerca"}]}},
+  /* ---- POLOS (sección aparte). Un colgante por color; el stock sale del código POLO. Precio por definir. ---- */
+  {id:"polo-crema",sec:"polos",tipo:"polo",codigo:"POLO",nombre:"Polo Clásico",insig:"Manga larga",msgTipo:"Polo manga larga",ar:"240/330",precio:34.99,colores:["Crema"],alias:{"Crema":"Blanco"},tallas:["M","XL","XXL","2XL"],
+    fotos:{"Crema":{frente:"fotos_png/polo-crema-frente.png",espalda:"fotos_png/polo-crema-espalda.png"}},
+    detalles:{"Crema":[{src:"fotos/polo-crema-1-c.jpg",txt:"Logo bordado en el pecho, junto al cierre"}]},
+    desc:"Buzo polo de manga larga con cuello y cierre en el cuello.",puntos:["Manga larga, cuello con cierre","Pago y entrega se confirman por WhatsApp"]},
+  {id:"polo-plomo",sec:"polos",tipo:"polo",codigo:"POLO",nombre:"Polo Clásico",insig:"Manga larga",msgTipo:"Polo manga larga",ar:"240/330",precio:34.99,colores:["Plomo"],tallas:["M","XL","XXL","2XL"],
+    fotos:{"Plomo":{frente:"fotos_png/polo-plomo-frente.png",espalda:"fotos_png/polo-plomo-espalda.png"}},
+    detalles:{"Plomo":[{src:"fotos/polo-plomo-1.jpg",txt:"Logo bordado en el pecho, tela jaspeada"}]},
+    desc:"Buzo polo de manga larga con cuello y cierre en el cuello.",puntos:["Manga larga, cuello con cierre","Pago y entrega se confirman por WhatsApp"]}
+];
+let SEC = "camisetas";
+let DISENOS = TODOS.filter(d=>(d.sec||"camisetas")==="camisetas");
+const GRAMAJES = [
+  {g:400,txt:"Pesada y rígida. Cae recta."},{g:300,txt:"Pesada y cómoda. De uso diario."},
+  {g:220,txt:"Peso medio-alto, con cuerpo."},{g:200,txt:"Peso medio, con estructura."},{g:180,txt:"La más liviana de la marca."}
+];
+
+/* ============ STOCK (lo publica el inventario en stock.json) ============ */
+let STOCK = null;
+function stockDe(d,color,talla){ const p = STOCK && STOCK.prendas && STOCK.prendas[d.codigo]; const ck = (d.alias&&d.alias[color])||color; if(!p || !p[ck]) return null; const n = p[ck][talla]; return typeof n==="number" ? n : 0; }
+function estadoStock(n){ return n===null ? "ok" : n<=0 ? "agotado" : n<=2 ? "ultimas" : "ok"; }
+function prendaAgotada(d){ return d.colores.every(c=>tallasDe(d).every(t=>estadoStock(stockDe(d,c,t))==="agotado")); }
+function cargarStock(){
+  return fetch("stock.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ STOCK=j; }).catch(()=>{ STOCK=null; });
+}
+
+/* ============ ESTADO Y UTILIDADES ============ */
+const $ = s => document.querySelector(s);
+const E = { idx:0, color:null, vuelta:false, modo:null, di:0, fmodo:null, ficha:null, talla:null, cant:1, colorF:null, pedido:[], abierto:null };
+const precio = n => { n=Math.round(n*100)/100; return CONFIG.moneda + (Number.isInteger(n)?n:n.toFixed(2).replace(".",",")); };
+const byId = id => TODOS.find(d => d.id===id);
+const gTxt = d => d.g ? d.g+" g" : "";
+const pc = (d,c) => (d.precios && c && d.precios[c]) || d.precio;
+const hayEsp = d => !!d.especial && Object.keys(d.especial).length>0;
+const espDe = (d,c) => !!(d.especial && c && d.especial[c]);
+const prTxt = (d,c) => { if(!d.precio) return "Precio por consultar"; if(c) return precio(pc(d,c)); if(d.precios){ const m=Math.min(d.precio,...Object.values(d.precios)); const M=Math.max(d.precio,...Object.values(d.precios)); if(m!==M) return "Desde "+precio(m); } return precio(d.precio); };
+const espChip = (d,c) => espDe(d,c) ? `<span class="sello esp">★ Camiseta especial</span>` : "";
+const espMini = d => hayEsp(d) ? `<span class="espm">★ Con versión especial</span>` : "";
+const codTxt = d => /^\d+$/.test(d.codigo||"") ? "#"+d.codigo : "";
+let VARS = [];
+const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
+const vid = v => v.d.id;
+const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
+const VER = "73";
+const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
+const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
+const COMUN = 150;
+const sellosDe = (d,c) => ["Algodón 100%"].concat(d.sellos||[], (d.sellosC&&d.sellosC[c])||[]);
+function stockTotal(d,c){ let t=0, k=0; for(const x of tallasDe(d)){ const n=stockDe(d,c,x); if(n!==null){ t+=n; k++; } } return k?t:null; }
+function stockChip(d,c){ const t=stockTotal(d,c); if(t===null) return ""; return t<=0 ? `<span class="sello st-ag">Agotado</span>` : t<=4 ? `<span class="sello st-ul">${t===1?"Última unidad":"Últimas "+t+" unidades"}</span>` : `<span class="sello st-ok">Disponible</span>`; }
+const compTxt = d => d.g ? `${d.g>COMUN?"+":""}${Math.round((d.g/COMUN-1)*100)}% más que una camiseta común (${COMUN} g)` : "";
+const notaDe = (d,c) => (d.notas && d.notas[c]) || "";
+const detsDe = (d,c) => Array.isArray(d.detalles) ? d.detalles : ((d.detalles && d.detalles[c]) || []);
+function construirVars(){ VARS = DISENOS.map(d=>({d,color:d.colores[0]})); }
+const nom = d => d.msgTipo ? d.msgTipo+" "+d.nombre : d.nombre+(codTxt(d)?" "+codTxt(d):"");
+const detTxt = (d,color) => [d.g?d.g+" g":"", color].filter(Boolean).join(", ");
+const lineaPr = (d,n,c) => d.precio ? " · "+precio(pc(d,c)*n)+(espDe(d,c)?" (camiseta especial)":"") : " · precio por confirmar";
+const waLink = t => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t)}`;
+
+/* ============ DIBUJO ============ */
+const CAMISETA = "M120 22 C150 56 250 56 280 22 L372 64 L398 150 L330 174 L318 142 L318 412 L82 412 L82 142 L70 174 L2 150 L28 64 Z";
+function tee(d, color, lado, etiqueta){
+  const c = COLORES[color], blanca = c.ink==="blanco";
+  const tinta = blanca ? "#fff" : "#000";
+  const logo = blanca ? "./marca_icono_blanco.png" : "./marca_icono_negro.png";
+  const pal  = blanca ? "./marca_palabra_blanco.png" : "./marca_palabra_negro.png";
+  const borde = blanca ? "#2a2a2a" : "#b5b5b5";
+  const gid = "g"+color.replace(/\W/g,"")+lado;
+  const est = lado==="frente"
+    ? `<image href="${logo}" x="140" y="96" width="120" height="120" preserveAspectRatio="xMidYMid meet"/>`
+    : `<image href="${pal}" x="120" y="86" width="160" height="78" preserveAspectRatio="xMidYMid meet"/>
+       <text x="200" y="272" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-stretch="125%" font-weight="800" font-size="86" fill="${tinta}">${d.g}</text>
+       <text x="200" y="300" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-stretch="125%" font-weight="600" font-size="13" letter-spacing="5" fill="${tinta}">GRAMOS</text>`;
+  return `<svg viewBox="0 0 400 430" role="img" aria-label="${d.nombre}, ${color}, ${lado}" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></linearGradient></defs>
+    <path d="${CAMISETA}" fill="${c.hex}" stroke="${borde}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="${CAMISETA}" fill="url(#${gid})"/>
+    <path d="M120 22 C150 ${lado==="frente"?66:44} 250 ${lado==="frente"?66:44} 280 22" fill="none" stroke="${borde}" stroke-width="9" stroke-linecap="round"/>
+    ${est}
+    ${etiqueta===false?"":`<text x="200" y="404" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="11" letter-spacing="3" fill="${blanca?"#666":"#888"}">FOTO PENDIENTE</text>`}
+  </svg>`;
+}
+function media(d, color, lado, etiqueta, grande){
+  const f = d.fotos && d.fotos[color] && d.fotos[color][lado];
+  return f ? `<img class="foto" src="${cb(grande?f.replace("fotos_png/","norm/").replace(/\.png$/,".webp"):(d.tipo==="polo"?f.replace("fotos_png/","zoom/").replace(/\.png$/,".webp"):f))}" alt="${d.nombre}, ${color}, ${lado}">` : (d.tipo==="polo" ? poloSvg(d, color, lado, etiqueta) : tee(d, color, lado, etiqueta));
+}
+function sombra(hex,p){ const n=parseInt(hex.slice(1),16); const f=v=>Math.round(v*(1-p)); return "#"+[(n>>16)&255,(n>>8)&255,n&255].map(f).map(v=>v.toString(16).padStart(2,"0")).join(""); }
+function poloSvg(d, color, lado, etiqueta){
+  const c = COLORES[color], base = c.hex, os = sombra(base,.1), ln = sombra(base,.32), gid = "p"+color.replace(/\W/g,"")+lado;
+  const cuerpo = "M82 14 L20 44 L2 214 L40 224 L56 100 L60 300 L180 300 L184 100 L200 224 L238 214 L220 44 L158 14 Q120 "+(lado==="frente"?40:30)+" 82 14Z";
+  const frente = `<path d="M82 14 L98 52 L120 36 L142 52 L158 14 Q120 40 82 14Z" fill="${base}" stroke="${ln}" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M120 36 L120 130" stroke="${ln}" stroke-width="1.6"/><path d="M110 40 L110 130 M130 40 L130 130" stroke="${ln}" stroke-width="1" opacity=".5"/>
+    <circle cx="120" cy="70" r="3" fill="${ln}" opacity=".7"/><circle cx="120" cy="100" r="3" fill="${ln}" opacity=".7"/>`;
+  const espalda = `<path d="M82 14 Q120 30 158 14 L150 26 Q120 40 90 26Z" fill="${os}" stroke="${ln}" stroke-width="1.4" stroke-linejoin="round"/>`;
+  return `<svg viewBox="0 0 240 330" role="img" aria-label="${d.nombre}, ${color}, ${lado}" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="${gid}" x1="0" x2="1"><stop offset="0" stop-color="${os}"/><stop offset=".5" stop-color="${base}"/><stop offset="1" stop-color="${os}"/></linearGradient></defs>
+    <path d="${cuerpo}" fill="url(#${gid})" stroke="${ln}" stroke-width="1.6" stroke-linejoin="round"/>
+    ${lado==="frente"?frente:espalda}
+    <path d="M40 224 L56 224 M224 224 L184 224 M60 296 L180 296" stroke="${ln}" stroke-width="1" opacity=".45"/>
+    ${etiqueta===false?"":`<text x="120" y="322" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="8" letter-spacing="2" fill="${ln}">FOTO PENDIENTE</text>`}
+  </svg>`;
+}
+const PERCHA = `<svg class="percha" viewBox="0 0 84 62" aria-hidden="true"><path d="M42 30 L42 20 C42 10 52 8 52 3 C52 -1 46 -2 44 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M42 30 L4 52 C0 55 2 59 7 59 L77 59 C82 59 84 55 80 52 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>`;
+function giro(d, color, vuelta, etiqueta, grande){
+  const ar = d.ar || "1/1";
+  return `<div class="giro${vuelta?" vuelta":""}${grande?" grande":""}">
+    <div class="cara f">${PERCHA}<span class="media" style="--ar:${ar}">${media(d,color,"frente",etiqueta,grande)}</span></div>
+    <div class="cara e">${PERCHA}<span class="media" style="--ar:${ar}">${media(d,color,"espalda",etiqueta,grande)}</span></div></div>`;
+}
+
+/* ============ VISOR DE ZOOM ============ */
+const Z = { s:1, x:0, y:0, p:new Map(), d0:0, prev:null, open:false, ret:null };
+function zoomSrc(p){ return cb(p.replace("fotos_png/","zoom/").replace(/\.png$/,".webp").replace("fotos/","zoom/")); }
+function srcLado(d, color, lado){ const f = d.fotos && d.fotos[color] && d.fotos[color][lado]; return f ? zoomSrc(f) : null; }
+function zLimites(){
+  const v=$("#z-vista"), im=$("#z-img"); const w=im.offsetWidth*Z.s, h=im.offsetHeight*Z.s;
+  const mx=Math.max(0,(w-v.clientWidth)/2), my=Math.max(0,(h-v.clientHeight)/2);
+  const cx=v.clientWidth/2, cy=v.clientHeight/2;
+  return {mx,my,cx,cy,w:im.offsetWidth,h:im.offsetHeight};
+}
+function zAplicar(){
+  const L=zLimites();
+  Z.x=Math.min(L.mx,Math.max(-L.mx,Z.x)); Z.y=Math.min(L.my,Math.max(-L.my,Z.y));
+  const im=$("#z-img");
+  im.style.transform=`translate(${Z.x - L.w*Z.s/2}px,${Z.y - L.h*Z.s/2}px) scale(${Z.s})`;
+}
+function zEn(nuevo, px, py){            /* zoom alrededor de un punto (px,py relativos al centro) */
+  nuevo=Math.min(6,Math.max(1,nuevo)); const k=nuevo/Z.s;
+  Z.x = px - (px - Z.x)*k; Z.y = py - (py - Z.y)*k; Z.s=nuevo;
+  if(Z.s===1){ Z.x=0; Z.y=0; }
+  zAplicar();
+}
+function abrirZoom(src, alt){
+  if(!src) return;
+  Z.prev = document.activeElement; Z.s=1; Z.x=0; Z.y=0; Z.p.clear();
+  const im=$("#z-img"); im.alt=alt||""; 
+  const z=$("#zoom"); z.hidden=false; z.classList.add("abierta"); Z.open=true;
+  im.onload=()=>zAplicar(); im.src=src; if(im.complete) zAplicar();
+  $("#z-cerrar").focus();
+}
+function cerrarZoom(){
+  const z=$("#zoom"); z.classList.remove("abierta"); z.hidden=true; Z.open=false; Z.p.clear();
+  if(Z.prev && Z.prev.focus) try{ Z.prev.focus(); }catch(e){}
+}
+function iniciarZoom(){
+  const v=$("#z-vista");
+  const centro=(e)=>{ const r=v.getBoundingClientRect(); return [e.clientX-r.left-r.width/2, e.clientY-r.top-r.height/2]; };
+  v.addEventListener("wheel", e=>{ e.preventDefault(); const [px,py]=centro(e); zEn(Z.s*Math.exp(-e.deltaY*0.0018), px, py); }, {passive:false});
+  v.addEventListener("pointerdown", e=>{ v.setPointerCapture(e.pointerId); Z.p.set(e.pointerId,[e.clientX,e.clientY]); if(Z.p.size===2){ const a=[...Z.p.values()]; Z.d0=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]); } });
+  v.addEventListener("pointermove", e=>{
+    if(!Z.p.has(e.pointerId)) return;
+    const ant=Z.p.get(e.pointerId); Z.p.set(e.pointerId,[e.clientX,e.clientY]);
+    if(Z.p.size===1){ if(Z.s>1){ Z.x+=e.clientX-ant[0]; Z.y+=e.clientY-ant[1]; zAplicar(); } }
+    else if(Z.p.size===2){
+      const a=[...Z.p.values()]; const d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);
+      const r=v.getBoundingClientRect(); const mx=(a[0][0]+a[1][0])/2-r.left-r.width/2, my=(a[0][1]+a[1][1])/2-r.top-r.height/2;
+      if(Z.d0>0) zEn(Z.s*d/Z.d0, mx, my); Z.d0=d;
+    }
+  });
+  const fin=e=>{ Z.p.delete(e.pointerId); Z.d0=0; };
+  v.addEventListener("pointerup",fin); v.addEventListener("pointercancel",fin);
+  v.addEventListener("dblclick", e=>{ const [px,py]=centro(e); if(Z.s>1.05) zEn(1,0,0); else zEn(2.6,px,py); });
+  $("#z-mas").addEventListener("click",()=>zEn(Z.s*1.4,0,0));
+  $("#z-menos").addEventListener("click",()=>zEn(Z.s/1.4,0,0));
+  $("#z-reset").addEventListener("click",()=>zEn(1,0,0));
+  $("#z-cerrar").addEventListener("click",cerrarZoom);
+  window.addEventListener("resize",()=>{ if(Z.open) zAplicar(); });
+}
+
+/* ============ DETALLES (zoom) ============ */
+function detalle(d, i, color){
+  const L = detsDe(d,color); const x = L[i]||L[0]; if(!x) return "";
+  return `<div class="det-wrap" data-id="${d.id}" data-i="${i}">
+    <div class="det" role="button" tabindex="0" data-zoom="${zoomSrc(x.src)}" aria-label="Detalle de ${d.nombre}. Toca para ampliar"><img src="${cb(x.src)}" alt="${d.nombre}: ${x.txt}"></div>
+    <p class="det-txt">${x.txt}</p>
+    ${L.length>1?`<div class="det-nav">${L.map((y,k)=>`<button type="button" class="det-th" data-k="${k}" aria-pressed="${k===i}" aria-label="Detalle ${k+1}"><img src="${cb(y.src)}" alt=""></button>`).join("")}</div>`:""}
+    <span class="det-ayuda">Toca la foto para ampliar</span></div>`;
+}
+function pintarFoco(){
+  const d = VARS[E.idx].d, foco = $("#foco"), dl = detsDe(d,E.color);
+  const det = E.modo==="det" && dl.length;
+  foco.style.setProperty("--k", 1);
+  foco.classList.toggle("detalle", !!det); $("#enfoque").classList.toggle("modo-det", !!det);
+  foco.innerHTML = det ? detalle(d, E.di, E.color) : giro(d, E.color, E.vuelta, undefined, true);
+  $("#e-frente").setAttribute("aria-pressed", !det && !E.vuelta);
+  $("#e-espalda").setAttribute("aria-pressed", !det && E.vuelta);
+  $("#e-detalles").setAttribute("aria-pressed", !!det);
+  $("#e-detalles").hidden = !dl.length;
+}
+
+/* ============ RIEL ============ */
+function pintarRiel(){
+  construirVars();
+  setTimeout(pintarPuntos,0);
+  const sub = d => [codTxt(d), d.insig].filter(Boolean).join(" · ");
+  const gr = d => d.g ? `<span class="gr"><em>${d.g}</em> g</span>` : "";
+  const pts = d => d.colores.length>1 ? `<span class="pts" aria-hidden="true">${d.colores.map(c=>`<i style="background:${COLORES[c].hex}"></i>`).join("")}</span>` : "";
+  $("#fila").innerHTML = VARS.map((v,i) => { const d=v.d; return `
+    <button type="button" class="colgante" style="--i:${i}" data-i="${i}" aria-label="${d.nombre}, ${[sub(d),gTxt(d)].filter(Boolean).join(", ")}${d.colores.length>1?", colores: "+d.colores.join(", "):""}">${giro(d, v.color, false)}<span class="leg-p"><b>${d.nombre}</b><span class="pr${d.precio?"":" sin"}">${prTxt(d)}</span>${espMini(d)}${gr(d)}${sub(d)?`<small>${sub(d)}</small>`:""}${pts(d)}</span></button>`; }).join("");
+}
+function pintarPuntos(){
+  const c=$("#p-dots"); if(!c) return;
+  if(SEC!=="polos"){ c.innerHTML=""; return; }
+  c.innerHTML = VARS.map((v,i)=>`<button type="button" data-i="${i}" aria-label="${v.d.nombre}, ${v.color}" style="background:${COLORES[v.color].hex}"></button>`).join("");
+  const car=$("#carril"), ps=[...c.children];
+  const act=()=>{ const w=car.clientWidth||1, i=Math.max(0,Math.min(ps.length-1,Math.round(car.scrollLeft/w))); ps.forEach((b,j)=>b.setAttribute("aria-current",j===i?"true":"false")); };
+  car.onscroll=act; act();
+  c.onclick=e=>{ const b=e.target.closest("button"); if(!b) return; const el=document.querySelectorAll(".colgante")[+b.dataset.i]; if(el) car.scrollTo({left:el.offsetLeft - (car.clientWidth-el.offsetWidth)/2,behavior:"smooth"}); };
+}
+function leyenda(i){
+  const v = VARS[i], d = v && v.d;
+  $("#leyenda").innerHTML = d ? `<b>${d.nombre}</b> · ${[d.colores.length>1?d.colores.join(" / "):d.colores[0], prTxt(d)].filter(Boolean).join(" · ")}${prendaAgotada(d)?" · <b>Agotada</b>":""}` : "Pasa el cursor por una prenda o tócala";
+}
+
+/* ============ VISTA DE PRENDA ============ */
+function abrirEnfoque(i, desdeHash, color){
+  E.idx = (i+VARS.length)%VARS.length; E.vuelta = false; E.modo = null; E.di = 0; E.color = color && VARS[E.idx].d.colores.includes(color) ? color : VARS[E.idx].color;
+  const c = $("#enfoque"); c.hidden = false; c.classList.add("abierta"); E.abierto = "enfoque";
+  pintarEnfoque(0);
+  if(!desdeHash) history.replaceState(null,"",hashProd(VARS[E.idx].d,E.color));
+  $("#e-cerrar").focus();
+}
+function pintarEnfoque(dir){
+  const d = VARS[E.idx].d, n = VARS.length;
+  const foco = $("#foco");
+  foco.className = "foco"; void foco.offsetWidth;
+  pintarFoco();
+  if(dir) foco.classList.add(dir>0?"entra-der":"entra-izq");
+  const p = VARS[(E.idx-1+n)%n], q = VARS[(E.idx+1)%n];
+  $("#fan-i").innerHTML = giro(p.d, p.color, false, false);
+  $("#fan-d").innerHTML = giro(q.d, q.color, false, false);
+  $("#e-nombre").textContent = d.nombre;
+  $("#e-sub").textContent = [codTxt(d), d.insig, d.colores.length>1?E.color:""].filter(Boolean).join(" · ");
+  pintarPrecioE(d); pintarColoresE(d);
+  if(location.hash.startsWith("#producto-")) history.replaceState(null,"",hashProd(d,E.color));
+}
+function pintarPrecioE(d){
+  const p=$("#e-precio"); p.textContent = prTxt(d,E.color); p.classList.toggle("sin", !d.precio);
+  const w=$("#e-peso"); w.hidden=!d.g; w.innerHTML = d.g ? `<span class="pl">Gramaje</span><span class="pv">${d.g}<small> g</small></span><span class="pb"><i style="width:${Math.round(d.g/400*100)}%"></i></span>` : "";
+  $("#e-comp").textContent = compTxt(d);
+  $("#e-sellos").innerHTML = espChip(d,E.color) + stockChip(d,E.color) + sellosDe(d,E.color).map(x=>`<span class="sello">${x}</span>`).join("");
+  const n=$("#e-nota"), t=notaDe(d,E.color); n.hidden=!t; n.textContent=t?"✦ "+t:"";
+}
+function pintarColoresE(d){
+  const b=$("#e-colores"); b.hidden = d.colores.length<2;
+  b.innerHTML = d.colores.map(c=>`<button type="button" data-c="${c}" aria-pressed="${c===E.color}"><i style="background:${COLORES[c].hex}"></i>${c}</button>`).join("");
+}
+function cambiarColorE(c){
+  const d=VARS[E.idx].d; if(!d.colores.includes(c)||c===E.color) return;
+  E.color=c; if(E.modo==="det" && !detsDe(d,c).length) E.modo=null; E.di=0;
+  pintarFoco(); $("#e-sub").textContent=[codTxt(d), d.insig, c].filter(Boolean).join(" · "); pintarPrecioE(d); pintarColoresE(d);
+  history.replaceState(null,"",hashProd(d,c));
+}
+function irEnfoque(paso){ E.idx = (E.idx+paso+VARS.length)%VARS.length; E.color = VARS[E.idx].color; E.vuelta=false; E.modo=null; E.di=0; pintarEnfoque(paso); }
+function cerrarEnfoque(){
+  const c=$("#enfoque"); if(!c.classList.contains("abierta")) return;
+  c.classList.remove("abierta"); c.hidden = true; E.abierto = null;
+  if(location.hash) history.replaceState(null,"",location.pathname+location.search+hashSec());
+  sincronizarSlides();
+}
+function zoomActual(){
+  const d=VARS[E.idx].d, dl=detsDe(d,E.color);
+  if(E.modo==="det" && dl.length){ const x=dl[E.di]||dl[0]; return abrirZoom(zoomSrc(x.src), d.nombre+": "+x.txt); }
+  abrirZoom(srcLado(d,E.color,E.vuelta?"espalda":"frente"), d.nombre);
+}
+function zoomFicha(){
+  const d=E.ficha; if(!d) return;
+  if(E.fmodo==="det"){ const z=document.querySelector("#f-giro .det"); if(z) return abrirZoom(z.dataset.zoom,"Detalle"); }
+  const v=!!document.querySelector("#f-giro .giro.vuelta");
+  abrirZoom(srcLado(d,E.colorF,v?"espalda":"frente"), d.nombre);
+}
+function lado(vuelta){
+  const venia = E.modo==="det"; E.vuelta = vuelta; E.modo = null;
+  const g = document.querySelector("#foco .giro");
+  if(venia || !g) pintarFoco(); else { g.classList.toggle("vuelta", vuelta); pintarFoco_botones(); }
+}
+function pintarFoco_botones(){
+  $("#e-frente").setAttribute("aria-pressed", !E.vuelta);
+  $("#e-espalda").setAttribute("aria-pressed", E.vuelta);
+  $("#e-detalles").setAttribute("aria-pressed", false);
+}
+
+/* ============ FICHA ============ */
+function abrirFicha(id, color, desdeHash){
+  const d = byId(id); if(!d) return;
+  E.ficha = d; E.colorF = color && d.colores.includes(color) ? color : d.colores[0]; E.talla = null; E.cant = 1; E.fmodo = null;
+  const f = $("#ficha"); f.hidden = false; f.classList.add("abierta");
+  f.innerHTML = `<button type="button" class="cerrar lbl" id="f-cerrar">Volver ✕</button>
+    <div class="ficha-grid">
+      <div class="ficha-img"><div id="f-giro">${giro(d,E.colorF,false,undefined,true)}</div>
+        <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" data-l="f" aria-pressed="true">Frente</button><button type="button" data-l="e" aria-pressed="false">Espalda</button><button type="button" data-l="d" aria-pressed="false"${detsDe(d,E.colorF).length?"":" hidden"}>Detalles</button></div>
+        <button type="button" class="enlace" id="f-zoom">Ampliar ⤢</button></div>
+      <div class="ficha-der">
+        ${(d.insig||d.g)?`<div><span class="badge${d.insig?"":" badge-g"}">${d.insig||gTxt(d)}</span>${codTxt(d)?` <span class="cod-ficha">${codTxt(d)}</span>`:""}</div>`:""}
+        <h3 id="f-nombre">${d.nombre}</h3>
+        <div class="precio" id="f-precio">${prTxt(d,E.colorF)}</div>
+        ${d.g?`<div class="comp" aria-label="Comparación de gramaje"><div class="cb"><span>Camiseta común</span><em><i style="width:${Math.round(COMUN/400*100)}%"></i></em><b>${COMUN} g</b></div><div class="cb me"><span>${d.nombre}</span><em><i style="width:${Math.round(d.g/400*100)}%"></i></em><b>${d.g} g</b></div><p>${compTxt(d)}</p></div>`:""}
+        <div class="e-sellos izq-s" id="f-sellos"></div>
+        <p>${d.desc}</p>
+        <p class="nota" id="f-nota" hidden></p>
+        <div class="dato"><b>Color</b><div class="opciones" id="f-colores" role="group" aria-label="Color">${d.colores.map(c=>`<button type="button" class="op col" data-c="${c}" aria-pressed="${c===E.colorF}"><i style="background:${COLORES[c].hex}"></i>${c}</button>`).join("")}</div></div>
+        <div class="dato"><b>Talla</b><div class="opciones" id="f-tallas" role="group" aria-label="Talla">${tallasDe(d).map(t=>`<button type="button" class="op" data-t="${t}" aria-pressed="false">${t}</button>`).join("")}</div></div>
+        <div class="dato"><b>Cantidad</b><div class="cant"><button type="button" id="f-menos" aria-label="Menos">−</button><output id="f-cant">1</output><button type="button" id="f-mas" aria-label="Más">+</button></div></div>
+        <div class="acciones">
+          <a class="pill wa" id="f-wa" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+          <button type="button" class="pill" id="f-add">Agregar al pedido</button>
+          <button type="button" class="pill" id="f-copiar">Copiar mensaje</button>
+          <span class="msg" id="f-msg" role="status"></span>
+          <span class="aviso">Elige una talla para activar el pedido. Si WhatsApp no abre, copia el mensaje y envíalo a mano.</span>
+        </div>
+        <ul class="lista-pts">${d.puntos?d.puntos.map(x=>`<li>${x}</li>`).join(""):`<li>Algodón 100% · ${d.g} g</li><li>Fotos reales de la prenda${d.detalles?" y de sus detalles":""}</li><li>Pago y entrega se confirman por WhatsApp</li>`}</ul>
+      </div></div>`;
+  E.abierto = "ficha";
+  if(!desdeHash) history.replaceState(null,"","#ficha-"+id);
+  actualizarFicha(); $("#f-cerrar").focus();
+}
+function cerrarFicha(){
+  const f=$("#ficha"); f.classList.remove("abierta"); f.hidden = true; E.ficha = null;
+  E.abierto = $("#enfoque").classList.contains("abierta") ? "enfoque" : null;
+  if(E.abierto==="enfoque") history.replaceState(null,"",hashProd(VARS[E.idx].d,E.color));
+  else if(location.hash) history.replaceState(null,"",location.pathname+location.search+hashSec());
+}
+function enlacePrenda(d,color){ try{ return location.href.split("#")[0] + "#producto-" + (color && d.colores.length>1 ? d.id+"-"+slug(color) : d.id); }catch(e){ return ""; } }
+function msgUno(d,color,talla,cant){
+  return `Hola, quiero pedir en CUATROCIENTOS:\n• ${nom(d)} (${detTxt(d,color)}) · talla ${talla} · x${cant}${lineaPr(d,cant,color)}\n  Ver la prenda: ${enlacePrenda(d,color)}\n\n¿Está disponible?`;
+}
+function actualizarFicha(){
+  const d = E.ficha; if(!d) return;
+  document.querySelectorAll("#f-tallas .op").forEach(b=>{
+    const est = estadoStock(stockDe(d,E.colorF,b.dataset.t));
+    b.disabled = est==="agotado"; b.dataset.e = est;
+    b.innerHTML = b.dataset.t + (est==="ultimas"?"<small>Últimas</small>":est==="agotado"?"<small>Agotada</small>":"");
+    if(b.disabled && E.talla===b.dataset.t) E.talla=null;
+  });
+  const maxC = E.talla ? (stockDe(d,E.colorF,E.talla) ?? 20) : 20;
+  E.cant = Math.max(1, Math.min(E.cant, Math.min(20,maxC)));
+  const av = document.querySelector("#ficha .aviso");
+  if(av) av.textContent = tallasDe(d).every(t=>estadoStock(stockDe(d,E.colorF,t))==="agotado") ? "Esta prenda está agotada por ahora. Escríbenos por WhatsApp y te avisamos cuando vuelva." : "Elige una talla para activar el pedido. Si WhatsApp no abre, copia el mensaje y envíalo a mano.";
+  const fp=$("#f-precio"); if(fp) fp.textContent=prTxt(d,E.colorF);
+  const fs=$("#f-sellos"); if(fs) fs.innerHTML = espChip(d,E.colorF) + stockChip(d,E.colorF) + sellosDe(d,E.colorF).map(x=>`<span class="sello">${x}</span>`).join("");
+  const fn=$("#f-nota"); if(fn){ const t=notaDe(d,E.colorF); fn.hidden=!t; fn.textContent=t?"✦ "+t:""; }
+  $("#f-cant").textContent = E.cant;
+  document.querySelectorAll("#f-tallas .op").forEach(b=>b.setAttribute("aria-pressed", b.dataset.t===E.talla));
+  document.querySelectorAll("#f-colores .op").forEach(b=>b.setAttribute("aria-pressed", b.dataset.c===E.colorF));
+  const wa=$("#f-wa");
+  if(E.talla){ wa.href = waLink(msgUno(d,E.colorF,E.talla,E.cant)); wa.removeAttribute("aria-disabled"); }
+  else { wa.href="#"; wa.setAttribute("aria-disabled","true"); }
+  ["#f-add","#f-copiar"].forEach(s=>$(s).disabled = !E.talla);
+}
+function copiar(texto, destino){
+  const ok=()=>{destino.textContent="Mensaje copiado.";setTimeout(()=>destino.textContent="",2200)};
+  const falla=()=>{destino.textContent="No se pudo copiar. Copia este texto: "+texto.replace(/\n/g," ")};
+  try{ navigator.clipboard.writeText(texto).then(ok,falla); }catch(e){ falla(); }
+}
+
+/* ============ PEDIDO ============ */
+function totalPedido(){ return E.pedido.reduce((s,i)=>s+(pc(byId(i.id),i.color)||0)*i.cant,0); }
+function hayPorConfirmar(){ return E.pedido.some(i=>!byId(i.id).precio); }
+function totTxt(){ const t=totalPedido(), x=hayPorConfirmar(); return t&&x ? precio(t)+" + por confirmar" : x ? "precio por confirmar" : precio(t); }
+function msgPedido(){
+  const l = E.pedido.map(i=>{const d=byId(i.id);return `• ${nom(d)} (${detTxt(d,i.color)}) · talla ${i.talla} · x${i.cant}${lineaPr(d,i.cant,i.color)}\n  Ver la prenda: ${enlacePrenda(d,i.color)}`});
+  return `Hola, quiero pedir en CUATROCIENTOS:\n${l.join("\n")}\n\nTotal: ${totTxt()}\n¿Está disponible?`;
+}
+function pintarPedido(){
+  const n = E.pedido.reduce((s,i)=>s+i.cant,0);
+  $("#bp").classList.toggle("visible", n>0);
+  $("#bp-ver").textContent = `Mi pedido · ${n} ${n===1?"prenda":"prendas"} · ${totTxt()}`;
+  $("#bp-wa").href = n ? waLink(msgPedido()) : "#";
+  $("#lista-in").innerHTML = E.pedido.map((i,k)=>{const d=byId(i.id);return `<div class="item"><span>${nom(d)} · ${i.color}${d.g?" · "+d.g+" g":""} · talla ${i.talla} · x${i.cant}</span><button type="button" data-q="${k}">Quitar</button></div>`}).join("");
+  if(!n){ $("#lista").hidden=true; $("#bp-ver").setAttribute("aria-expanded","false"); }
+}
+function agregar(){
+  const d=E.ficha; if(!d||!E.talla) return;
+  const ex=E.pedido.find(i=>i.id===d.id&&i.talla===E.talla&&i.color===E.colorF);
+  if(ex) ex.cant+=E.cant; else E.pedido.push({id:d.id,color:E.colorF,talla:E.talla,cant:E.cant});
+  pintarPedido();
+  $("#f-msg").textContent="Agregado a tu pedido.";
+  setTimeout(()=>{const m=$("#f-msg"); if(m) m.textContent=""},2200);
+}
+
+/* ============ PANELES ============ */
+function panel(html){
+  const p=$("#panel"); p.innerHTML = `<button type="button" class="x" id="p-x">Cerrar ✕</button>${html}`;
+  p.hidden=false; p.classList.add("abierto"); $("#vel").classList.add("abierto"); $("#p-x").focus();
+  document.querySelectorAll(".barra .rel").forEach(r=>setTimeout(()=>r.style.width=r.dataset.w+"%",80));
+}
+function cerrarPanel(){ const p=$("#panel"); p.classList.remove("abierto","promos"); p.hidden=true; $("#vel").classList.remove("abierto"); }
+const panelAbierto = () => $("#panel").classList.contains("abierto");
+function nosotros(){
+  panel(`<span class="lbl" style="color:var(--carmin)">Nosotros</span><h3>Cuesta lo que pesa</h3>
+    <p>Camisetas streetwear de algodón 100% y alto gramaje, con estampados urbanos. El gramaje es cuántos gramos pesa un metro cuadrado de tela: a más gramos, más cuerpo, más caída y más duración.</p>
+    ${GRAMAJES.map(x=>`<div class="barra"><span class="g">${x.g}<small> g</small></span><div><div class="pista"><div class="rel" data-w="${Math.round(x.g/400*100)}"></div></div><span class="txt">${x.txt}</span></div></div>`).join("")}`);
+}
+function contacto(){
+  panel(`<span class="lbl" style="color:var(--carmin)">Contacto</span><h3>Pide por WhatsApp</h3>
+    <p>Sin carrito ni registro. Elige tu prenda y talla y el botón arma el mensaje. También puedes mandarnos una captura de la prenda que te gustó.</p>
+    <div class="num" aria-label="Número de WhatsApp">${CONFIG.whatsappTxt}</div>
+    <div><a class="pill wa" href="${waLink("Hola, quiero información de CUATROCIENTOS.")}" target="_blank" rel="noopener">Escribir por WhatsApp</a></div>
+    <div class="pasos"><div><b>1 · Elige</b>Abre la prenda, escoge color, talla y cantidad.</div><div><b>2 · Escríbenos</b>Envía el mensaje o una captura.</div><div><b>3 · Confirmamos</b>Te respondemos con disponibilidad, pago y entrega.</div></div>`);
+}
+
+
+/* ============ PROMOCIONES ============ */
+const BASE = {tee:29.99,color:31.99,polo:34.99,dvd180:17.99,dvd200:19.99,dvd220:24.99};
+const FOTOS = {tee:["relieve-negro-frente","flor-negro-frente"],color:["cruces-fucsia-frente","herradura-negro-frente"],polo:["polo-crema-frente"],dvd180:["erosion-plomo-frente"],dvd200:["club-negro-frente"],dvd220:["menosmas-negro-frente"]};
+const PROMOS = [
+  {n:"Dúo 400",d:"2 camisetas de 400 g, el diseño que quieras",c:[["tee",2]],p:55.99},
+  {n:"Dúo Color",d:"2 camisetas de 400 g cuyo bordado cambia de color con el calor",c:[["color",2]],p:59.99},
+  {n:"Trío 400",d:"3 camisetas de 400 g, el diseño que quieras",c:[["tee",3]],p:81.99},
+  {n:"Combo Polo",d:"1 polo manga larga + 1 camiseta de 400 g",c:[["polo",1],["tee",1]],p:61.99},
+  {n:"Look Completo",d:"2 camisetas de 400 g + 1 polo manga larga",c:[["tee",2],["polo",1]],p:87.99},
+  {n:"Camiseta + DVD",d:"1 camiseta de 400 g + 1 DVD (musculosa) de 200 g",c:[["tee",1],["dvd200",1]],p:46.99},
+  {n:"Dúo DVD",d:"2 DVD (musculosas): Erosión 180 g + Club 200 g",c:[["dvd180",1],["dvd200",1]],p:35.99},
+  {n:"Full",d:"2 camisetas de 400 g + 1 polo + 1 DVD de 200 g",c:[["tee",2],["polo",1],["dvd200",1]],p:104.99}
+];
+const fmtGrande = n => { const e=Math.floor(n), c=Math.round((n-e)*100); return CONFIG.moneda+e+(c?`<sup>${String(c).padStart(2,"0")}</sup>`:""); };
+function abrirPromos(){
+  const tarjetas = PROMOS.map(m=>{
+    const normal = m.c.reduce((s,[k,q])=>s+BASE[k]*q,0), ahorro = normal-m.p;
+    const fotos = m.c.flatMap(([k,q])=>Array.from({length:q},(_,i)=>FOTOS[k][i%FOTOS[k].length]));
+    return `<article class="promo"><span class="pm-ahorro">Ahorras ${precio(ahorro)}</span>
+      <div class="pm-fotos">${fotos.map(f=>`<img src="${cb("promo/"+f+".webp")}" alt="" loading="lazy">`).join("")}</div>
+      <div><h4>${m.n}</h4><p>${m.d}</p></div>
+      <div class="pm-pr"><b>${fmtGrande(m.p)}</b><s>${precio(normal)}</s></div>
+      <a class="pill wa" href="${waLink("Hola, quiero la promo "+m.n+" ("+precio(m.p)+"). ¿Qué diseños y tallas hay disponibles?")}" target="_blank" rel="noopener">Pedir esta promo</a></article>`;
+  }).join("");
+  panel(`<span class="lbl" style="color:var(--carmin)">Promociones</span><h3>Llévate más, paga menos</h3>
+    <p class="pm-sub">Combina prendas y ahorra. Elige tu promo y te confirmamos diseños, colores y tallas por WhatsApp.</p>
+    <div class="pm-lista">${tarjetas}</div>`);
+  $("#panel").classList.add("promos"); $("#panel").scrollTop=0;
+}
+
+/* ============ SECCIONES ============ */
+function ponerSeccion(s, sinHash, interno){
+  SEC = s; DISENOS = TODOS.filter(d=>(d.sec||"camisetas")===s);
+  const p = s==="polos";
+  document.body.classList.toggle("polos", p); document.body.classList.toggle("dvd", s==="dvd");
+  $("#b-nosotros").hidden = p; $("#b-camisetas").hidden = true;
+  $("#marca-sup").hidden = p; $("#tit-polos").hidden = !p;
+  document.querySelectorAll("#tabs-sec button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.s===s));
+  const fr = (p?CONFIG.frasePolos:CONFIG.frase).map(f=>`<span>${f} ·</span>`).join("");
+  $("#franja").innerHTML = fr+fr+fr+fr;
+  pintarRiel(); leyenda(-1); $("#carril").scrollLeft = 0;
+  if(!interno){
+    cancelarIntro(true);
+    if(p) mostrarRiel();
+    else if(!sinHash && !TOUR[s]) iniciarTourSec(s);
+    else mostrarSlides();
+  }
+  if(!sinHash) history.replaceState(null,"",location.pathname+location.search+hashSec());
+}
+
+/* ============ INICIO ============ */
+let introT=[], introOn=false;
+let tourOn=false; const TOUR={};
+function limpiarTour(){ document.querySelectorAll("#fila .colgante").forEach(c=>c.classList.remove("lit")); $("#fila").classList.remove("luces","alba"); document.querySelectorAll("#fila .funda,#fila .gbar").forEach(x=>x.remove()); document.querySelectorAll("#fila .gr em[data-g]").forEach(e=>{ e.textContent=e.dataset.g; }); document.querySelectorAll("#fila .colgante.listo").forEach(c=>c.classList.remove("listo")); const h=$("#haz"); if(h){ h.classList.remove("on"); h.style.transform=""; } if(window.__rafD){ cancelAnimationFrame(window.__rafD); window.__rafD=0; } }
+function cancelarIntro(sinSlides){
+  introT.forEach(clearTimeout); introT=[]; introOn=false;
+  if(tourOn){ tourOn=false; limpiarTour(); if(sinSlides!==true && SEC!=="polos") mostrarSlides(); }
+}
+/* desfile de luz: el riel arranca en penumbra, un haz recorre las perchas de izquierda a derecha y cada prenda se enciende con su nombre y precio */
+function ponerFundas(){
+  const f=$("#fila"); f.classList.add("luces");
+  [...f.children].forEach(el=>{ if(el.querySelector(".funda")) return; const lp=el.querySelector(".leg-p"); const d=document.createElement("i"); d.className="funda"; d.style.height=Math.max(60,(lp?lp.offsetTop:el.offsetHeight)+6)+"px"; d.innerHTML='<span class="fl"><img src="./marca_icono_blanco.png" alt=""><img src="./marca_palabra_blanco.png" alt=""></span>'; el.appendChild(d); });
+}
+function pesar(el){
+  const em=el.querySelector(".gr em"), gr=el.querySelector(".gr");
+  if(!em||!gr){ setTimeout(()=>el.classList.add("listo"),900); return; }
+  const g=+em.textContent||0; em.dataset.g=g; em.textContent="0";
+  const bar=document.createElement("i"); bar.className="gbar"; bar.innerHTML="<u></u>"; gr.after(bar);
+  const u=bar.firstChild, t0=performance.now()+120, D=900;
+  const paso=t=>{
+    if(!tourOn||!bar.isConnected) return;
+    const p=Math.max(0,Math.min(1,(t-t0)/D)), e=1-Math.pow(1-p,3);
+    em.textContent=Math.round(g*e); u.style.width=(g/400*100*e)+"%";
+    if(p<1) requestAnimationFrame(paso); else { em.textContent=g; el.classList.add("listo"); }
+  };
+  requestAnimationFrame(paso);
+}
+function tourSeccion(fin){
+  const f=$("#fila"), c=$("#carril"), kids=[...f.children], n=kids.length;
+  const rd=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  ponerFundas(); c.scrollLeft=0;
+  if(rd){ kids.forEach(k=>{ k.classList.add("lit"); const fu=k.querySelector(".funda"); if(fu) fu.remove(); }); introT.push(setTimeout(()=>{ if(!tourOn) return; tourOn=false; limpiarTour(); fin(); },1000)); return; }
+  /* 1) amanecer: la sala se ilumina tenue con las prendas aun en su funda; 2) las fundas de lavanderia se levantan una a una y descubren prenda, nombre y precio */
+  introT.push(setTimeout(()=>{ if(!tourOn) return; f.classList.add("alba"); },250));
+  /* todas las prendas tienen exactamente el mismo ciclo: llegada (0,6 s) + funda que sube y gramaje (3,4 s). Si el riel se desplaza, cada una espera su turno completo */
+  const max=c.scrollWidth-c.clientWidth, desp=max>8, tB=1000, slot=desp?2000:800, PRE=250, CICLO=2500;
+  kids.forEach((el,i)=>{
+    introT.push(setTimeout(()=>{
+      if(!tourOn) return;
+      const tgt=Math.max(0,Math.min(max,el.offsetLeft+el.offsetWidth/2-c.clientWidth/2));
+      if(Math.abs(tgt-c.scrollLeft)>2) c.scrollTo({left:tgt,behavior:"smooth"});
+    },tB+i*slot));
+    introT.push(setTimeout(()=>{
+      if(!tourOn) return;
+      const fu=el.querySelector(".funda"); if(fu) fu.classList.add("sube");
+      el.classList.add("lit"); leyenda(i);
+      pesar(el);
+    },tB+i*slot+PRE));
+  });
+  const tF=tB+(n-1)*slot+PRE+1700;
+  introT.push(setTimeout(()=>{ if(!tourOn) return; leyenda(-1); },tF));
+  introT.push(setTimeout(()=>{ if(!tourOn) return; tourOn=false; $(".riel-wrap").classList.add("desv"); },tF+600));
+  introT.push(setTimeout(()=>{ $(".riel-wrap").classList.remove("desv"); limpiarTour(); fin(); },tF+900));
+}
+function iniciarTourSec(s){
+  TOUR[s]=true; mostrarRiel(); tourOn=true;
+  tourSeccion(()=>{ leyenda(-1); mostrarSlides(); });
+}
+function recorrido(){
+  const c=$("#carril"), max=c.scrollWidth-c.clientWidth;
+  if(max<8 || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const t0=performance.now(), dur=1500;
+  const paso=t=>{ if(!introOn) return; const p=Math.min(1,(t-t0)/dur); const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; c.scrollLeft = max*(p<.5? e*2 : 2-e*2)/1; if(p<1) requestAnimationFrame(paso); else c.scrollLeft=0; };
+  requestAnimationFrame(paso);
+}
+function entrar(sin){
+  const b=$("#bienvenida"); if(b.classList.contains("sale")) return;
+  b.classList.add("sale"); $("#app").classList.remove("fuera");
+  let visto=false; try{ visto = sessionStorage.getItem("c400-visto")==="1"; sessionStorage.setItem("c400-visto","1"); }catch(e){}
+  setTimeout(()=>{ b.hidden=true; },1400);
+  if(SEC==="polos") return;
+  if(sin===true || visto || TOUR[SEC]){ TOUR[SEC]=true; mostrarSlides(); return; }
+  if(!matchMedia("(prefers-reduced-motion:reduce)").matches) ponerFundas();
+  setTimeout(()=>{ if(!tourOn && !E.abierto && !panelAbierto() && !TOUR.camisetas) iniciarTourSec("camisetas"); },1000);
+}
+/* ============ MODO DESLIZAR (horizontal) ============ */
+let HIO=null;
+function mostrarRiel(){ document.body.classList.remove("slides"); if(HIO){ HIO.disconnect(); HIO=null; } }
+const hEsp=(d,c)=>espDe(d,c)?"★ Camiseta especial":(hayEsp(d)?"★ Con versión especial":"");
+function mostrarSlides(){
+  if(SEC==="polos" || !VARS.length) return;
+  document.body.classList.add("slides");
+  const sc=$("#h-scroll");
+  sc.innerHTML = VARS.map((v,i)=>{ const d=v.d; return `
+    <article class="h-slide" data-i="${i}">
+      <h3 class="h-nom">${d.nombre}<small>${[codTxt(d), d.insig, d.colores.length>1?v.color:""].filter(Boolean).join(" · ")}</small></h3>
+      <div class="h-foto" data-i="${i}">${giro(d, v.color, false, false, true)}</div>
+      <div class="h-datos">
+        <div class="h-pcol"><div class="h-precio${d.precio?"":" sin"}">${prTxt(d, d.colores.length>1?v.color:"")}</div><div class="h-espec"${hEsp(d,v.color)?"":" hidden"}>${hEsp(d,v.color)}</div></div>
+        ${d.g?`<div class="h-g"><small>Gramaje</small><b data-g="${d.g}">${d.g}<i>g</i></b><em><u style="--w:${Math.round(d.g/400*100)}%"></u></em></div>`:""}
+      </div>
+      <div class="h-fila">
+        ${d.colores.length>1?`<div class="h-cols" role="group" aria-label="Color">${d.colores.map(co=>`<button type="button" data-i="${i}" data-c="${co}" aria-label="${co}" aria-pressed="${co===v.color}" style="background:${COLORES[co].hex}"></button>`).join("")}</div>`:""}
+        <button type="button" class="pill solido h-ver" data-i="${i}">Ver prenda</button>
+        <span class="h-br" aria-hidden="true"></span>
+        <button type="button" class="pill h-esp" data-i="${i}">Ver espalda</button>
+      </div>
+      ${i===0&&VARS.length>1?`<span class="h-sig">Desliza →</span>`:""}
+    </article>`; }).join("");
+  $("#h-pos").innerHTML = VARS.map((v,i)=>`<button type="button" data-i="${i}" aria-label="${v.d.nombre}"></button>`).join("");
+  sc.scrollLeft = 0;
+  if(HIO) HIO.disconnect();
+  HIO = new IntersectionObserver(es=>es.forEach(en=>{
+    const sl=en.target, i=+sl.dataset.i;
+    if(en.isIntersecting && en.intersectionRatio>=.55){
+      sl.classList.add("vis");
+      document.querySelectorAll("#h-pos button").forEach((b,k)=>b.classList.toggle("on",k===i));
+      const b=sl.querySelector(".h-g b"); if(b && !b.dataset.hecho){ b.dataset.hecho="1"; contar(b); }
+      const sg=document.querySelector(".h-sig"); if(sg && i>0) sg.remove();
+    }
+  }),{root:sc,threshold:[.55]});
+  sc.querySelectorAll(".h-slide").forEach(x=>HIO.observe(x));
+}
+function irSlide(dir){ const sc=$("#h-scroll"); sc.scrollBy({left:dir*sc.clientWidth,behavior:"smooth"}); }
+function sincronizarSlides(){ if(!document.body.classList.contains("slides")) return; const sc=$("#h-scroll"); sc.scrollTo({left:E.idx*sc.clientWidth,behavior:"instant"}); }
+function contar(b){
+  const g=+b.dataset.g, u=b.querySelector("i").outerHTML; if(matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const t0=performance.now(), D=900;
+  const f=t=>{ const p=Math.min(1,(t-t0)/D), e=1-Math.pow(1-p,3); b.innerHTML=Math.round(g*e)+u; if(p<1) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+}
+function iniciar(){
+  const una = CONFIG.frase.map(f=>`<span>${f} ·</span>`).join("");
+  $("#franja").innerHTML = una+una+una+una;
+  pintarRiel(); pintarPedido(); cargarStock().then(()=>{ if(E.ficha) actualizarFicha(); if(E.abierto==="enfoque" && VARS[E.idx]) pintarPrecioE(VARS[E.idx].d); });
+
+  let arrastre=false;
+  const reduce = () => matchMedia("(prefers-reduced-motion:reduce)").matches;
+  $("#fila").addEventListener("click", e=>{
+    const b=e.target.closest(".colgante"); if(!b) return;
+    if(arrastre){ arrastre=false; return; }
+    const i=+b.dataset.i; if(reduce() || b.classList.contains("elegida")){ if(!b.classList.contains("elegida")) abrirEnfoque(i); return; }
+    $("#fila").classList.add("eligiendo"); b.classList.add("elegida");
+    setTimeout(()=>{ abrirEnfoque(i); setTimeout(()=>{ b.classList.remove("elegida"); $("#fila").classList.remove("eligiendo"); },500); },430);
+  });
+  (function(){
+    const c=$("#carril"), f=$("#fila"); let down=false,sx=0,sl=0,lx=0,lt=0,vx=0,moved=false,raf=0;
+    c.addEventListener("pointerdown",e=>{ if(e.pointerType!=="mouse"||e.button!==0) return; down=true; moved=false; sx=lx=e.clientX; sl=c.scrollLeft; lt=performance.now(); vx=0; cancelAnimationFrame(raf); });
+    window.addEventListener("pointermove",e=>{ if(!down) return; const dx=e.clientX-sx; if(!moved){ if(Math.abs(dx)<6) return; moved=true; c.style.scrollSnapType="none"; c.classList.add("arrastrando"); } const t=performance.now(); vx=(e.clientX-lx)/Math.max(1,t-lt); lx=e.clientX; lt=t; c.scrollLeft=sl-dx; });
+    window.addEventListener("pointerup",()=>{ if(!down) return; down=false; if(!moved) return; arrastre=true; setTimeout(()=>{arrastre=false;},80); c.classList.remove("arrastrando"); let v=-vx*16; const paso=()=>{ c.scrollLeft+=v; v*=.94; if(Math.abs(v)>.4) raf=requestAnimationFrame(paso); else c.style.scrollSnapType=""; }; paso(); });
+    let ult=c.scrollLeft, idle=0;
+    c.addEventListener("scroll",()=>{ const dx=c.scrollLeft-ult; ult=c.scrollLeft; const v=Math.max(-9,Math.min(9,-dx*.45)); f.style.setProperty("--vel",v.toFixed(2)); clearTimeout(idle); idle=setTimeout(()=>f.style.setProperty("--vel",0),70); },{passive:true});
+  })();
+  $("#fila").addEventListener("mouseover", e=>{ const b=e.target.closest(".colgante"); if(b) leyenda(+b.dataset.i); });
+  $("#fila").addEventListener("focusin", e=>{ const b=e.target.closest(".colgante"); if(b) leyenda(+b.dataset.i); });
+  $("#fila").addEventListener("mouseleave", ()=>leyenda(-1));
+  $("#b-ver").addEventListener("click", ()=>abrirEnfoque(0));
+  $("#b-nosotros").addEventListener("click", nosotros);
+  $("#tabs-sec").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; if(b.dataset.s==="promos"){ abrirPromos(); return; } if(b.dataset.s!==SEC) ponerSeccion(b.dataset.s); });
+  $("#e-colores").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) cambiarColorE(b.dataset.c); });
+  $("#b-contacto").addEventListener("click", contacto);
+  $("#b-entrar").addEventListener("click", entrar);
+  $("#h-ant").addEventListener("click", ()=>irSlide(-1));
+  $("#h-sig").addEventListener("click", ()=>irSlide(1));
+  $("#h-pos").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b){ const sc=$("#h-scroll"); sc.scrollTo({left:(+b.dataset.i)*sc.clientWidth,behavior:"smooth"}); } });
+  ["pointerdown","keydown","wheel","touchstart"].forEach(ev=>document.addEventListener(ev,()=>{ if(tourOn) cancelarIntro(); },{passive:true}));
+  $("#h-scroll").addEventListener("click", e=>{
+    const col=e.target.closest(".h-cols button");
+    if(col){ const i=+col.dataset.i, v=VARS[i]; v.color=col.dataset.c; const sl=col.closest(".h-slide"); sl.querySelector(".h-foto").innerHTML=giro(v.d, v.color, false, false, true); sl.querySelectorAll(".h-cols button").forEach(b=>b.setAttribute("aria-pressed", b===col)); sl.querySelector(".h-nom small").textContent=[codTxt(v.d), v.d.insig, v.color].filter(Boolean).join(" · "); sl.querySelector(".h-precio").textContent=prTxt(v.d,v.color); const he=sl.querySelector(".h-espec"); he.textContent=hEsp(v.d,v.color); he.hidden=!he.textContent; return; }
+    const ver=e.target.closest(".h-ver"); if(ver){ const v=VARS[+ver.dataset.i]; abrirEnfoque(+ver.dataset.i,false,v.color); return; }
+    const esp=e.target.closest(".h-esp"); if(esp){ const sl=esp.closest(".h-slide"), g=sl.querySelector(".giro"); if(g){ g.classList.toggle("vuelta"); esp.textContent = g.classList.contains("vuelta") ? "Ver frente" : "Ver espalda"; } return; }
+    const ft=e.target.closest(".h-foto"); if(ft){ const g=ft.querySelector(".giro"); if(g) g.classList.toggle("vuelta"); const e2=ft.closest(".h-slide").querySelector(".h-esp"); if(e2&&g) e2.textContent = g.classList.contains("vuelta") ? "Ver frente" : "Ver espalda"; }
+  });
+  $("#bienvenida").addEventListener("click", e=>{ if(e.target.id==="bienvenida") entrar(); });
+  let visto=false; try{ visto = sessionStorage.getItem("c400-visto")==="1"; }catch(e){}
+  if(visto) entrar(); else setTimeout(entrar, 4700);
+
+  $("#e-cerrar").addEventListener("click", cerrarEnfoque);
+  $("#e-ant").addEventListener("click", ()=>irEnfoque(-1));
+  $("#e-sig").addEventListener("click", ()=>irEnfoque(1));
+  $("#e-frente").addEventListener("click", ()=>lado(false));
+  $("#e-espalda").addEventListener("click", ()=>lado(true));
+  $("#e-detalles").addEventListener("click", ()=>{ E.modo="det"; E.di=0; pintarFoco(); });
+  $("#foco").addEventListener("click", e=>{
+    const th=e.target.closest(".det-th"); if(th){ E.di=+th.dataset.k; pintarFoco(); return; }
+    const z=e.target.closest(".det"); if(z){ abrirZoom(z.dataset.zoom, "Detalle"); return; }
+    if(e.target.closest(".giro")) zoomActual();
+  });
+  $("#foco").addEventListener("keydown", e=>{ const z=e.target.closest(".det"); if(z && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); abrirZoom(z.dataset.zoom,"Detalle"); } });
+  $("#e-zoom").addEventListener("click", zoomActual);
+  iniciarZoom();
+  $("#e-disp").addEventListener("click", ()=>abrirFicha(VARS[E.idx].d.id, E.color));
+
+  $("#ficha").addEventListener("click", e=>{
+    if(e.target.closest("#f-cerrar")) return cerrarFicha();
+    const t=e.target.closest("#f-tallas .op"); if(t){ E.talla=t.dataset.t; return actualizarFicha(); }
+    const c=e.target.closest("#f-colores .op"); if(c){
+      E.colorF=c.dataset.c;
+      const v=document.querySelector('#ficha .seg [data-l="e"]').getAttribute("aria-pressed")==="true";
+      const dl=detsDe(E.ficha,E.colorF), bd=document.querySelector('#ficha .seg [data-l="d"]'); if(bd) bd.hidden=!dl.length;
+      if(E.fmodo==="det"){
+        if(dl.length) $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF);
+        else { E.fmodo=null; document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.l==="f")); $("#f-giro").innerHTML=giro(E.ficha,E.colorF,false,undefined,true); }
+        return actualizarFicha();
+      }
+      $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return actualizarFicha();
+    }
+    const th=e.target.closest("#f-giro .det-th"); if(th){ $("#f-giro").innerHTML=detalle(E.ficha,+th.dataset.k,E.colorF); return; }
+    const zz=e.target.closest("#f-giro .det"); if(zz){ abrirZoom(zz.dataset.zoom,"Detalle"); return; }
+    if(e.target.closest("#f-zoom")) return zoomFicha();
+    if(e.target.closest("#f-giro .giro")) return zoomFicha();
+    const l=e.target.closest(".ficha-img .seg button"); if(l){
+      const v=l.dataset.l==="e", dt=l.dataset.l==="d";
+      document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b===l));
+      if(dt){ E.fmodo="det"; $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF); return; }
+      if(E.fmodo==="det"){ E.fmodo=null; $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return; }
+      const g=document.querySelector("#f-giro .giro"); if(g) g.classList.toggle("vuelta", v); return;
+    }
+    if(e.target.closest("#f-menos")){ E.cant=Math.max(1,E.cant-1); return actualizarFicha(); }
+    if(e.target.closest("#f-mas")){ E.cant=Math.min(20,E.cant+1); return actualizarFicha(); }
+    if(e.target.closest("#f-add")) return agregar();
+    if(e.target.closest("#f-copiar") && E.talla) return copiar(msgUno(E.ficha,E.colorF,E.talla,E.cant), $("#f-msg"));
+  });
+  $("#panel").addEventListener("click", e=>{ if(e.target.closest("#p-x")) cerrarPanel(); });
+  $("#vel").addEventListener("click", cerrarPanel);
+  $("#bp-ver").addEventListener("click", ()=>{ const l=$("#lista"); l.hidden=!l.hidden; $("#bp-ver").setAttribute("aria-expanded", !l.hidden); });
+  $("#lista-in").addEventListener("click", e=>{ const q=e.target.closest("[data-q]"); if(q){ E.pedido.splice(+q.dataset.q,1); pintarPedido(); } });
+
+  document.addEventListener("keydown", e=>{
+    if(Z.open){ if(e.key==="Escape") cerrarZoom(); else if(e.key==="+"||e.key==="=") zEn(Z.s*1.4,0,0); else if(e.key==="-") zEn(Z.s/1.4,0,0); else if(e.key==="0") zEn(1,0,0); return; }
+    if(e.key==="Escape"){ if(panelAbierto()) cerrarPanel(); else if($("#ficha").classList.contains("abierta")) cerrarFicha(); else cerrarEnfoque(); }
+    if(document.body.classList.contains("slides") && !$("#enfoque").classList.contains("abierta") && !$("#ficha").classList.contains("abierta") && !panelAbierto() && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ e.preventDefault(); irSlide(e.key==="ArrowRight"?1:-1); }
+    if($("#enfoque").classList.contains("abierta") && !$("#ficha").classList.contains("abierta") && !panelAbierto()){
+      if(e.key==="ArrowRight") irEnfoque(1); if(e.key==="ArrowLeft") irEnfoque(-1);
+    }
+  });
+  const h = location.hash;
+  if(h==="#polos"){ ponerSeccion("polos",true); entrar(true); }
+  if(h==="#dvd"){ ponerSeccion("dvd",true); entrar(true); }
+  if(h.startsWith("#historias")){ const k=h.slice(11); if(k==="dvd"||k==="polos") ponerSeccion(k,true); entrar(true); }
+  if(h.startsWith("#producto-")){
+    const k=h.slice(10); const t=TODOS.find(d=>k===d.id||k.startsWith(d.id+"-"));
+    if(t){ ponerSeccion(t.sec||"camisetas",true); const cs=k.slice(t.id.length+1); const col=t.colores.find(c=>slug(c)===cs); const i=VARS.findIndex(v=>v.d.id===t.id); entrar(true); abrirEnfoque(i,true,col); }
+  }
+  if(h.startsWith("#ficha-")){ const d=byId(h.slice(7)); if(d){ ponerSeccion(d.sec||"camisetas",true); entrar(true); abrirFicha(d.id,null,true); } }
+}
+iniciar();
+</script>
