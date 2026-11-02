@@ -155,6 +155,16 @@ button{font:inherit;color:inherit;cursor:pointer}
 .det-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
 .det{width:max(150px,min(100%,calc(100cqh - 200px),520px));aspect-ratio:1/1;overflow:hidden;background:#111;cursor:zoom-in;border:1px solid var(--negro);position:relative}
 .det img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease;transform-origin:50% 50%;user-select:none;-webkit-user-drag:none}
+.s-pts{display:flex;justify-content:center;gap:2px;margin:2px 0 0}
+.s-pts button{width:22px;height:22px;padding:0;border:0;background:none;position:relative;cursor:pointer}
+.s-pts button::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--texto2);opacity:.4;transition:opacity .2s,transform .2s}
+.s-pts button[aria-pressed="true"]::after{opacity:1;background:var(--carmin);transform:scale(1.35)}
+.foco,#f-giro{touch-action:pan-y}
+@keyframes sl-d{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes sl-i{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:none}}
+.foco.an-d>*,#f-giro.an-d>*{animation:sl-d .28s ease-out}
+.foco.an-i>*,#f-giro.an-i>*{animation:sl-i .28s ease-out}
+@media (prefers-reduced-motion:reduce){.foco.an-d>*,.foco.an-i>*,#f-giro.an-d>*,#f-giro.an-i>*{animation:none}}
 .det.zoom{cursor:zoom-out}
 .det.zoom img{transform:scale(2.2)}
 .det-txt{margin:0;font-size:13px;text-align:center;color:var(--texto2);max-width:44ch}
@@ -640,7 +650,8 @@ body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:n
     <div class="seg seg-col" id="e-colores" role="group" aria-label="Color" hidden></div>
     <div class="e-sellos" id="e-sellos"></div>
     <p class="nota nota-e" id="e-nota" hidden></p>
-    <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" id="e-frente" aria-pressed="true">Frente</button><button type="button" id="e-espalda" aria-pressed="false">Espalda</button><button type="button" id="e-detalles" aria-pressed="false" hidden>Detalles</button><button type="button" id="e-modelo" aria-pressed="false" hidden>Modelo</button></div>
+    <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" id="e-frente" aria-pressed="true">Frente</button><button type="button" id="e-espalda" aria-pressed="false">Espalda</button><button type="button" id="e-detalles" aria-pressed="false" hidden>Detalles</button></div>
+    <div class="s-pts" id="e-pts" role="group" aria-label="Fotos de la prenda"></div>
     <div class="acc-fila"><button type="button" class="enlace" id="e-zoom">Ampliar ⤢</button><button type="button" class="enlace" id="e-disp">Ver disponibilidad ↗</button></div>
   </div>
 </section>
@@ -714,7 +725,7 @@ const TODOS = [
     detalles:{"Negro":[{src:"fotos/relieve-negro-1.jpg",txt:"Bordado de la espalda, de cerca"},{src:"fotos/relieve-negro-2.jpg",txt:"Relieve y banda inferior"}],"Blanco":[{src:"fotos/relieve-blanco-1.jpg",txt:"Bordado de la espalda, de cerca"},{src:"fotos/relieve-blanco-2.jpg",txt:"Relieve y banda inferior"}]}},
   {id:"menos-mas",sellos:["Cadena de acero inoxidable"],sec:"dvd",codigo:"6682",nombre:"Menos Más",g:220,precio:24.99,colores:["Negro","Rosado"],desc:"Musculosa con estampa grande al frente: «More / Less» en letras de plantilla y firma. En negro y en rosado degradado. Incluye una cadena de acero inoxidable: úsala puesta en la prenda o como collar, como una cadena normal.",
     fotos:{"Negro":{frente:"fotos_png/menosmas-negro-frente.png",espalda:"fotos_png/menosmas-negro-espalda.png"},"Rosado":{frente:"fotos_png/menosmas-rosado-frente.png",espalda:"fotos_png/menosmas-rosado-espalda.png"}},
-    detalles:{"Negro":[{src:"fotos/menosmas-negro-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-negro-1.jpg",txt:"Estampa de cerca"},{src:"fotos/menosmas-negro-2.jpg",txt:"Cadena de acero inoxidable"}],"Rosado":[{src:"fotos/menosmas-rosado-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-rosado-1-c.jpg",txt:"Estampa de cerca"}]}},
+    detalles:{"Negro":[{src:"fotos/menosmas-negro-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-negro-1.jpg",txt:"Estampa de cerca"},{src:"fotos/menosmas-negro-2.jpg",txt:"Cadena de acero inoxidable"}],"Rosado":[{src:"fotos/menosmas-rosado-0-c.jpg",txt:"Sin la cadena: la cadena es un accesorio que se quita"},{src:"fotos/menosmas-rosado-1.jpg",txt:"Estampa de cerca"}]}},
   {id:"club",sellos:["Lavado con manchas"],sec:"dvd",codigo:"0215",nombre:"Club",g:200,precio:19.99,colores:["Negro","Blanco"],desc:"Musculosa con manchas lavadas y letras tipo plantilla. Texto chico al frente, «Made Club Studio» grande atrás.",
     fotos:{"Negro":{frente:"fotos_png/club-negro-frente.png",espalda:"fotos_png/club-negro-espalda.png"},"Blanco":{frente:"fotos_png/club-blanco-frente.png",espalda:"fotos_png/club-blanco-espalda.png"}},
     detalles:{"Negro":[{src:"fotos/club-negro-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/club-negro-2.jpg",txt:"Letras de la espalda, de cerca"}],"Blanco":[{src:"fotos/club-blanco-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/club-blanco-2.jpg",txt:"Letras de la espalda, de cerca"}]}},
@@ -749,7 +760,7 @@ function cargarStock(){
 
 /* ============ ESTADO Y UTILIDADES ============ */
 const $ = s => document.querySelector(s);
-const E = { idx:0, color:null, vuelta:false, modo:null, di:0, fmodo:null, ficha:null, talla:null, cant:1, colorF:null, pedido:[], abierto:null };
+const E = { idx:0, color:null, s:0, di:0, fs:0, fdi:0, ficha:null, talla:null, cant:1, colorF:null, pedido:[], abierto:null };
 const precio = n => { n=Math.round(n*100)/100; return CONFIG.moneda + (Number.isInteger(n)?n:n.toFixed(2).replace(".",",")); };
 const byId = id => TODOS.find(d => d.id===id);
 const gTxt = d => d.g ? d.g+" g" : "";
@@ -764,7 +775,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "74";
+const VER = "75";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
@@ -894,26 +905,53 @@ function iniciarZoom(){
 }
 
 /* ============ DETALLES (zoom) ============ */
-function detalle(d, i, color, m){
+function detalle(d, i, color, m, solo){
   const L = lstDe(d,color,m); const x = L[i]||L[0]; if(!x) return "";
   return `<div class="det-wrap" data-id="${d.id}" data-i="${i}" data-m="${m||""}">
     <div class="det" role="button" tabindex="0" data-zoom="${zoomSrc(x.src)}" aria-label="Detalle de ${d.nombre}. Toca para ampliar"><img src="${cb(x.src)}" alt="${d.nombre}: ${x.txt}"></div>
     <p class="det-txt">${x.txt}</p>
-    ${L.length>1?`<div class="det-nav">${L.map((y,k)=>`<button type="button" class="det-th" data-k="${k}" aria-pressed="${k===i}" aria-label="Detalle ${k+1}"><img src="${cb(y.src)}" alt=""></button>`).join("")}</div>`:""}
+    ${L.length>1&&!solo?`<div class="det-nav">${L.map((y,k)=>`<button type="button" class="det-th" data-k="${k}" aria-pressed="${k===i}" aria-label="Detalle ${k+1}"><img src="${cb(y.src)}" alt=""></button>`).join("")}</div>`:""}
     <span class="det-ayuda">Toca la foto para ampliar</span></div>`;
 }
-function pintarFoco(){
-  const d = VARS[E.idx].d, foco = $("#foco"), dl = detsDe(d,E.color), ml = modsDe(d,E.color);
-  const det = (E.modo==="det" && dl.length) || (E.modo==="mod" && ml.length);
+/* ===== Secuencia de fotos: prenda frente → modelo frente → prenda espalda → modelo espalda → detalles ===== */
+function slidesDe(d,c){
+  const ml=modsDe(d,c), dl=detsDe(d,c), mf=ml.find(x=>/-frente\./.test(x.src)), me=ml.find(x=>/-espalda\./.test(x.src)), a=[{k:"g",v:false}];
+  if(mf) a.push({k:"m",x:mf}); a.push({k:"g",v:true}); if(me) a.push({k:"m",x:me}); if(dl.length) a.push({k:"d"});
+  return a;
+}
+function vistaHtml(d,c,sl,di){
+  if(sl.k==="g") return giro(d,c,sl.v,undefined,true);
+  if(sl.k==="m") return detalle(d,sl.x===modsDe(d,c)[0]?0:1,c,"mod",true);
+  return detalle(d,di,c,"det");
+}
+function zonaDe(S,s){ const i=S.findIndex(x=>x.k==="g"&&x.v); const sl=S[s]; return sl.k==="d"?"d":(s>=i?"e":"f"); }
+function puntosHtml(S,s){ return S.length>1 ? S.map((sl,k)=>`<button type="button" data-s="${k}" aria-pressed="${k===s}" aria-label="Foto ${k+1} de ${S.length}"></button>`).join("") : ""; }
+function ponerAnim(el,dir){ el.classList.remove("an-d","an-i"); if(!dir) return; void el.offsetWidth; el.classList.add(dir>0?"an-d":"an-i"); }
+let swT=0;
+function deslizable(el, fn){
+  let x0=null,y0=0;
+  el.addEventListener("pointerdown",e=>{ x0=e.target.closest(".det-th")?null:e.clientX; y0=e.clientY; },{passive:true});
+  el.addEventListener("pointerup",e=>{ if(x0===null) return; const dx=e.clientX-x0, dy=e.clientY-y0; x0=null; if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.4){ swT=Date.now(); fn(dx<0?1:-1); } });
+  el.addEventListener("pointercancel",()=>{ x0=null; });
+  el.addEventListener("click",e=>{ if(Date.now()-swT<400){ e.stopPropagation(); e.preventDefault(); } },true);
+}
+function pintarFoco(dir){
+  const d = VARS[E.idx].d, foco = $("#foco"), S = slidesDe(d,E.color), dl = detsDe(d,E.color);
+  E.s = Math.max(0, Math.min(E.s, S.length-1)); const sl = S[E.s], det = sl.k!=="g", z = zonaDe(S,E.s);
   foco.style.setProperty("--k", 1);
-  foco.classList.toggle("detalle", !!det); $("#enfoque").classList.toggle("modo-det", !!det);
-  foco.innerHTML = det ? detalle(d, E.di, E.color, E.modo) : giro(d, E.color, E.vuelta, undefined, true);
-  $("#e-frente").setAttribute("aria-pressed", !det && !E.vuelta);
-  $("#e-espalda").setAttribute("aria-pressed", !det && E.vuelta);
-  $("#e-detalles").setAttribute("aria-pressed", E.modo==="det" && !!det);
+  foco.classList.toggle("detalle", det); $("#enfoque").classList.toggle("modo-det", det);
+  foco.innerHTML = vistaHtml(d, E.color, sl, E.di);
+  ponerAnim(foco, dir);
+  $("#e-frente").setAttribute("aria-pressed", z==="f");
+  $("#e-espalda").setAttribute("aria-pressed", z==="e");
+  $("#e-detalles").setAttribute("aria-pressed", z==="d");
   $("#e-detalles").hidden = !dl.length;
-  $("#e-modelo").setAttribute("aria-pressed", E.modo==="mod" && !!det);
-  $("#e-modelo").hidden = !ml.length;
+  $("#e-pts").innerHTML = puntosHtml(S,E.s);
+}
+function irFoto(paso){
+  const d=VARS[E.idx].d, S=slidesDe(d,E.color), sl=S[E.s];
+  if(sl.k==="d"){ const n=detsDe(d,E.color).length; if(paso>0 && E.di<n-1){ E.di++; return pintarFoco(0); } if(paso<0 && E.di>0){ E.di--; return pintarFoco(0); } }
+  const n=E.s+paso; if(n<0||n>=S.length) return; E.s=n; E.di=0; pintarFoco(paso);
 }
 
 /* ============ RIEL ============ */
@@ -942,7 +980,7 @@ function leyenda(i){
 
 /* ============ VISTA DE PRENDA ============ */
 function abrirEnfoque(i, desdeHash, color){
-  E.idx = (i+VARS.length)%VARS.length; E.vuelta = false; E.modo = null; E.di = 0; E.color = color && VARS[E.idx].d.colores.includes(color) ? color : VARS[E.idx].color;
+  E.idx = (i+VARS.length)%VARS.length; E.s = 0; E.di = 0; E.color = color && VARS[E.idx].d.colores.includes(color) ? color : VARS[E.idx].color;
   const c = $("#enfoque"); c.hidden = false; c.classList.add("abierta"); E.abierto = "enfoque";
   pintarEnfoque(0);
   if(!desdeHash) history.replaceState(null,"",hashProd(VARS[E.idx].d,E.color));
@@ -975,11 +1013,11 @@ function pintarColoresE(d){
 }
 function cambiarColorE(c){
   const d=VARS[E.idx].d; if(!d.colores.includes(c)||c===E.color) return;
-  E.color=c; if((E.modo==="det" && !detsDe(d,c).length) || (E.modo==="mod" && !modsDe(d,c).length)) E.modo=null; E.di=0;
+  { const a=slidesDe(d,E.color)[E.s], S2=slidesDe(d,c); const k=S2.findIndex(x=>x.k===a.k&&!!x.v===!!a.v&&(a.k!=="m"||(/-espalda\./.test(a.x.src)===/-espalda\./.test(x.x.src)))); E.s=k>=0?k:0; E.color=c; E.di=0; }
   pintarFoco(); $("#e-sub").textContent=[codTxt(d), d.insig, c].filter(Boolean).join(" · "); pintarPrecioE(d); pintarColoresE(d);
   history.replaceState(null,"",hashProd(d,c));
 }
-function irEnfoque(paso){ E.idx = (E.idx+paso+VARS.length)%VARS.length; E.color = VARS[E.idx].color; E.vuelta=false; E.modo=null; E.di=0; pintarEnfoque(paso); }
+function irEnfoque(paso){ E.idx = (E.idx+paso+VARS.length)%VARS.length; E.color = VARS[E.idx].color; E.s=0; E.di=0; pintarEnfoque(paso); }
 function cerrarEnfoque(){
   const c=$("#enfoque"); if(!c.classList.contains("abierta")) return;
   c.classList.remove("abierta"); c.hidden = true; E.abierto = null;
@@ -987,38 +1025,46 @@ function cerrarEnfoque(){
   sincronizarSlides();
 }
 function zoomActual(){
-  const d=VARS[E.idx].d, dl=detsDe(d,E.color), ml=modsDe(d,E.color);
-  if(E.modo==="mod" && ml.length){ const x=ml[E.di]||ml[0]; return abrirZoom(zoomSrc(x.src), d.nombre+": "+x.txt); }
-  if(E.modo==="det" && dl.length){ const x=dl[E.di]||dl[0]; return abrirZoom(zoomSrc(x.src), d.nombre+": "+x.txt); }
-  abrirZoom(srcLado(d,E.color,E.vuelta?"espalda":"frente"), d.nombre);
+  const d=VARS[E.idx].d, z=document.querySelector("#foco .det");
+  if(z) return abrirZoom(z.dataset.zoom, d.nombre);
+  abrirZoom(srcLado(d,E.color,document.querySelector("#foco .giro.vuelta")?"espalda":"frente"), d.nombre);
 }
 function zoomFicha(){
   const d=E.ficha; if(!d) return;
-  if(E.fmodo==="det" || E.fmodo==="mod"){ const z=document.querySelector("#f-giro .det"); if(z) return abrirZoom(z.dataset.zoom,"Detalle"); }
+  const z=document.querySelector("#f-giro .det"); if(z) return abrirZoom(z.dataset.zoom,d.nombre);
   const v=!!document.querySelector("#f-giro .giro.vuelta");
   abrirZoom(srcLado(d,E.colorF,v?"espalda":"frente"), d.nombre);
 }
 function lado(vuelta){
-  const venia = E.modo==="det" || E.modo==="mod"; E.vuelta = vuelta; E.modo = null;
-  const g = document.querySelector("#foco .giro");
-  if(venia || !g) pintarFoco(); else { g.classList.toggle("vuelta", vuelta); pintarFoco_botones(); }
+  const S=slidesDe(VARS[E.idx].d,E.color), k=S.findIndex(x=>x.k==="g"&&x.v===vuelta); if(k<0) return;
+  const dir=k>E.s?1:-1; E.s=k; E.di=0; pintarFoco(dir);
 }
-function pintarFoco_botones(){
-  $("#e-frente").setAttribute("aria-pressed", !E.vuelta);
-  $("#e-espalda").setAttribute("aria-pressed", E.vuelta);
-  $("#e-detalles").setAttribute("aria-pressed", false);
-  $("#e-modelo").setAttribute("aria-pressed", false);
+function pintarFichaVista(dir){
+  const d=E.ficha, S=slidesDe(d,E.colorF); E.fs=Math.max(0,Math.min(E.fs,S.length-1)); const z=zonaDe(S,E.fs), dl=detsDe(d,E.colorF);
+  $("#f-giro").innerHTML=vistaHtml(d,E.colorF,S[E.fs],E.fdi); ponerAnim($("#f-giro"),dir);
+  document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>{ b.setAttribute("aria-pressed", b.dataset.l===z); if(b.dataset.l==="d") b.hidden=!dl.length; });
+  $("#f-pts").innerHTML=puntosHtml(S,E.fs);
+}
+function pintarFichaCambioColor(){
+  const d=E.ficha, S=slidesDe(d,E.colorF); const cur=E.fsPrev; E.fs=0; E.fdi=0;
+  if(cur){ const k=S.findIndex(x=>x.k===cur.k&&!!x.v===!!cur.v&&(cur.k!=="m"||(/-espalda\./.test(cur.x.src)===/-espalda\./.test((x.x||{src:""}).src)))); if(k>=0) E.fs=k; }
+  pintarFichaVista(0); actualizarFicha();
+}
+function irSlideF(paso){
+  const d=E.ficha, S=slidesDe(d,E.colorF), sl=S[E.fs];
+  if(sl.k==="d"){ const n=detsDe(d,E.colorF).length; if(paso>0 && E.fdi<n-1){ E.fdi++; return pintarFichaVista(0); } if(paso<0 && E.fdi>0){ E.fdi--; return pintarFichaVista(0); } }
+  const n=E.fs+paso; if(n<0||n>=S.length) return; E.fs=n; E.fdi=0; pintarFichaVista(paso);
 }
 
 /* ============ FICHA ============ */
 function abrirFicha(id, color, desdeHash){
   const d = byId(id); if(!d) return;
-  E.ficha = d; E.colorF = color && d.colores.includes(color) ? color : d.colores[0]; E.talla = null; E.cant = 1; E.fmodo = null;
+  E.ficha = d; E.colorF = color && d.colores.includes(color) ? color : d.colores[0]; E.talla = null; E.cant = 1; E.fs = 0; E.fdi = 0;
   const f = $("#ficha"); f.hidden = false; f.classList.add("abierta");
   f.innerHTML = `<button type="button" class="cerrar lbl" id="f-cerrar">Volver ✕</button>
     <div class="ficha-grid">
       <div class="ficha-img"><div id="f-giro">${giro(d,E.colorF,false,undefined,true)}</div>
-        <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" data-l="f" aria-pressed="true">Frente</button><button type="button" data-l="e" aria-pressed="false">Espalda</button><button type="button" data-l="d" aria-pressed="false"${detsDe(d,E.colorF).length?"":" hidden"}>Detalles</button><button type="button" data-l="m" aria-pressed="false"${modsDe(d,E.colorF).length?"":" hidden"}>Modelo</button></div>
+        <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" data-l="f" aria-pressed="true">Frente</button><button type="button" data-l="e" aria-pressed="false">Espalda</button><button type="button" data-l="d" aria-pressed="false"${detsDe(d,E.colorF).length?"":" hidden"}>Detalles</button></div><div class="s-pts" id="f-pts" role="group" aria-label="Fotos de la prenda"></div>
         <button type="button" class="enlace" id="f-zoom">Ampliar ⤢</button></div>
       <div class="ficha-der">
         ${(d.insig||d.g)?`<div><span class="badge${d.insig?"":" badge-g"}">${d.insig||gTxt(d)}</span>${codTxt(d)?` <span class="cod-ficha">${codTxt(d)}</span>`:""}</div>`:""}
@@ -1042,7 +1088,7 @@ function abrirFicha(id, color, desdeHash){
       </div></div>`;
   E.abierto = "ficha";
   if(!desdeHash) history.replaceState(null,"","#ficha-"+id);
-  actualizarFicha(); $("#f-cerrar").focus();
+  pintarFichaVista(0); deslizable($("#f-giro"), irSlideF); actualizarFicha(); $("#f-cerrar").focus();
 }
 function cerrarFicha(){
   const f=$("#ficha"); f.classList.remove("abierta"); f.hidden = true; E.ficha = null;
@@ -1352,11 +1398,12 @@ function iniciar(){
   $("#e-sig").addEventListener("click", ()=>irEnfoque(1));
   $("#e-frente").addEventListener("click", ()=>lado(false));
   $("#e-espalda").addEventListener("click", ()=>lado(true));
-  $("#e-detalles").addEventListener("click", ()=>{ E.modo="det"; E.di=0; pintarFoco(); });
-  $("#e-modelo").addEventListener("click", ()=>{ E.modo="mod"; E.di=0; pintarFoco(); });
+  $("#e-detalles").addEventListener("click", ()=>{ const S=slidesDe(VARS[E.idx].d,E.color), k=S.findIndex(x=>x.k==="d"); if(k<0) return; const dir=k>E.s?1:-1; E.s=k; E.di=0; pintarFoco(dir); });
+  deslizable($("#foco"), irFoto);
+  $("#e-pts").addEventListener("click", e=>{ const b=e.target.closest("[data-s]"); if(!b) return; const k=+b.dataset.s, dir=k>E.s?1:-1; E.s=k; E.di=0; pintarFoco(dir); });
   $("#foco").addEventListener("click", e=>{
-    const th=e.target.closest(".det-th"); if(th){ E.di=+th.dataset.k; pintarFoco(); return; }
-    const z=e.target.closest(".det"); if(z){ abrirZoom(z.dataset.zoom, "Detalle"); return; }
+    const th=e.target.closest(".det-th"); if(th){ E.di=+th.dataset.k; pintarFoco(0); return; }
+    const z=e.target.closest(".det"); if(z){ abrirZoom(z.dataset.zoom, VARS[E.idx].d.nombre); return; }
     if(e.target.closest(".giro")) zoomActual();
   });
   $("#foco").addEventListener("keydown", e=>{ const z=e.target.closest(".det"); if(z && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); abrirZoom(z.dataset.zoom,"Detalle"); } });
@@ -1368,27 +1415,17 @@ function iniciar(){
     if(e.target.closest("#f-cerrar")) return cerrarFicha();
     const t=e.target.closest("#f-tallas .op"); if(t){ E.talla=t.dataset.t; return actualizarFicha(); }
     const c=e.target.closest("#f-colores .op"); if(c){
-      E.colorF=c.dataset.c;
-      const v=document.querySelector('#ficha .seg [data-l="e"]').getAttribute("aria-pressed")==="true";
-      const dl=detsDe(E.ficha,E.colorF), ml=modsDe(E.ficha,E.colorF), bd=document.querySelector('#ficha .seg [data-l="d"]'), bm=document.querySelector('#ficha .seg [data-l="m"]'); if(bd) bd.hidden=!dl.length; if(bm) bm.hidden=!ml.length;
-      if(E.fmodo==="det" || E.fmodo==="mod"){
-        if((E.fmodo==="mod"?ml:dl).length) $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF,E.fmodo);
-        else { E.fmodo=null; document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.l==="f")); $("#f-giro").innerHTML=giro(E.ficha,E.colorF,false,undefined,true); }
-        return actualizarFicha();
-      }
-      $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return actualizarFicha();
+      E.fsPrev=slidesDe(E.ficha,E.colorF)[E.fs]; E.colorF=c.dataset.c;
+      return pintarFichaCambioColor();
     }
-    const th=e.target.closest("#f-giro .det-th"); if(th){ $("#f-giro").innerHTML=detalle(E.ficha,+th.dataset.k,E.colorF,E.fmodo); return; }
-    const zz=e.target.closest("#f-giro .det"); if(zz){ abrirZoom(zz.dataset.zoom,"Detalle"); return; }
+    const th=e.target.closest("#f-giro .det-th"); if(th){ E.fdi=+th.dataset.k; pintarFichaVista(0); return; }
+    const pf=e.target.closest("#f-pts [data-s]"); if(pf){ const k=+pf.dataset.s, dir=k>E.fs?1:-1; E.fs=k; E.fdi=0; pintarFichaVista(dir); return; }
+    const zz=e.target.closest("#f-giro .det"); if(zz){ abrirZoom(zz.dataset.zoom,E.ficha.nombre); return; }
     if(e.target.closest("#f-zoom")) return zoomFicha();
     if(e.target.closest("#f-giro .giro")) return zoomFicha();
     const l=e.target.closest(".ficha-img .seg button"); if(l){
-      const v=l.dataset.l==="e", dt=l.dataset.l==="d", mt=l.dataset.l==="m";
-      document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b===l));
-      if(dt){ E.fmodo="det"; $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF); return; }
-      if(mt){ E.fmodo="mod"; $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF,"mod"); return; }
-      if(E.fmodo==="det" || E.fmodo==="mod"){ E.fmodo=null; $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return; }
-      const g=document.querySelector("#f-giro .giro"); if(g) g.classList.toggle("vuelta", v); return;
+      const S=slidesDe(E.ficha,E.colorF), k=S.findIndex(x=> l.dataset.l==="d" ? x.k==="d" : (x.k==="g" && x.v===(l.dataset.l==="e")));
+      if(k<0) return; const dir=k>E.fs?1:-1; E.fs=k; E.fdi=0; pintarFichaVista(dir); return;
     }
     if(e.target.closest("#f-menos")){ E.cant=Math.max(1,E.cant-1); return actualizarFicha(); }
     if(e.target.closest("#f-mas")){ E.cant=Math.min(20,E.cant+1); return actualizarFicha(); }
