@@ -640,7 +640,7 @@ body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:n
     <div class="seg seg-col" id="e-colores" role="group" aria-label="Color" hidden></div>
     <div class="e-sellos" id="e-sellos"></div>
     <p class="nota nota-e" id="e-nota" hidden></p>
-    <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" id="e-frente" aria-pressed="true">Frente</button><button type="button" id="e-espalda" aria-pressed="false">Espalda</button><button type="button" id="e-detalles" aria-pressed="false" hidden>Detalles</button></div>
+    <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" id="e-frente" aria-pressed="true">Frente</button><button type="button" id="e-espalda" aria-pressed="false">Espalda</button><button type="button" id="e-detalles" aria-pressed="false" hidden>Detalles</button><button type="button" id="e-modelo" aria-pressed="false" hidden>Modelo</button></div>
     <div class="acc-fila"><button type="button" class="enlace" id="e-zoom">Ampliar ⤢</button><button type="button" class="enlace" id="e-disp">Ver disponibilidad ↗</button></div>
   </div>
 </section>
@@ -774,6 +774,9 @@ function stockChip(d,c){ const t=stockTotal(d,c); if(t===null) return ""; return
 const compTxt = d => d.g ? `${d.g>COMUN?"+":""}${Math.round((d.g/COMUN-1)*100)}% más que una camiseta común (${COMUN} g)` : "";
 const notaDe = (d,c) => (d.notas && d.notas[c]) || "";
 const detsDe = (d,c) => Array.isArray(d.detalles) ? d.detalles : ((d.detalles && d.detalles[c]) || []);
+const MODELO = {"flor":{"Negro":[{"src":"fotos/modelo/flor-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/flor-negro-espalda.jpg","txt":"Con modelo, de espalda"}]},"cruces":{"Negro":[{"src":"fotos/modelo/cruces-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/cruces-negro-espalda.jpg","txt":"Con modelo, de espalda"}],"Blanco":[{"src":"fotos/modelo/cruces-blanco-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/cruces-blanco-espalda.jpg","txt":"Con modelo, de espalda"}],"Fucsia":[{"src":"fotos/modelo/cruces-fucsia-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/cruces-fucsia-espalda.jpg","txt":"Con modelo, de espalda"}]},"herradura":{"Negro":[{"src":"fotos/modelo/herradura-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/herradura-negro-espalda.jpg","txt":"Con modelo, de espalda"}]},"desenfoque":{"Negro":[{"src":"fotos/modelo/desenfoque-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/desenfoque-negro-espalda.jpg","txt":"Con modelo, de espalda"}]},"relieve":{"Negro":[{"src":"fotos/modelo/relieve-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/relieve-negro-espalda.jpg","txt":"Con modelo, de espalda"}],"Blanco":[{"src":"fotos/modelo/relieve-blanco-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/relieve-blanco-espalda.jpg","txt":"Con modelo, de espalda"}]},"erosion":{"Negro":[{"src":"fotos/modelo/erosion-negro-frente.jpg","txt":"Con modelo, de frente"},{"src":"fotos/modelo/erosion-negro-espalda.jpg","txt":"Con modelo, de espalda"}]}};
+const modsDe = (d,c) => (MODELO[d.id] && MODELO[d.id][c]) || [];
+const lstDe = (d,c,m) => m==="mod" ? modsDe(d,c) : detsDe(d,c);
 function construirVars(){ VARS = DISENOS.map(d=>({d,color:d.colores[0]})); }
 const nom = d => d.msgTipo ? d.msgTipo+" "+d.nombre : d.nombre+(codTxt(d)?" "+codTxt(d):"");
 const detTxt = (d,color) => [d.g?d.g+" g":"", color].filter(Boolean).join(", ");
@@ -891,24 +894,26 @@ function iniciarZoom(){
 }
 
 /* ============ DETALLES (zoom) ============ */
-function detalle(d, i, color){
-  const L = detsDe(d,color); const x = L[i]||L[0]; if(!x) return "";
-  return `<div class="det-wrap" data-id="${d.id}" data-i="${i}">
+function detalle(d, i, color, m){
+  const L = lstDe(d,color,m); const x = L[i]||L[0]; if(!x) return "";
+  return `<div class="det-wrap" data-id="${d.id}" data-i="${i}" data-m="${m||""}">
     <div class="det" role="button" tabindex="0" data-zoom="${zoomSrc(x.src)}" aria-label="Detalle de ${d.nombre}. Toca para ampliar"><img src="${cb(x.src)}" alt="${d.nombre}: ${x.txt}"></div>
     <p class="det-txt">${x.txt}</p>
     ${L.length>1?`<div class="det-nav">${L.map((y,k)=>`<button type="button" class="det-th" data-k="${k}" aria-pressed="${k===i}" aria-label="Detalle ${k+1}"><img src="${cb(y.src)}" alt=""></button>`).join("")}</div>`:""}
     <span class="det-ayuda">Toca la foto para ampliar</span></div>`;
 }
 function pintarFoco(){
-  const d = VARS[E.idx].d, foco = $("#foco"), dl = detsDe(d,E.color);
-  const det = E.modo==="det" && dl.length;
+  const d = VARS[E.idx].d, foco = $("#foco"), dl = detsDe(d,E.color), ml = modsDe(d,E.color);
+  const det = (E.modo==="det" && dl.length) || (E.modo==="mod" && ml.length);
   foco.style.setProperty("--k", 1);
   foco.classList.toggle("detalle", !!det); $("#enfoque").classList.toggle("modo-det", !!det);
-  foco.innerHTML = det ? detalle(d, E.di, E.color) : giro(d, E.color, E.vuelta, undefined, true);
+  foco.innerHTML = det ? detalle(d, E.di, E.color, E.modo) : giro(d, E.color, E.vuelta, undefined, true);
   $("#e-frente").setAttribute("aria-pressed", !det && !E.vuelta);
   $("#e-espalda").setAttribute("aria-pressed", !det && E.vuelta);
-  $("#e-detalles").setAttribute("aria-pressed", !!det);
+  $("#e-detalles").setAttribute("aria-pressed", E.modo==="det" && !!det);
   $("#e-detalles").hidden = !dl.length;
+  $("#e-modelo").setAttribute("aria-pressed", E.modo==="mod" && !!det);
+  $("#e-modelo").hidden = !ml.length;
 }
 
 /* ============ RIEL ============ */
@@ -970,7 +975,7 @@ function pintarColoresE(d){
 }
 function cambiarColorE(c){
   const d=VARS[E.idx].d; if(!d.colores.includes(c)||c===E.color) return;
-  E.color=c; if(E.modo==="det" && !detsDe(d,c).length) E.modo=null; E.di=0;
+  E.color=c; if((E.modo==="det" && !detsDe(d,c).length) || (E.modo==="mod" && !modsDe(d,c).length)) E.modo=null; E.di=0;
   pintarFoco(); $("#e-sub").textContent=[codTxt(d), d.insig, c].filter(Boolean).join(" · "); pintarPrecioE(d); pintarColoresE(d);
   history.replaceState(null,"",hashProd(d,c));
 }
@@ -982,18 +987,19 @@ function cerrarEnfoque(){
   sincronizarSlides();
 }
 function zoomActual(){
-  const d=VARS[E.idx].d, dl=detsDe(d,E.color);
+  const d=VARS[E.idx].d, dl=detsDe(d,E.color), ml=modsDe(d,E.color);
+  if(E.modo==="mod" && ml.length){ const x=ml[E.di]||ml[0]; return abrirZoom(zoomSrc(x.src), d.nombre+": "+x.txt); }
   if(E.modo==="det" && dl.length){ const x=dl[E.di]||dl[0]; return abrirZoom(zoomSrc(x.src), d.nombre+": "+x.txt); }
   abrirZoom(srcLado(d,E.color,E.vuelta?"espalda":"frente"), d.nombre);
 }
 function zoomFicha(){
   const d=E.ficha; if(!d) return;
-  if(E.fmodo==="det"){ const z=document.querySelector("#f-giro .det"); if(z) return abrirZoom(z.dataset.zoom,"Detalle"); }
+  if(E.fmodo==="det" || E.fmodo==="mod"){ const z=document.querySelector("#f-giro .det"); if(z) return abrirZoom(z.dataset.zoom,"Detalle"); }
   const v=!!document.querySelector("#f-giro .giro.vuelta");
   abrirZoom(srcLado(d,E.colorF,v?"espalda":"frente"), d.nombre);
 }
 function lado(vuelta){
-  const venia = E.modo==="det"; E.vuelta = vuelta; E.modo = null;
+  const venia = E.modo==="det" || E.modo==="mod"; E.vuelta = vuelta; E.modo = null;
   const g = document.querySelector("#foco .giro");
   if(venia || !g) pintarFoco(); else { g.classList.toggle("vuelta", vuelta); pintarFoco_botones(); }
 }
@@ -1001,6 +1007,7 @@ function pintarFoco_botones(){
   $("#e-frente").setAttribute("aria-pressed", !E.vuelta);
   $("#e-espalda").setAttribute("aria-pressed", E.vuelta);
   $("#e-detalles").setAttribute("aria-pressed", false);
+  $("#e-modelo").setAttribute("aria-pressed", false);
 }
 
 /* ============ FICHA ============ */
@@ -1011,7 +1018,7 @@ function abrirFicha(id, color, desdeHash){
   f.innerHTML = `<button type="button" class="cerrar lbl" id="f-cerrar">Volver ✕</button>
     <div class="ficha-grid">
       <div class="ficha-img"><div id="f-giro">${giro(d,E.colorF,false,undefined,true)}</div>
-        <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" data-l="f" aria-pressed="true">Frente</button><button type="button" data-l="e" aria-pressed="false">Espalda</button><button type="button" data-l="d" aria-pressed="false"${detsDe(d,E.colorF).length?"":" hidden"}>Detalles</button></div>
+        <div class="seg" role="group" aria-label="Lado de la prenda"><button type="button" data-l="f" aria-pressed="true">Frente</button><button type="button" data-l="e" aria-pressed="false">Espalda</button><button type="button" data-l="d" aria-pressed="false"${detsDe(d,E.colorF).length?"":" hidden"}>Detalles</button><button type="button" data-l="m" aria-pressed="false"${modsDe(d,E.colorF).length?"":" hidden"}>Modelo</button></div>
         <button type="button" class="enlace" id="f-zoom">Ampliar ⤢</button></div>
       <div class="ficha-der">
         ${(d.insig||d.g)?`<div><span class="badge${d.insig?"":" badge-g"}">${d.insig||gTxt(d)}</span>${codTxt(d)?` <span class="cod-ficha">${codTxt(d)}</span>`:""}</div>`:""}
@@ -1346,6 +1353,7 @@ function iniciar(){
   $("#e-frente").addEventListener("click", ()=>lado(false));
   $("#e-espalda").addEventListener("click", ()=>lado(true));
   $("#e-detalles").addEventListener("click", ()=>{ E.modo="det"; E.di=0; pintarFoco(); });
+  $("#e-modelo").addEventListener("click", ()=>{ E.modo="mod"; E.di=0; pintarFoco(); });
   $("#foco").addEventListener("click", e=>{
     const th=e.target.closest(".det-th"); if(th){ E.di=+th.dataset.k; pintarFoco(); return; }
     const z=e.target.closest(".det"); if(z){ abrirZoom(z.dataset.zoom, "Detalle"); return; }
@@ -1362,23 +1370,24 @@ function iniciar(){
     const c=e.target.closest("#f-colores .op"); if(c){
       E.colorF=c.dataset.c;
       const v=document.querySelector('#ficha .seg [data-l="e"]').getAttribute("aria-pressed")==="true";
-      const dl=detsDe(E.ficha,E.colorF), bd=document.querySelector('#ficha .seg [data-l="d"]'); if(bd) bd.hidden=!dl.length;
-      if(E.fmodo==="det"){
-        if(dl.length) $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF);
+      const dl=detsDe(E.ficha,E.colorF), ml=modsDe(E.ficha,E.colorF), bd=document.querySelector('#ficha .seg [data-l="d"]'), bm=document.querySelector('#ficha .seg [data-l="m"]'); if(bd) bd.hidden=!dl.length; if(bm) bm.hidden=!ml.length;
+      if(E.fmodo==="det" || E.fmodo==="mod"){
+        if((E.fmodo==="mod"?ml:dl).length) $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF,E.fmodo);
         else { E.fmodo=null; document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.l==="f")); $("#f-giro").innerHTML=giro(E.ficha,E.colorF,false,undefined,true); }
         return actualizarFicha();
       }
       $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return actualizarFicha();
     }
-    const th=e.target.closest("#f-giro .det-th"); if(th){ $("#f-giro").innerHTML=detalle(E.ficha,+th.dataset.k,E.colorF); return; }
+    const th=e.target.closest("#f-giro .det-th"); if(th){ $("#f-giro").innerHTML=detalle(E.ficha,+th.dataset.k,E.colorF,E.fmodo); return; }
     const zz=e.target.closest("#f-giro .det"); if(zz){ abrirZoom(zz.dataset.zoom,"Detalle"); return; }
     if(e.target.closest("#f-zoom")) return zoomFicha();
     if(e.target.closest("#f-giro .giro")) return zoomFicha();
     const l=e.target.closest(".ficha-img .seg button"); if(l){
-      const v=l.dataset.l==="e", dt=l.dataset.l==="d";
+      const v=l.dataset.l==="e", dt=l.dataset.l==="d", mt=l.dataset.l==="m";
       document.querySelectorAll("#ficha .ficha-img .seg button").forEach(b=>b.setAttribute("aria-pressed", b===l));
       if(dt){ E.fmodo="det"; $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF); return; }
-      if(E.fmodo==="det"){ E.fmodo=null; $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return; }
+      if(mt){ E.fmodo="mod"; $("#f-giro").innerHTML=detalle(E.ficha,0,E.colorF,"mod"); return; }
+      if(E.fmodo==="det" || E.fmodo==="mod"){ E.fmodo=null; $("#f-giro").innerHTML=giro(E.ficha,E.colorF,v,undefined,true); return; }
       const g=document.querySelector("#f-giro .giro"); if(g) g.classList.toggle("vuelta", v); return;
     }
     if(e.target.closest("#f-menos")){ E.cant=Math.max(1,E.cant-1); return actualizarFicha(); }
