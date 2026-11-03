@@ -724,7 +724,7 @@ const TODOS = [
     detalles:{"Negro":[{src:"fotos/cruces-negro-1-c.jpg",txt:"Emblema del frente con tachas metálicas"},{src:"fotos/cruces-negro-2.jpg",txt:"Banda bordada en verde y cruces de tela"}],"Blanco":[{src:"fotos/cruces-blanco-1-c.jpg",txt:"Cruces de tela con tachas metálicas"},{src:"fotos/cruces-blanco-2.jpg",txt:"Banda bordada en rosa y cruces en relieve"}],"Fucsia":[{src:"fotos/cruces-fucsia-1.jpg",txt:"Flores de tela en relieve con tachas metálicas"},{src:"fotos/cruces-fucsia-2.jpg",txt:"Cruces de tela en relieve y banda bordada de la espalda"}]}},
   {id:"herradura",sellos:["Escudo bordado"],codigo:"18056",nombre:"Herradura",g:400,precio:29.99,precios:{"Negro":31.99},especial:{"Negro":1},colores:["Negro","Blanco"],notas:{"Negro":"Bordado que cambia de color: rosa en reposo y blanco con el calor."},desc:"Camiseta oversize pesada con un escudo bordado: pequeño en el pecho, grande en la espalda. En negro con bordado rosa que se vuelve blanco con el calor, y en blanco con hilo morado.",
     fotos:{"Blanco":{frente:"fotos_png/herradura-blanco-frente.png",espalda:"fotos_png/herradura-blanco-espalda.png"},"Negro":{frente:"fotos_png/herradura-negro-frente.png",espalda:"fotos_png/herradura-negro-espalda.png"}},
-    detalles:{"Blanco":[{src:"fotos/herradura-blanco-1.jpg",txt:"Escudo del frente, bordado en morado"},{src:"fotos/herradura-blanco-2.jpg",txt:"Escudo de la espalda, de cerca"}],"Negro":[{src:"fotos/herradura-negro-1.jpg",txt:"Bordado rosa en reposo"},{src:"fotos/herradura-negro-2.jpg",txt:"Con el calor el bordado se vuelve blanco"}]}},
+    detalles:{"Blanco":[{src:"fotos/herradura-blanco-1.jpg",txt:"Escudo del frente, bordado en morado"},{src:"fotos/herradura-blanco-2.jpg",txt:"Escudo de la espalda, de cerca"}],"Negro":[{src:"fotos/herradura-negro-0.jpg",txt:"Escudo del frente, de cerca"},{src:"fotos/herradura-negro-1.jpg",txt:"Bordado rosa en reposo"},{src:"fotos/herradura-negro-2.jpg",txt:"Con el calor el bordado se vuelve blanco"}]}},
   {id:"desenfoque",sellos:["Letras desenfocadas"],codigo:"3207",nombre:"Desenfoque",g:300,precio:24.99,colores:["Blanco","Negro"],desc:"Camiseta oversize con letras desenfocadas, como vistas fuera de foco. Texto pequeño al frente y frase grande en la espalda.",
     fotos:{"Blanco":{frente:"fotos_png/desenfoque-blanco-frente.png",espalda:"fotos_png/desenfoque-blanco-espalda.png"},"Negro":{frente:"fotos_png/desenfoque-negro-frente.png",espalda:"fotos_png/desenfoque-negro-espalda.png"}},
     detalles:{"Blanco":[{src:"fotos/desenfoque-blanco-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/desenfoque-blanco-2.jpg",txt:"Frase de la espalda, de cerca"}],"Negro":[{src:"fotos/desenfoque-negro-1.jpg",txt:"Letras del frente, de cerca"},{src:"fotos/desenfoque-negro-2.jpg",txt:"Frase de la espalda, de cerca"}]}},
@@ -783,7 +783,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "92";
+const VER = "93";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
