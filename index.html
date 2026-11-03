@@ -487,8 +487,8 @@ body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:n
 .polos .carril{scroll-snap-type:x proximity}
 .polos .fila{gap:0;padding-left:0;padding-right:0;justify-content:flex-start}
 .polos .fila .colgante{flex:0 0 100cqw;width:100cqw;align-items:center;scroll-snap-align:center;transform-origin:50% 45%}
-.polos .fila .colgante .giro{width:min(94cqw,calc(100dvh - 400px),560px);margin:0 auto}
-.polos .colgante .media{aspect-ratio:1/.92!important;margin:0}
+.polos .fila .colgante .giro{width:min(82cqw,calc((100dvh - 330px)*.558),400px);margin:0 auto}
+.polos .colgante .media{aspect-ratio:1438/2576!important;margin:0}
 .polos .colgante .media img.foto{inset:0 0 6% 0;height:94%;object-position:50% 100%;z-index:1}
 .p-dots{display:none;justify-content:center;gap:12px;margin-top:10px}
 .polos .p-dots{display:flex}
@@ -775,7 +775,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "79";
+const VER = "80";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
