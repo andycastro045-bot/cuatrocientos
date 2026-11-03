@@ -397,6 +397,7 @@ body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:n
 .h-nom small{display:block;margin-top:6px;font-family:var(--cuerpo);font-weight:400;font-stretch:100%;font-size:12px;letter-spacing:.2em;color:var(--texto2)}
 .h-foto{width:min(88cqw,calc(100cqh - 200px),640px);cursor:default}
 .h-foto .giro{width:100%}
+.polos .h-foto{width:min(84cqw,calc((100cqh - 235px)*.558),400px)}
 .h-pcol{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
 .h-espec[hidden]{display:none}
 .h-datos{display:flex;align-items:center;justify-content:center;gap:clamp(14px,3vw,28px)}
@@ -608,6 +609,12 @@ body.slides .riel-wrap,body.slides .pie-escena,body.slides .fila-pills{display:n
 .sello.esp{background:var(--carmin);border-color:var(--carmin);color:#fff}
 .espm{display:block;margin-top:3px;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--carmin)}
 .h-espec{margin-top:2px;white-space:nowrap;font-family:var(--display);font-stretch:125%;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--carmin)}
+/* ---- v81: polos con modelo (deslizar como camisetas, marco limpio) ---- */
+body.polos .h-slide .h-foto{width:min(84cqw,calc((100cqh - 290px)*.558),400px)}
+@media (max-width:520px){body.polos .h-slide .h-foto{width:min(84cqw,calc((100cqh - 290px)*.558),400px)}}
+.polos .h-foto .media img.foto{border-radius:14px;filter:none;box-shadow:0 22px 38px -16px rgba(60,40,10,.5)}
+.polos .det img{border:0;background:none;border-radius:14px;box-shadow:0 22px 38px -16px rgba(60,40,10,.5)}
+.polos .modo-det .det img,.polos.modo-det .det img{max-height:min(calc(100cqh - 105px),720px)}
 </style>
 
 <div class="luz" id="luz" aria-hidden="true"><i class="l1"></i><i class="l2"></i></div>
@@ -775,7 +782,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "80";
+const VER = "81";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
@@ -1219,7 +1226,7 @@ function ponerSeccion(s, sinHash, interno){
   pintarRiel(); leyenda(-1); $("#carril").scrollLeft = 0;
   if(!interno){
     cancelarIntro(true);
-    if(p) mostrarRiel();
+    if(p){ TOUR[s]=true; mostrarSlides(); }
     else if(!sinHash && !TOUR[s]) iniciarTourSec(s);
     else mostrarSlides();
   }
@@ -1232,7 +1239,7 @@ let tourOn=false; const TOUR={};
 function limpiarTour(){ document.querySelectorAll("#fila .colgante").forEach(c=>c.classList.remove("lit")); $("#fila").classList.remove("luces","alba"); document.querySelectorAll("#fila .funda,#fila .gbar").forEach(x=>x.remove()); document.querySelectorAll("#fila .gr em[data-g]").forEach(e=>{ e.textContent=e.dataset.g; }); document.querySelectorAll("#fila .colgante.listo").forEach(c=>c.classList.remove("listo")); const h=$("#haz"); if(h){ h.classList.remove("on"); h.style.transform=""; } if(window.__rafD){ cancelAnimationFrame(window.__rafD); window.__rafD=0; } }
 function cancelarIntro(sinSlides){
   introT.forEach(clearTimeout); introT=[]; introOn=false;
-  if(tourOn){ tourOn=false; limpiarTour(); if(sinSlides!==true && SEC!=="polos") mostrarSlides(); }
+  if(tourOn){ tourOn=false; limpiarTour(); if(sinSlides!==true) mostrarSlides(); }
 }
 /* desfile de luz: el riel arranca en penumbra, un haz recorre las perchas de izquierda a derecha y cada prenda se enciende con su nombre y precio */
 function ponerFundas(){
@@ -1296,7 +1303,7 @@ function entrar(sin){
   b.classList.add("sale"); $("#app").classList.remove("fuera");
   let visto=false; try{ visto = sessionStorage.getItem("c400-visto")==="1"; sessionStorage.setItem("c400-visto","1"); }catch(e){}
   setTimeout(()=>{ b.hidden=true; },1400);
-  if(SEC==="polos") return;
+  if(SEC==="polos"){ TOUR.polos=true; mostrarSlides(); return; }
   if(sin===true || visto || TOUR[SEC]){ TOUR[SEC]=true; mostrarSlides(); return; }
   if(!matchMedia("(prefers-reduced-motion:reduce)").matches) ponerFundas();
   setTimeout(()=>{ if(!tourOn && !E.abierto && !panelAbierto() && !TOUR.camisetas) iniciarTourSec("camisetas"); },1000);
@@ -1306,12 +1313,12 @@ let HIO=null;
 function mostrarRiel(){ document.body.classList.remove("slides"); if(HIO){ HIO.disconnect(); HIO=null; } }
 const hEsp=(d,c)=>espDe(d,c)?"★ Camiseta especial":(hayEsp(d)?"★ Con versión especial":"");
 function mostrarSlides(){
-  if(SEC==="polos" || !VARS.length) return;
+  if(!VARS.length) return;
   document.body.classList.add("slides");
   const sc=$("#h-scroll");
   sc.innerHTML = VARS.map((v,i)=>{ const d=v.d; return `
     <article class="h-slide" data-i="${i}">
-      <h3 class="h-nom">${d.nombre}<small>${[codTxt(d), d.insig, d.colores.length>1?v.color:""].filter(Boolean).join(" · ")}</small></h3>
+      <h3 class="h-nom">${d.nombre}<small>${[codTxt(d), d.insig, (d.colores.length>1||d.tipo==="polo")?v.color:""].filter(Boolean).join(" · ")}</small></h3>
       <div class="h-foto" data-i="${i}">${giro(d, v.color, false, false, true)}</div>
       <div class="h-datos">
         <div class="h-pcol"><div class="h-precio${d.precio?"":" sin"}">${prTxt(d, d.colores.length>1?v.color:"")}</div><div class="h-espec"${hEsp(d,v.color)?"":" hidden"}>${hEsp(d,v.color)}</div></div>
