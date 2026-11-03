@@ -715,9 +715,9 @@ const COLORES = {
    Detalles (zoom): detalles:[{src:"fotos/archivo.jpg", txt:"Qué se ve en la foto"}]
    Nombres, gramajes y precios son de EJEMPLO: cámbialos por los reales. */
 const TODOS = [
-  {id:"flor",sellos:["Pedrería y flor pintada"],codigo:"18075",nombre:"Flor",g:400,precio:29.99,colores:["Negro"],desc:"Camiseta negra oversize con una flor pintada y pedrería de colores. Pequeña en el pecho, grande en la espalda.",
-    fotos:{"Negro":{frente:"fotos_png/flor-negro-frente.png",espalda:"fotos_png/flor-negro-espalda.png"}},
-    detalles:{"Negro":[{src:"fotos/flor-negro-1-c.jpg",txt:"Flor del pecho con pedrería"},{src:"fotos/flor-negro-2.jpg",txt:"Pétalos pintados y pedrería de la espalda"}]}},
+  {id:"flor",sellos:["Pedrería y flor pintada"],codigo:"18075",nombre:"Flor",g:400,precio:29.99,colores:["Negro","Blanco"],desc:"Camiseta oversize con una flor pintada y pedrería de colores. Pequeña en el pecho, grande en la espalda.",
+    fotos:{"Negro":{frente:"fotos_png/flor-negro-frente.png",espalda:"fotos_png/flor-negro-espalda.png"},"Blanco":{frente:"fotos_png/flor-blanco-frente.png",espalda:"fotos_png/flor-blanco-espalda.png"}},
+    detalles:{"Negro":[{src:"fotos/flor-negro-1-c.jpg",txt:"Flor del pecho con pedrería"},{src:"fotos/flor-negro-2.jpg",txt:"Pétalos pintados y pedrería de la espalda"}],"Blanco":[{src:"fotos/flor-blanco-1.jpg",txt:"Flor del pecho con pedrería"},{src:"fotos/flor-blanco-2.jpg",txt:"Pétalos pintados y pedrería de la espalda"}]}},
   {id:"cruces",sellos:["Bordado en relieve"],codigo:"9909",nombre:"Cruces",g:400,precio:29.99,precios:{"Blanco":31.99,"Fucsia":31.99},especial:{"Blanco":1,"Fucsia":1},colores:["Negro","Blanco","Fucsia"],alias:{"Fucsia":"Rosado"},notas:{"Blanco":"Bordado que cambia de color: con el calor el rosado se vuelve blanco y, al enfriarse, vuelve a ser rosado."},desc:"Camiseta oversize pesada con cruces y letras bordadas en relieve. Un símbolo pequeño al frente, composición grande en la espalda.",
     fotos:{"Negro":{frente:"fotos_png/cruces-negro-frente.png",espalda:"fotos_png/cruces-negro-espalda.png"},"Blanco":{frente:"fotos_png/cruces-blanco-frente.png",espalda:"fotos_png/cruces-blanco-espalda.png"},"Fucsia":{frente:"fotos_png/cruces-fucsia-frente.png",espalda:"fotos_png/cruces-fucsia-espalda.png"}},
     detalles:{"Negro":[{src:"fotos/cruces-negro-1-c.jpg",txt:"Emblema del frente con tachas metálicas"},{src:"fotos/cruces-negro-2.jpg",txt:"Banda bordada en verde y cruces de tela"}],"Blanco":[{src:"fotos/cruces-blanco-1-c.jpg",txt:"Cruces de tela con tachas metálicas"},{src:"fotos/cruces-blanco-2.jpg",txt:"Banda bordada en rosa y cruces en relieve"}],"Fucsia":[{src:"fotos/cruces-fucsia-1.jpg",txt:"Flores de tela en relieve con tachas metálicas"},{src:"fotos/cruces-fucsia-2.jpg",txt:"Cruces de tela en relieve y banda bordada de la espalda"}]}},
@@ -782,7 +782,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "81";
+const VER = "82";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
