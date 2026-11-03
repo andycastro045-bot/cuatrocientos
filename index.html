@@ -615,6 +615,7 @@ body.polos .h-slide .h-foto{width:min(84cqw,calc((100cqh - 290px)*.558),400px)}
 .polos .h-foto .media img.foto{border-radius:14px;filter:none;box-shadow:0 22px 38px -16px rgba(60,40,10,.5)}
 .polos .det img{border:0;background:none;border-radius:14px;box-shadow:0 22px 38px -16px rgba(60,40,10,.5)}
 .polos .modo-det .det img,.polos.modo-det .det img{max-height:min(calc(100cqh - 105px),720px)}
+.flecha:disabled{opacity:.28;pointer-events:none}
 </style>
 
 <div class="luz" id="luz" aria-hidden="true"><i class="l1"></i><i class="l2"></i></div>
@@ -643,11 +644,11 @@ body.polos .h-slide .h-foto{width:min(84cqw,calc((100cqh - 290px)*.558),400px)}
 <section class="capa" id="enfoque" role="dialog" aria-modal="true" aria-label="Prenda" hidden>
   <button type="button" class="cerrar lbl" id="e-cerrar">Cerrar ✕</button>
   <div class="escenario" id="escenario">
-    <button type="button" class="flecha i" id="e-ant" aria-label="Prenda anterior">←</button>
+    <button type="button" class="flecha i" id="e-ant" aria-label="Foto anterior">←</button>
     <div class="fantasma i" id="fan-i"></div>
     <div class="foco" id="foco"></div>
     <div class="fantasma d" id="fan-d"></div>
-    <button type="button" class="flecha d" id="e-sig" aria-label="Prenda siguiente">→</button>
+    <button type="button" class="flecha d" id="e-sig" aria-label="Foto siguiente">→</button>
   </div>
   <div class="titulo-area">
     <h2 id="e-nombre"></h2>
@@ -782,7 +783,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "82";
+const VER = "83";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
@@ -954,6 +955,8 @@ function pintarFoco(dir){
   $("#e-detalles").setAttribute("aria-pressed", z==="d");
   $("#e-detalles").hidden = !dl.length;
   $("#e-pts").innerHTML = puntosHtml(S,E.s);
+  const prim = E.s===0 && !(sl.k==="d" && E.di>0), ult = E.s===S.length-1 && !(sl.k==="d" && E.di<dl.length-1);
+  $("#e-ant").disabled = prim; $("#e-sig").disabled = ult;
 }
 function irFoto(paso){
   const d=VARS[E.idx].d, S=slidesDe(d,E.color), sl=S[E.s];
@@ -1401,8 +1404,8 @@ function iniciar(){
   if(visto) entrar(); else setTimeout(entrar, 4700);
 
   $("#e-cerrar").addEventListener("click", cerrarEnfoque);
-  $("#e-ant").addEventListener("click", ()=>irEnfoque(-1));
-  $("#e-sig").addEventListener("click", ()=>irEnfoque(1));
+  $("#e-ant").addEventListener("click", ()=>irFoto(-1));
+  $("#e-sig").addEventListener("click", ()=>irFoto(1));
   $("#e-frente").addEventListener("click", ()=>lado(false));
   $("#e-espalda").addEventListener("click", ()=>lado(true));
   $("#e-detalles").addEventListener("click", ()=>{ const S=slidesDe(VARS[E.idx].d,E.color), k=S.findIndex(x=>x.k==="d"); if(k<0) return; const dir=k>E.s?1:-1; E.s=k; E.di=0; pintarFoco(dir); });
@@ -1449,7 +1452,7 @@ function iniciar(){
     if(e.key==="Escape"){ if(panelAbierto()) cerrarPanel(); else if($("#ficha").classList.contains("abierta")) cerrarFicha(); else cerrarEnfoque(); }
     if(document.body.classList.contains("slides") && !$("#enfoque").classList.contains("abierta") && !$("#ficha").classList.contains("abierta") && !panelAbierto() && (e.key==="ArrowRight"||e.key==="ArrowLeft")){ e.preventDefault(); irSlide(e.key==="ArrowRight"?1:-1); }
     if($("#enfoque").classList.contains("abierta") && !$("#ficha").classList.contains("abierta") && !panelAbierto()){
-      if(e.key==="ArrowRight") irEnfoque(1); if(e.key==="ArrowLeft") irEnfoque(-1);
+      if(e.key==="ArrowRight") irFoto(1); if(e.key==="ArrowLeft") irFoto(-1);
     }
   });
   const h = location.hash;
