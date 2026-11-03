@@ -783,7 +783,7 @@ let VARS = [];
 const slug = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-");
 const vid = v => v.d.id;
 const hashProd = (d,c) => "#producto-"+d.id+(d.colores.length>1 && c && c!==d.colores[0] ? "-"+slug(c) : "");
-const VER = "83";
+const VER = "84";
 const cb = p => p + (p.includes("?")?"&":"?") + "v=" + VER;
 const hashSec = () => SEC==="polos" ? "#polos" : SEC==="dvd" ? "#dvd" : "";
 const COMUN = 150;
