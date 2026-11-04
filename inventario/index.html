@@ -354,11 +354,9 @@ function escanerHtml(){
   }
   return `${avisosHtml()}
   <div class="esc-acc">
-    <button type="button" class="btn sol" data-a="cam">Escanear con la cámara</button>
-    <button type="button" class="btn" data-a="foto">Tomar foto de la etiqueta</button>
-    <form class="manual" id="f-man" autocomplete="off"><input id="man" type="text" placeholder="Escribe el código, p. ej. CRU-NEG-0007" value="${esc(S.raw)}" aria-label="Código de la etiqueta"><button class="btn" type="submit">Buscar</button></form>
-    <span class="diag">${esc(diagTxt())}</span>
-    <span class="sub" style="color:var(--mute);font-size:12.5px">Un lector de código de barras USB o Bluetooth también sirve: toca el cuadro y escanea.</span>
+    <button type="button" class="btn sol" data-a="cam" style="min-height:96px;font-size:16px;letter-spacing:.18em">Escanear</button>
+    ${S.fall?`<button type="button" class="btn" data-a="foto">Tomar foto de la etiqueta</button>
+    <form class="manual" id="f-man" autocomplete="off"><input id="man" type="text" placeholder="O escribe el código, p. ej. CRU-NEG-0007" value="${esc(S.raw)}" aria-label="Código de la etiqueta"><button class="btn" type="submit">Buscar</button></form>`:""}
   </div>${res}`;
 }
 function rebajaTxt(){ const u=S.u, pv=parseFloat(S.precio); if(!u||!(pv>=0)||S.precio==="") return ""; const d=u.lista-pv; return d>0.004?`Rebaja de ${$$(d)} (${Math.round(d/u.lista*100)}%)`:d<-0.004?`${$$(-d)} sobre el precio de lista`:"Sin rebaja"; }
@@ -470,7 +468,7 @@ async function abrirCam(){
   },280);
 }
 function cerrarCam(){ clearInterval(bucle); leyendo=false; if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } $("#cam").hidden=true; }
-function camNo(why){
+function camNo(why){ S.fall=true;
   S.msg=(why==="permiso"?"La cámara está bloqueada para esta página. Actívala en Ajustes del teléfono (Safari › Cámara) o abre el enlace directo en Safari. ":"Esta pantalla no deja abrir la cámara en vivo (pasa dentro de otras apps como Claude). Abre el enlace en Safari o instala la app en tu pantalla de inicio. ")+"Mientras tanto toca «Tomar foto de la etiqueta» o escribe el código.";
   if(location.hash!=="#escaner") location.hash="escaner"; else pintar(); }
 
