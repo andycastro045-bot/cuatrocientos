@@ -187,13 +187,30 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .vl{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--line)}
 .vl button{border:1px solid var(--line);background:transparent;min-height:30px;padding:0 10px;font-size:11px}
 @media (max-width:520px){.vl li{grid-template-columns:minmax(0,1fr) auto}.vl .d{grid-column:1/-1;color:var(--mute)}}
-.pinbox{max-width:340px;margin:28px auto 0;text-align:center}
-.pinbox .dots{display:flex;justify-content:center;gap:16px;margin:22px 0 6px}
-.pinbox .dots i{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);display:block}
-.pinbox .dots i.on{background:var(--ink)}
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.pad button{height:68px;border:1px solid var(--line);background:var(--surf);font-family:var(--display);font-stretch:112%;font-weight:800;font-size:28px;border-radius:50%;touch-action:manipulation}
-.pad button:active{background:var(--ink);color:var(--bg)}
+/* pantalla de bloqueo */
+.lock{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:#f2f2f2;text-align:center;
+  padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(22px + env(safe-area-inset-bottom,0px));
+  background:radial-gradient(110% 70% at 50% 0%,#232323 0%,#0b0b0b 62%),#0b0b0b}
+.lock .lg{width:62px;height:62px;object-fit:contain;margin-bottom:14px;opacity:.95}
+.lock h1{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:15px;letter-spacing:.2em;text-transform:uppercase}
+.lock .sb{margin:8px 0 0;max-width:30ch;color:#a3a3a3;font-size:14px;line-height:1.4;min-height:40px}
+.lock .dots{display:flex;justify-content:center;gap:20px;margin:22px 0 10px;height:18px}
+.lock .dots i{width:16px;height:16px;border-radius:50%;border:1.5px solid #6b6b6b;display:block;transition:background .12s,border-color .12s,transform .12s}
+.lock .dots i.on{background:#f2f2f2;border-color:#f2f2f2;transform:scale(1.08)}
+.lock .dots.err i{border-color:#e15a5a;background:#e15a5a}
+.lock .dots.shake{animation:sacude .42s}
+@keyframes sacude{20%{transform:translateX(-12px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(4px)}}
+.lock .er{min-height:20px;margin:0 0 8px;color:#ff8a8a;font-size:13px;max-width:30ch}
+.lock .pad{display:grid;grid-template-columns:repeat(3,76px);gap:14px 22px;margin-top:6px;justify-content:center}
+.lock .pad button{width:76px;height:76px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#f2f2f2;
+  font-family:var(--display);font-stretch:112%;font-weight:700;font-size:30px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background .08s,transform .08s}
+.lock .pad button:active{background:rgba(255,255,255,.9);color:#0b0b0b;transform:scale(.94)}
+.lock .pad button.bk{border-color:transparent;background:none;font-size:22px;color:#a3a3a3}
+.lock .pad button.bk:active{background:rgba(255,255,255,.12);color:#fff}
+.lock .pad span{width:76px;height:76px}
+@media (max-height:640px){.lock .lg{width:44px;height:44px;margin-bottom:8px}.lock .pad{gap:8px 20px}.lock .pad button,.lock .pad span{width:64px;height:64px;font-size:26px}.lock .pad{grid-template-columns:repeat(3,64px)}.lock .dots{margin:12px 0 6px}}
+.diag{font-size:12px;color:var(--mute);margin:4px 0 0;line-height:1.5}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -340,6 +357,7 @@ function escanerHtml(){
     <button type="button" class="btn sol" data-a="cam">Escanear con la cámara</button>
     <button type="button" class="btn" data-a="foto">Tomar foto de la etiqueta</button>
     <form class="manual" id="f-man" autocomplete="off"><input id="man" type="text" placeholder="Escribe el código, p. ej. CRU-NEG-0007" value="${esc(S.raw)}" aria-label="Código de la etiqueta"><button class="btn" type="submit">Buscar</button></form>
+    <span class="diag">${esc(diagTxt())}</span>
     <span class="sub" style="color:var(--mute);font-size:12.5px">Un lector de código de barras USB o Bluetooth también sirve: toca el cuadro y escanea.</span>
   </div>${res}`;
 }
@@ -371,37 +389,90 @@ function anular(code){
 }
 
 /* ---------- lectura de códigos de barras ---------- */
-let zx=null, stream=null, bucle=null, leyendo=false;
-function cargarZX(){ return zx||(zx=new Promise((ok,no)=>{ if(window.ZXing) return ok(window.ZXing); const s=document.createElement("script"); s.src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"; s.onload=()=>ok(window.ZXing); s.onerror=()=>{zx=null;no(new Error("zxing"));}; document.head.appendChild(s); })); }
+let zx=null, stream=null, bucle=null, leyendo=false, zxEst="";
+function cargarZX(){ return zx||(zx=new Promise((ok,no)=>{ if(window.ZXing){ zxEst="listo"; return ok(window.ZXing); }
+  const ponte=u=>{ const s=document.createElement("script"); s.src=u; s.onload=()=>{ zxEst="listo"; ok(window.ZXing); }; s.onerror=()=>{ s.remove(); if(u.indexOf("http")===0){ zx=null; zxEst="falló"; no(new Error("zxing")); } else ponte("https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"); }; document.head.appendChild(s); };
+  zxEst="cargando"; ponte("zxing.min.js?v=1"); })); }
+function vivoOk(){ return !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.isSecureContext!==false); }
+function diagTxt(){ return "Cámara en vivo: "+(vivoOk()?"disponible":"no disponible aquí")+" · Lector: "+("BarcodeDetector" in window?"nativo":(zxEst==="listo"?"listo":zxEst==="falló"?"no cargó (sin conexión)":"cargando…")); }
+async function zxDec(cv){
+  try{ const Z=await cargarZX(); const h=new Map(); h.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.CODE_128]); h.set(Z.DecodeHintType.TRY_HARDER,true);
+    for(const B of [Z.HybridBinarizer,Z.GlobalHistogramBinarizer]){ try{ const rd=new Z.MultiFormatReader(); rd.setHints(h); return rd.decode(new Z.BinaryBitmap(new B(new Z.HTMLCanvasElementLuminanceSource(cv)))).getText(); }catch(e){} } }catch(e){}
+  return null; }
 async function leerLienzo(cv){
   if("BarcodeDetector" in window){ try{ const r=await new BarcodeDetector({formats:["code_128"]}).detect(cv); if(r&&r[0]) return r[0].rawValue; }catch(e){} }
-  try{ const Z=await cargarZX(); const h=new Map(); h.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.CODE_128]); h.set(Z.DecodeHintType.TRY_HARDER,true);
-    const rd=new Z.MultiFormatReader(); rd.setHints(h);
-    const bm=new Z.BinaryBitmap(new Z.HybridBinarizer(new Z.HTMLCanvasElementLuminanceSource(cv))); return rd.decode(bm).getText(); }catch(e){ return null; }
+  return zxDec(cv);
+}
+/* recorta src (x,y,w,h) a un lienzo de ancho ~an; rot=true lo gira 90° para dejar las barras verticales */
+function recorte(src,x,y,w,h,an,rot){ const c=document.createElement("canvas"), g=c.getContext("2d",{willReadFrequently:true}); const k=an/(rot?h:w), cw=Math.round((rot?h:w)*k), ch=Math.round((rot?w:h)*k);
+  c.width=cw; c.height=ch; g.fillStyle="#fff"; g.fillRect(0,0,cw,ch);
+  if(rot){ g.translate(cw/2,ch/2); g.rotate(Math.PI/2); g.drawImage(src,x,y,w,h,-ch/2,-cw/2,ch,cw); } else g.drawImage(src,x,y,w,h,0,0,cw,ch); return c; }
+/* busca zonas con aspecto de código de barras: mucho cambio en un sentido y poco en el otro */
+function zonasBarras(src,W,H){
+  const s=Math.min(1,720/Math.max(W,H)), w=Math.max(8,Math.round(W*s)), h=Math.max(8,Math.round(H*s)), c=document.createElement("canvas"); c.width=w; c.height=h;
+  const g=c.getContext("2d",{willReadFrequently:true}); g.drawImage(src,0,0,w,h); const d=g.getImageData(0,0,w,h).data, L=new Float32Array(w*h);
+  for(let i=0;i<w*h;i++) L[i]=.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2];
+  const out=[];
+  for(const vert of [false,true]){
+    const E=new Float32Array(w*h);
+    for(let y=1;y<h-1;y++) for(let x=1;x<w-1;x++){ const gx=Math.abs(L[y*w+x+1]-L[y*w+x-1]), gy=Math.abs(L[(y+1)*w+x]-L[(y-1)*w+x]); E[y*w+x]=Math.max(0,vert?gy-gx:gx-gy); }
+    const C=8, cw=Math.ceil(w/C), ch=Math.ceil(h/C), M=new Float32Array(cw*ch);
+    for(let y=0;y<h;y++) for(let x=0;x<w;x++) M[((y/C)|0)*cw+((x/C)|0)]+=E[y*w+x];
+    let mx=0; for(const v of M) if(v>mx) mx=v; if(mx<=0) continue;
+    const act=new Uint8Array(cw*ch); for(let i=0;i<M.length;i++) act[i]=M[i]>mx*.3?1:0;
+    const vis=new Uint8Array(cw*ch);
+    for(let i=0;i<act.length;i++){ if(!act[i]||vis[i]) continue; const st=[i]; vis[i]=1; let x0=cw,y0=ch,x1=0,y1=0,sum=0;
+      while(st.length){ const j=st.pop(), jx=j%cw, jy=(j/cw)|0; sum+=M[j]; if(jx<x0)x0=jx; if(jx>x1)x1=jx; if(jy<y0)y0=jy; if(jy>y1)y1=jy;
+        for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]]){ const nx=jx+dx, ny=jy+dy; if(nx<0||ny<0||nx>=cw||ny>=ch) continue; const k=ny*cw+nx; if(act[k]&&!vis[k]){ vis[k]=1; st.push(k); } } }
+      out.push({vert,sum,x:x0*C/s,y:y0*C/s,w:(x1-x0+1)*C/s,h:(y1-y0+1)*C/s}); }
+  }
+  /* el código a veces se parte en dos zonas: también probamos las uniones de pares con forma de código de barras */
+  const base=out.slice(); for(let i=0;i<base.length;i++) for(let j=i+1;j<base.length;j++){ const a=base[i], b=base[j]; if(a.vert!==b.vert) continue;
+    const x=Math.min(a.x,b.x), y=Math.min(a.y,b.y), w=Math.max(a.x+a.w,b.x+b.w)-x, h=Math.max(a.y+a.h,b.y+b.h)-y, r=a.vert?h/w:w/h;
+    const ox=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x), oy=Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y);
+    const cerca=a.vert?(ox>=.5*Math.min(a.w,b.w)&&-oy<=.35*h):(oy>=.5*Math.min(a.h,b.h)&&-ox<=.35*w);
+    if(cerca&&r>1.3&&r<9) out.push({vert:a.vert,sum:(a.sum+b.sum)*1.2,x,y,w,h}); }
+  out.sort((a,b)=>b.sum-a.sum);
+  return out.filter(z=>{ const r=z.vert?z.h/z.w:z.w/z.h; return r>1.2&&r<12; }).slice(0,5);
+}
+async function leerFuente(src,W,H,rapido){
+  for(const z of zonasBarras(src,W,H)){ for(const [fx,fy] of [[.03,.1],[.08,.2],[.14,.2],[0,0]]){
+    const mx=(z.vert?z.w:z.w)*fx, my=z.h*fy, x=Math.max(0,z.x-mx), y=Math.max(0,z.y-my), w=Math.min(W-x,z.w+2*mx), h=Math.min(H-y,z.h+2*my);
+    const an=Math.min(1400,Math.max(500,Math.round((z.vert?h:w)*1.5)));
+    const t=await leerLienzo(recorte(src,x,y,w,h,an,z.vert)); if(t&&leerCodigo(t)) return t; } }
+  if(rapido) return null;
+  for(const rot of [false,true]){ for(const an of [1400,900]){ const t=await leerLienzo(recorte(src,0,0,W,H,Math.min(an,rot?H:W),rot)); if(t&&leerCodigo(t)) return t; } }
+  for(const [fx,fy,fw,fh] of [[.1,.25,.8,.5],[.2,.3,.6,.4],[0,.2,1,.6]]){ for(const rot of [false,true]){ const t=await leerLienzo(recorte(src,W*fx,H*fy,W*fw,H*fh,1200,rot)); if(t&&leerCodigo(t)) return t; } }
+  return null;
 }
 async function leerImagen(file){
   S.msg="Leyendo la foto…"; pintar();
-  try{ const bmp=await createImageBitmap(file), k=Math.min(1,1800/Math.max(bmp.width,bmp.height)), cv=document.createElement("canvas");
-    cv.width=Math.round(bmp.width*k); cv.height=Math.round(bmp.height*k); cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);
-    let t=await leerLienzo(cv);
-    if(!t){ const r=document.createElement("canvas"); r.width=cv.height; r.height=cv.width; const g=r.getContext("2d"); g.translate(r.width/2,r.height/2); g.rotate(Math.PI/2); g.drawImage(cv,-cv.width/2,-cv.height/2); t=await leerLienzo(r); }
+  try{
+    let bmp; try{ bmp=await createImageBitmap(file,{imageOrientation:"from-image"}); }catch(e){ bmp=await createImageBitmap(file); }
+    const t=await leerFuente(bmp,bmp.width,bmp.height,false);
     if(t) return resolver(t);
-    S.msg="No pude leer el código. Acércate, que ocupe buena parte de la foto y con buena luz."; pintar();
-  }catch(e){ S.msg="No pude abrir esa foto."; pintar(); }
+    S.msg="No pude leer el código. Acércate hasta que el código de barras ocupe buena parte de la foto, con buena luz y sin reflejos; o escribe el código debajo."; pintar();
+  }catch(e){ S.msg="No pude abrir esa foto. Escribe el código de la etiqueta en el cuadro de abajo."; pintar(); }
 }
 async function abrirCam(){
-  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)) return camNo();
-  try{ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false}); }catch(e){ return camNo(); }
-  const v=$("#cam-v"); v.srcObject=stream; $("#cam").hidden=false; try{ await v.play(); }catch(e){}
-  leyendo=true; const cv=document.createElement("canvas");
+  if(!vivoOk()) return camNo("nocam");
+  try{ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},audio:false}); }
+  catch(e){ return camNo(e&&e.name==="NotAllowedError"?"permiso":"error"); }
+  const v=$("#cam-v"); v.setAttribute("playsinline",""); v.setAttribute("autoplay",""); v.muted=true; v.srcObject=stream; $("#cam").hidden=false; try{ await v.play(); }catch(e){}
+  cargarZX().catch(()=>{});
+  leyendo=true; const cv=document.createElement("canvas"); let tick=0;
   bucle=setInterval(async()=>{
-    if(!leyendo||v.videoWidth===0) return; leyendo=false;
-    cv.width=v.videoWidth; cv.height=v.videoHeight; cv.getContext("2d").drawImage(v,0,0);
-    const t=await leerLienzo(cv); if(t&&leerCodigo(t)){ cerrarCam(); return resolver(t); } leyendo=true;
-  },350);
+    if(!leyendo||v.videoWidth===0) return; leyendo=false; tick++;
+    const W=v.videoWidth, H=v.videoHeight; cv.width=W; cv.height=H; cv.getContext("2d",{willReadFrequently:true}).drawImage(v,0,0);
+    let t=null;
+    if(tick%2) t=await leerLienzo(recorte(cv,W*.04,H*.28,W*.92,H*.44,1100,false)); else t=await leerFuente(cv,W,H,true);
+    if(t&&leerCodigo(t)){ cerrarCam(); return resolver(t); } leyendo=true;
+  },280);
 }
 function cerrarCam(){ clearInterval(bucle); leyendo=false; if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } $("#cam").hidden=true; }
-function camNo(){ S.msg="La cámara en vivo no se puede abrir desde aquí. Usa «Tomar foto de la etiqueta» o escribe el código."; if(location.hash!=="#escaner") location.hash="escaner"; else pintar(); }
+function camNo(why){
+  S.msg=(why==="permiso"?"La cámara está bloqueada para esta página. Actívala en Ajustes del teléfono (Safari › Cámara) o abre el enlace directo en Safari. ":"Esta pantalla no deja abrir la cámara en vivo (pasa dentro de otras apps como Claude). Abre el enlace en Safari o instala la app en tu pantalla de inicio. ")+"Mientras tanto toca «Tomar foto de la etiqueta» o escribe el código.";
+  if(location.hash!=="#escaner") location.hash="escaner"; else pintar(); }
 
 /* ---------- ventas / costos ---------- */
 function ventasHtml(){
@@ -486,13 +557,15 @@ function pintar(){
   if(sesion==="crear"||sesion==="entrar"){
     const nuevo=sesion==="crear";
     const fase=nuevo&&S.pinFase===2;
-    const titulo=nuevo?(fase?"Repite el PIN":"Crea el PIN del inventario"):"Entrar al inventario";
-    const sub=nuevo?(fase?"Escribe otra vez los mismos 4 números.":"Elige 4 números. Se los das solo a tu socio. Quien no tenga el PIN no puede ver ni cambiar nada."):"Escribe tu PIN de 4 números.";
+    const titulo=nuevo?(fase?"Repite el PIN":"Crea tu PIN"):"Inventario";
+    const sub=nuevo?(fase?"Escribe otra vez los mismos 4 números.":"Elige 4 números. Solo tu socio y tú lo sabrán."):"Escribe tu PIN de 4 números.";
     const n=(S.pinBuf||"").length;
-    app.innerHTML=`<div class="pinbox"><span class="cap">${titulo}</span><p style="margin:6px 0 0;color:var(--mute)">${sub}</p>
-      <div class="dots" aria-label="${n} de 4 dígitos">${[0,1,2,3].map(i=>`<i class="${i<n?"on":""}"></i>`).join("")}</div>
-      <p class="msg-err" style="min-height:20px;text-align:center">${esc(S.pinErr||"")}</p>
-      <div class="pad">${["1","2","3","4","5","6","7","8","9","","0","⌫"].map(k=>k===""?`<span></span>`:`<button type="button" data-k="${k}" aria-label="${k==="⌫"?"Borrar":k}">${k}</button>`).join("")}</div></div>`; return; }
+    const er=!!S.pinErr;
+    app.innerHTML=`<div class="lock"><img class="lg" src="../marca_icono_blanco.png" alt=""><h1>${esc(titulo)}</h1><p class="sb">${esc(sub)}</p>
+      <div class="dots ${er?"err shake":""}" role="img" aria-label="${n} de 4 dígitos">${[0,1,2,3].map(i=>`<i class="${i<n?"on":""}"></i>`).join("")}</div>
+      <p class="er" role="alert">${esc(S.pinErr||"")}</p>
+      <div class="pad">${["1","2","3","4","5","6","7","8","9","","0","⌫"].map(k=>k===""?`<span></span>`:`<button type="button" data-k="${k}" class="${k==="⌫"?"bk":""}" aria-label="${k==="⌫"?"Borrar":k}">${k}</button>`).join("")}</div></div>`;
+    if(er&&navigator.vibrate){ try{navigator.vibrate(160);}catch(e){} } return; }
   if(sesion==="carga"||!(listo.p&&listo.m&&listo.s)){ app.innerHTML=`<div class="vacio"><b>Cargando inventario</b>Un momento.</div>`; return; }
   const cod=ruta(), p=cod&&P[cod];
   const enFoco=document.activeElement&&document.activeElement.id;
@@ -500,7 +573,7 @@ function pintar(){
   vista=vistaAct();
   document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===vista));
   $("#f-busca").hidden = vista!=="";
-  if(vista==="escaner"){ app.innerHTML=escanerHtml(); if(enFoco==="man"&&$("#man")) $("#man").focus(); if(enFoco==="sv-precio"&&$("#sv-precio")){ const i=$("#sv-precio"); i.focus(); i.setSelectionRange(i.value.length,i.value.length);} return; }
+  if(vista==="escaner"){ if(!zx) cargarZX().then(()=>{ if(vista==="escaner"&&!form) pintar(); }).catch(()=>{}); app.innerHTML=escanerHtml(); if(enFoco==="man"&&$("#man")) $("#man").focus(); if(enFoco==="sv-precio"&&$("#sv-precio")){ const i=$("#sv-precio"); i.focus(); i.setSelectionRange(i.value.length,i.value.length);} return; }
   if(vista==="ventas"){ app.innerHTML=ventasHtml(); return; }
   app.innerHTML = p ? detalleHtml(p) : inicioHtml();
   if(enFoco==="fp-nom"&&$("#fp-nom")) $("#fp-nom").focus();
