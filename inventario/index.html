@@ -474,9 +474,9 @@ function pintar(){
   if(sesion==="crear"||sesion==="entrar"){
     const nuevo=sesion==="crear";
     app.innerHTML=`<form class="form" id="f-pin" style="margin-top:24px;max-width:420px" autocomplete="off"><span class="cap">${nuevo?"Crea el PIN del inventario":"Entrar al inventario"}</span>
-      <p style="margin:0;color:var(--mute)">${nuevo?"Elige un PIN de al menos 6 caracteres. Se lo das solo a tu socio. Quien no lo tenga no puede ver ni cambiar nada.":"Escribe el PIN."}</p>
-      <label>PIN<input id="pin1" type="password" autocomplete="${nuevo?"new-password":"current-password"}" inputmode="text" minlength="6" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>
-      ${nuevo?`<label>Repite el PIN<input id="pin2" type="password" autocomplete="new-password" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>`:""}
+      <p style="margin:0;color:var(--mute)">${nuevo?"Elige un PIN de 4 números. Se lo das solo a tu socio. Quien no lo tenga no puede ver ni cambiar nada.":"Escribe el PIN."}</p>
+      <label>PIN<input id="pin1" type="password" autocomplete="${nuevo?"new-password":"current-password"}" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>
+      ${nuevo?`<label>Repite el PIN<input id="pin2" type="password" autocomplete="new-password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>`:""}
       ${S.pinErr?`<p class="msg-err">${esc(S.pinErr)}</p>`:""}
       <div class="fila-btn" style="margin:0"><button type="submit" class="btn sol">${nuevo?"Crear PIN y entrar":"Entrar"}</button></div></form>`; return; }
   if(sesion==="carga"||!(listo.p&&listo.m&&listo.s)){ app.innerHTML=`<div class="vacio"><b>Cargando inventario</b>Un momento.</div>`; return; }
@@ -495,13 +495,13 @@ function pintar(){
 /* ---------- PIN ---------- */
 async function enviarPin(){
   const p1=$("#pin1").value, nuevo=sesion==="crear";
-  if(p1.length<6){ S.pinErr="Mínimo 6 caracteres."; return pintar(); }
+  if(!/^[0-9]{4}$/.test(p1)){ S.pinErr="El PIN son 4 números."; return pintar(); }
   if(nuevo&&p1!==$("#pin2").value){ S.pinErr="Los dos PIN no coinciden."; return pintar(); }
   S.pinErr=""; $("#app").innerHTML=`<div class="vacio"><b>Un momento…</b></div>`;
   try{
-    if(nuevo){ const r=await fetch(SB_URL+"/rest/v1/rpc/inv_crear_pin",{method:"POST",headers:{"apikey":SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_nuevo:p1})}).then(r=>r.json()); if(r.error){ S.pinErr=r.error==="ya_existe"?"Ya hay un PIN creado. Recarga e ingrésalo.":"Mínimo 6 caracteres."; return pintar(); } }
+    if(nuevo){ const r=await fetch(SB_URL+"/rest/v1/rpc/inv_crear_pin",{method:"POST",headers:{"apikey":SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_nuevo:p1})}).then(r=>r.json()); if(r.error){ S.pinErr=r.error==="ya_existe"?"Ya hay un PIN creado. Recarga e ingrésalo.":"El PIN son 4 números."; return pintar(); } }
     PIN=p1; await cargar(); try{localStorage.setItem("c400_pin",PIN);}catch(e){}
-  }catch(e){ if(e.message==="pin"){ S.pinErr="PIN incorrecto o demasiados intentos (espera 15 minutos)."; PIN=""; sesion="entrar"; pintar(); } else error(e); }
+  }catch(e){ if(e.message==="pin"){ S.pinErr="PIN incorrecto o demasiados intentos (espera 30 minutos)."; PIN=""; sesion="entrar"; pintar(); } else error(e); }
 }
 
 /* ---------- eventos ---------- */
