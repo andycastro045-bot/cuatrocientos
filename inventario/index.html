@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b0b0b">
+<meta name="robots" content="noindex,nofollow"><meta http-equiv="Cache-Control" content="no-cache"><meta name="theme-color" content="#0b0b0b">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Inventario"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
@@ -187,6 +187,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .vl{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--line)}
 .vl button{border:1px solid var(--line);background:transparent;min-height:30px;padding:0 10px;font-size:11px}
 @media (max-width:520px){.vl li{grid-template-columns:minmax(0,1fr) auto}.vl .d{grid-column:1/-1;color:var(--mute)}}
+.pinbox{max-width:340px;margin:28px auto 0;text-align:center}
+.pinbox .dots{display:flex;justify-content:center;gap:16px;margin:22px 0 6px}
+.pinbox .dots i{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);display:block}
+.pinbox .dots i.on{background:var(--ink)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.pad button{height:68px;border:1px solid var(--line);background:var(--surf);font-family:var(--display);font-stretch:112%;font-weight:800;font-size:28px;border-radius:50%;touch-action:manipulation}
+.pad button:active{background:var(--ink);color:var(--bg)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -236,6 +243,11 @@ async function cargar(){
   SYNC=j.sync||{publicadoEn:0,ejemplo:false};
   listo={p:true,m:true,s:true}; sesion="ok"; pintar();
 }
+
+/* ---------- fotos del frente, sin vestir ---------- */
+const FOTOS=new Set(["9909|Negro","9909|Blanco","9909|Rosado","3207|Blanco","3207|Negro","18075|Blanco","18075|Negro","18056|Blanco","18056|Negro","9901|Blanco","9901|Negro","0215|Blanco","0215|Negro","76021|Negro","76021|Plomo","6682|Negro","6682|Rosado","POLO|Blanco","POLO|Plomo"]);
+const imgDe=(cod,col)=>FOTOS.has(cod+"|"+col)?`img/${cod}-${col}.webp`:"";
+const imgPrenda=p=>{ for(const c of Object.keys(p.colores||{})){ const f=imgDe(p.codigo,c); if(f) return f; } return p.foto||""; };
 
 /* ---------- consultas sobre los datos ---------- */
 const cant = (p,c,t) => { const n = p.colores && p.colores[c] && p.colores[c][t]; return typeof n==="number" ? n : 0; };
@@ -308,7 +320,7 @@ function escanerHtml(){
   if(u){
     const p=P[u.prenda], vend=V[u.code];
     const tl=p?tallasDe(p):["S","M","L","XL"];
-    res+=`<div class="res"><span class="cod">${esc(u.code)}</span><h2>${esc(u.nombre)} · ${esc(u.colorN)}</h2>`;
+    res+=`<div class="res"><div style="display:flex;gap:14px;align-items:center">${imgDe(u.prenda,u.color)?`<img src="${esc(imgDe(u.prenda,u.color))}" alt="" style="height:96px;width:auto;background:var(--soft);padding:4px">`:""}<div><span class="cod">${esc(u.code)}</span><h2>${esc(u.nombre)} · ${esc(u.colorN)}</h2></div></div>`;
     if(vend){
       res+=`<span class="est vend">Ya vendida</span><p style="margin:8px 0 0">Talla <b>${esc(vend.talla)}</b> · vendida en <b>${$$(vend.venta)}</b> (lista ${$$(vend.lista)}) · ${hora(vend.t)}</p>
       <div class="fila-btn"><button type="button" class="btn peli" data-a="anular" data-cod="${esc(u.code)}">Anular esta venta</button></div>`;
@@ -419,7 +431,7 @@ function avisosHtml(){
 function tarjeta(p){
   const a=agotadas(p), b=bajas(p), tot=total(p);
   return `<button type="button" class="tarjeta" data-cod="${esc(p.codigo)}">
-    <span class="ft">${p.foto?`<img src="${esc(p.foto)}" alt="">`:""}</span>
+    <span class="ft">${imgPrenda(p)?`<img src="${esc(imgPrenda(p))}" alt="">`:""}</span>
     <span><span class="cod">${esc(p.codigo)}</span><h3>${esc(p.nombre)}</h3><span class="sub">${esc(p.tipo||"")}${p.tipo?" · ":""}${esc(det(p))}</span>
     <span class="tot"><b class="num">${tot}</b><span class="sub">uds</span>${a?`<span class="pill agot">${a} ${a===1?"talla agotada":"tallas agotadas"}</span>`:""}${b?`<span class="pill baja">${b} por agotarse</span>`:""}${!a&&!b?`<span class="pill bien">Con stock</span>`:""}</span></span></button>`;
 }
@@ -440,10 +452,10 @@ function detalleHtml(p){
   const hist=M.filter(m=>m.codigo===p.codigo).slice(0,8);
   return `${avisosHtml()}
   <button type="button" class="atras" data-a="atras">← Todas las prendas</button>
-  <div class="cab"><span class="ft">${p.foto?`<img src="${esc(p.foto)}" alt="${esc(p.nombre)}">`:""}</span>
+  <div class="cab"><span class="ft">${imgPrenda(p)?`<img src="${esc(imgPrenda(p))}" alt="${esc(p.nombre)}">`:""}</span>
     <div><span class="cod">${esc(p.codigo)}</span><h2>${esc(p.nombre)}</h2><span class="sub" style="color:var(--mute)">${esc(p.tipo||"")}${p.tipo?" · ":""}${esc(det(p))}</span>${p.desc?`<p>${esc(p.desc)}</p>`:""}</div></div>
   <div class="totales"><div><b class="num">${total(p)}</b><span class="cap">unidades en total</span></div><div><b class="num">${cols.length}</b><span class="cap">${cols.length===1?"color":"colores"}</span></div><div><b class="num">${b}</b><span class="cap">por agotarse</span></div><div><b class="num">${a}</b><span class="cap">agotadas</span></div></div>
-  ${cols.map(c=>`<section class="color"><h4><i style="background:${COLORES[c]||"#888"}"></i>${esc(c)}<span class="num">${totalColor(p,c)} uds</span></h4>
+  ${cols.map(c=>`<section class="color"><h4>${imgDe(p.codigo,c)?`<img src="${esc(imgDe(p.codigo,c))}" alt="" style="height:52px;width:auto;background:var(--soft);padding:3px">`:""}<i style="background:${COLORES[c]||"#888"}"></i>${esc(c)}<span class="num">${totalColor(p,c)} uds</span></h4>
     <div class="tallas" style="grid-template-columns:repeat(${tallasDe(p).length},minmax(0,1fr));max-width:${tallasDe(p).length*150}px">${tallasDe(p).map(t=>{const n=cant(p,c,t),k=n===0?"agot":n<=2?"baja":"";
       return `<div class="t ${k}"><div class="nom"><span>${t}</span><span class="est">${n===0?"Agotada":n<=2?"Quedan pocas":""}</span></div>
       <input class="num" type="number" inputmode="numeric" min="0" step="1" value="${n}" data-c="${esc(c)}" data-t="${t}" aria-label="Unidades ${esc(c)} talla ${t}">
@@ -473,12 +485,14 @@ function pintar(){
   const logueado=sesion==="ok"; $("#tabs").hidden=!logueado; if(!logueado) $("#f-busca").hidden=true;
   if(sesion==="crear"||sesion==="entrar"){
     const nuevo=sesion==="crear";
-    app.innerHTML=`<form class="form" id="f-pin" style="margin-top:24px;max-width:420px" autocomplete="off"><span class="cap">${nuevo?"Crea el PIN del inventario":"Entrar al inventario"}</span>
-      <p style="margin:0;color:var(--mute)">${nuevo?"Elige un PIN de 4 números. Se lo das solo a tu socio. Quien no lo tenga no puede ver ni cambiar nada.":"Escribe el PIN."}</p>
-      <label>PIN<input id="pin1" type="password" autocomplete="${nuevo?"new-password":"current-password"}" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>
-      ${nuevo?`<label>Repite el PIN<input id="pin2" type="password" autocomplete="new-password" inputmode="numeric" pattern="[0-9]*" maxlength="4" style="padding:12px;border:2px solid var(--ink);background:var(--surf)"></label>`:""}
-      ${S.pinErr?`<p class="msg-err">${esc(S.pinErr)}</p>`:""}
-      <div class="fila-btn" style="margin:0"><button type="submit" class="btn sol">${nuevo?"Crear PIN y entrar":"Entrar"}</button></div></form>`; return; }
+    const fase=nuevo&&S.pinFase===2;
+    const titulo=nuevo?(fase?"Repite el PIN":"Crea el PIN del inventario"):"Entrar al inventario";
+    const sub=nuevo?(fase?"Escribe otra vez los mismos 4 números.":"Elige 4 números. Se los das solo a tu socio. Quien no tenga el PIN no puede ver ni cambiar nada."):"Escribe tu PIN de 4 números.";
+    const n=(S.pinBuf||"").length;
+    app.innerHTML=`<div class="pinbox"><span class="cap">${titulo}</span><p style="margin:6px 0 0;color:var(--mute)">${sub}</p>
+      <div class="dots" aria-label="${n} de 4 dígitos">${[0,1,2,3].map(i=>`<i class="${i<n?"on":""}"></i>`).join("")}</div>
+      <p class="msg-err" style="min-height:20px;text-align:center">${esc(S.pinErr||"")}</p>
+      <div class="pad">${["1","2","3","4","5","6","7","8","9","","0","⌫"].map(k=>k===""?`<span></span>`:`<button type="button" data-k="${k}" aria-label="${k==="⌫"?"Borrar":k}">${k}</button>`).join("")}</div></div>`; return; }
   if(sesion==="carga"||!(listo.p&&listo.m&&listo.s)){ app.innerHTML=`<div class="vacio"><b>Cargando inventario</b>Un momento.</div>`; return; }
   const cod=ruta(), p=cod&&P[cod];
   const enFoco=document.activeElement&&document.activeElement.id;
@@ -493,16 +507,26 @@ function pintar(){
 }
 
 /* ---------- PIN ---------- */
-async function enviarPin(){
-  const p1=$("#pin1").value, nuevo=sesion==="crear";
-  if(!/^[0-9]{4}$/.test(p1)){ S.pinErr="El PIN son 4 números."; return pintar(); }
-  if(nuevo&&p1!==$("#pin2").value){ S.pinErr="Los dos PIN no coinciden."; return pintar(); }
-  S.pinErr=""; $("#app").innerHTML=`<div class="vacio"><b>Un momento…</b></div>`;
-  try{
-    if(nuevo){ const r=await fetch(SB_URL+"/rest/v1/rpc/inv_crear_pin",{method:"POST",headers:{"apikey":SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_nuevo:p1})}).then(r=>r.json()); if(r.error){ S.pinErr=r.error==="ya_existe"?"Ya hay un PIN creado. Recarga e ingrésalo.":"El PIN son 4 números."; return pintar(); } }
-    PIN=p1; await cargar(); try{localStorage.setItem("c400_pin",PIN);}catch(e){}
-  }catch(e){ if(e.message==="pin"){ S.pinErr="PIN incorrecto o demasiados intentos (espera 30 minutos)."; PIN=""; sesion="entrar"; pintar(); } else error(e); }
+function tecla(k){
+  if(sesion!=="crear"&&sesion!=="entrar") return;
+  S.pinBuf=S.pinBuf||"";
+  if(k==="⌫"){ S.pinBuf=S.pinBuf.slice(0,-1); S.pinErr=""; return pintar(); }
+  if(!/^[0-9]$/.test(k)||S.pinBuf.length>=4) return;
+  S.pinBuf+=k; S.pinErr=""; pintar();
+  if(S.pinBuf.length===4) setTimeout(enviarPin,120);
 }
+async function enviarPin(){
+  const p=S.pinBuf||"", nuevo=sesion==="crear";
+  if(!/^[0-9]{4}$/.test(p)) return;
+  if(nuevo&&S.pinFase!==2){ S.pinTmp=p; S.pinFase=2; S.pinBuf=""; return pintar(); }
+  if(nuevo&&p!==S.pinTmp){ S.pinErr="No coinciden. Empieza otra vez."; S.pinFase=1; S.pinBuf=""; S.pinTmp=""; return pintar(); }
+  $("#app").innerHTML=`<div class="vacio"><b>Un momento…</b></div>`;
+  try{
+    if(nuevo){ const r=await fetch(SB_URL+"/rest/v1/rpc/inv_crear_pin",{method:"POST",headers:{"apikey":SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_nuevo:p})}).then(r=>r.json()); if(r.error){ S.pinErr=r.error==="ya_existe"?"Ya hay un PIN creado. Recarga e ingrésalo.":"El PIN son 4 números."; S.pinBuf=""; S.pinFase=1; return pintar(); } }
+    PIN=p; S.pinBuf=""; S.pinTmp=""; S.pinFase=1; await cargar(); try{localStorage.setItem("c400_pin",PIN);}catch(e){}
+  }catch(e){ if(e.message==="pin"){ S.pinErr="PIN incorrecto, o demasiados intentos (espera 30 minutos)."; PIN=""; S.pinBuf=""; sesion="entrar"; pintar(); } else error(e); }
+}
+document.addEventListener("keydown",e=>{ if(sesion!=="crear"&&sesion!=="entrar") return; if(/^[0-9]$/.test(e.key)) tecla(e.key); else if(e.key==="Backspace") tecla("⌫"); });
 
 /* ---------- eventos ---------- */
 function abrir(cod){ form=null; location.hash="p-"+cod; window.scrollTo(0,0); }
@@ -542,6 +566,7 @@ function guardarPrenda(){
 }
 
 document.addEventListener("click",e=>{
+  const kb=e.target.closest("[data-k]"); if(kb){ return tecla(kb.dataset.k); }
   const tb=e.target.closest("#tabs button"); if(tb){ form=null; location.hash=tb.dataset.tab; window.scrollTo(0,0); if(!tb.dataset.tab) pintar(); return; }
   const ts=e.target.closest("[data-ts]"); if(ts){ S.talla=ts.dataset.ts; return pintar(); }
   const ac=e.target.closest("[data-a]"); if(ac){ const k=ac.dataset.a;
@@ -572,7 +597,6 @@ document.addEventListener("submit",e=>{
   e.preventDefault();
   if(e.target.id==="f-busca") return buscar();
   if(e.target.id==="f-man") return resolver($("#man").value);
-  if(e.target.id==="f-pin") return enviarPin();
   if(e.target.id==="f-prenda") return guardarPrenda();
 });
 $("#foto").addEventListener("change",e=>{ const f=e.target.files&&e.target.files[0]; e.target.value=""; if(f) leerImagen(f); });
